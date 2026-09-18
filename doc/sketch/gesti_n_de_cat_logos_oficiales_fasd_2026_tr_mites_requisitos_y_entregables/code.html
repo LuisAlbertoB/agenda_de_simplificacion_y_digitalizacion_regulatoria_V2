@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error-container": "#ffdad6", "on-primary-container": "#472e00", "surface-bright": "#353944", "gov-gold-dark": "#92400e", "tech-cyan-glow": "#38bdf8", "on-surface": "#dfe2f1", "status-warning": "#f59e0b", "on-error": "#690005", "tertiary-container": "#00b17b", "on-background": "#dfe2f1", "background": "#0f131d", "tertiary": "#4edea3", "error-container": "#93000a", "border-gold": "rgba(198, 146, 59, 0.35)", "surface-variant": "#313540", "on-primary-fixed-variant": "#614000", "gov-gold-muted": "rgba(198, 146, 59, 0.15)", "surface-container": "#1c1f2a", "primary-fixed": "#ffddaf", "border-prominent": "rgba(255, 255, 255, 0.16)", "secondary-fixed": "#cce5ff", "surface-card": "rgba(17, 24, 39, 0.85)", "status-danger": "#f43f5e", "border-subtle": "rgba(255, 255, 255, 0.08)", "on-secondary": "#003351", "on-tertiary": "#003824", "surface-dim": "#0f131d", "on-primary": "#442c00", "on-surface-variant": "#d4c4b2", "on-primary-fixed": "#281800", "secondary-container": "#3198dc", "gov-gold-light": "#d97706", "text-secondary": "#94a3b8", "surface-container-high": "#262a35", "primary-container": "#c6923b", "surface-container-lowest": "#0a0e18", "primary": "#f6bd61", "outline-variant": "#504537", "surface-elevated": "#1e293b", "secondary": "#93ccff", "tertiary-fixed-dim": "#4edea3", "surface-base": "#0b0f19", "on-secondary-fixed": "#001d31", "surface-container-low": "#171b26", "secondary-fixed-dim": "#93ccff", "primary-fixed-dim": "#f6bd61", "on-tertiary-fixed": "#002113", "border-tech": "rgba(2, 132, 199, 0.35)", "on-tertiary-container": "#003b26", "surface-container-highest": "#313540", "on-secondary-fixed-variant": "#004b73", "inverse-on-surface": "#2c303b", "surface-recessed": "rgba(11, 15, 25, 0.65)", "text-primary": "#f8fafc", "inverse-primary": "#805600", "error": "#ffb4ab", "surface-tint": "#f6bd61", "inverse-surface": "#dfe2f1", "on-tertiary-fixed-variant": "#005236", "tertiary-fixed": "#6ffbbe", "outline": "#9c8f7e", "surface": "#0f131d", "on-secondary-container": "#002c47", "text-tertiary": "#64748b" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "space-2xs": "0.25rem", "space-2xl": "3rem", "space-xl": "2rem", "space-lg": "1.5rem", "space-sm": "0.75rem", "space-3xl": "4rem", "container-max": "1440px", "space-md": "1rem", "gutter-mobile": "1rem" }, "fontFamily": { "headline-lg-mobile": ["Outfit"], "headline-sm": ["Outfit"], "headline-xl": ["Outfit"], "headline-xl-mobile": ["Outfit"], "headline-md": ["Outfit"], "data-mono": ["Inter"], "headline-lg": ["Outfit"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "title-md": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "body-lg": ["Plus Jakarta Sans"], "label-md": ["Inter"] }, "fontSize": { "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "data-mono": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }] } } } }</script></head><body class="bg-surface-base font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-card/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-20 w-full px-gutter-desktop mx-auto max-w-[1440px] flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><img alt="logo.jpeg" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1V9kiu3hqM8QVHOB4-QpFQd61ykgccze0fNUFEV6DJRzpbR-GbEQrJqDHECNMDXWledLsNtT5wUBMSMU8yu-zsFcqw151KW6XYG5gPSz6G8gI78u0cXchFmOLdwcOm4tyCKDzY0imPgl7OQA1TNOZdT2_hWU8S1ddEhaSmkCYP973RGKOXz1WxTmLwqeNzDvmQQX7u2fPFsUk6va__uqdJoTwYp_Lrq47MGk6MKcJ9U_Mi1kydFHob3EkwofDkeBOsh5I3dPif03Q"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-tight tracking-tight">FASD 2026</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Tuxtla Gutiérrez • LNETB</span></div></div><div class="hidden xl:flex items-center gap-space-xs px-space-xs py-space-2xs bg-surface-recessed rounded"><span class="material-symbols-outlined text-primary text-title-md">account_balance</span><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface-variant leading-none">Dependencia</span><span class="font-data-mono text-data-mono text-on-surface font-semibold leading-tight">Coordinación General de Mejora Regulatoria</span></div><span class="material-symbols-outlined text-on-surface-variant text-label-md">arrow_drop_down</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded"><a class="px-space-sm py-space-xs font-title-md text-body-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded" data-path="panel-general" href="#">Panel General</a><a class="px-space-sm py-space-xs font-title-md text-body-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded" data-path="gestion-de-catalogos" href="#">Gestión de Catálogos (Trámites, Requisitos, Acciones)</a><a class="px-space-sm py-space-xs font-title-md text-body-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded" data-path="matriz-fasd" href="#">Matriz FASD</a><a class="px-space-sm py-space-xs font-title-md text-body-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded" data-path="centro-de-emision-y-exportacion-documental" href="#">Centro de Emisión y Exportación Documental</a></nav><div class="flex items-center gap-space-sm"><div class="hidden md:flex items-center gap-space-xs px-space-xs py-space-2xs bg-surface-container-lowest rounded"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><span class="font-data-mono text-data-mono text-tertiary">API v1.0 MS02 IAM</span></div><div class="flex items-center gap-space-xs bg-surface-container-low px-space-xs py-space-2xs rounded"><div class="hidden sm:flex flex-col text-right"><span class="font-data-mono text-data-mono text-on-surface leading-none">TUX-890214-HCS</span><span class="font-label-sm text-label-sm text-primary leading-tight">Validador Titular</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WlEJANNgOttuUApUfdJRuYf2Pi4hrUgKdJsDSzOdITHD2sbe9kMeDmFPy7PjdRFzBTv_KqN5gW0GF68jjc0F9PvGIN8LDaA4K-JNzfMgpvK_kTLnlW_Bheq7hoSl05Gueq3HONu_o05veApCRA8ocwgfC3ZZNodHK44inWLJqiewcCz6RlltmCdAkPqwnbe1JRwZy5TE7FrKDScUhuPsqswH2xJEV51r1QNeqA3GlPLc30x59U6LlcW8uvdShJyR9nXY5UAqLopR0"/></div></div></div></header><main class="w-full pt-20 bg-surface-base min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Ambient Glow Underlay -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-24 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute top-12 right-10 w-80 h-80 bg-secondary/10 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Page Header & Operational Stats -->
+<div class="w-full max-w-[1440px] mx-auto px-gutter-desktop pt-space-lg pb-space-md flex flex-col gap-space-lg">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm uppercase tracking-wider">LNETB • Art. 18 Fracc. IV</span>
+<span class="text-text-tertiary font-data-mono text-data-mono">UUID: FASD-2026-CAT-TUX</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">Gestión Integral de Catálogos Oficiales</h1>
+<p class="font-body-md text-body-md text-text-secondary max-w-3xl">
+            Repositorio taxonómico normalizado del Municipio de Tuxtla Gutiérrez. Regula las relaciones M:N entre trámites ciudadanos/empresariales, requisitos interoperables, matrices de acción LNETB y entregables normativos con validez criptográfica.
+          </p>
+</div>
+<!-- Global Fast CTA Bar -->
+<div class="flex items-center gap-space-xs shrink-0">
+<button class="px-space-md py-space-xs bg-surface-container-high hover:bg-surface-elevated text-text-primary rounded font-title-md text-body-sm flex items-center gap-space-xs transition shadow-sm" id="btn-open-sync">
+<span class="material-symbols-outlined text-secondary text-title-md">sync</span>
+<span>Sincronizar Catálogo Nacional (CNA)</span>
+</button>
+<button class="px-space-lg py-space-xs bg-gradient-to-r from-primary-container to-gov-gold-light hover:brightness-110 text-on-primary-container font-title-md text-body-sm font-semibold rounded flex items-center gap-space-xs shadow-md transition transform active:scale-95" id="btn-open-creator">
+<span class="material-symbols-outlined text-title-md">add_circle</span>
+<span>+ Registrar Nuevo Elemento</span>
+</button>
+</div>
+</div>
+<!-- Live Analytical Impact Bento -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Metric 1 -->
+<div class="bg-surface-card/90 backdrop-blur-md rounded-xl p-space-md shadow-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-md text-label-md text-text-secondary uppercase">Tasa de Reusabilidad M:N</span>
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/15 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-headline-sm">hub</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-xl text-headline-xl text-text-primary font-bold">4.42</span>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center">
+<span class="material-symbols-outlined text-label-sm">trending_up</span> +18.6% LNETB
+            </span>
+</div>
+<div class="mt-space-xs flex items-center justify-between text-text-tertiary font-data-mono text-data-mono">
+<span>48 Requisitos Maestros</span>
+<span class="text-primary font-semibold">212 Trámites cubiertos</span>
+</div>
+<!-- Tiny SVG micro-sparkline -->
+<div class="w-full h-2 bg-surface-container rounded-full mt-space-xs overflow-hidden">
+<div class="h-full bg-tertiary w-[74%] rounded-full"></div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-card/90 backdrop-blur-md rounded-xl p-space-md shadow-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-md text-label-md text-text-secondary uppercase">Reducción Carga Regulatoria</span>
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-headline-sm">speed</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-xl text-headline-xl text-text-primary font-bold">38.4%</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold flex items-center">
+<span class="material-symbols-outlined text-label-sm">arrow_downward</span> -14 hrs promedio
+            </span>
+</div>
+<div class="mt-space-xs flex items-center justify-between text-text-tertiary font-data-mono text-data-mono">
+<span>Meta Anual FASD 2026</span>
+<span class="text-text-primary font-semibold">Objetivo: 45%</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full mt-space-xs overflow-hidden">
+<div class="h-full bg-primary w-[85%] rounded-full"></div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-card/90 backdrop-blur-md rounded-xl p-space-md shadow-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-md text-label-md text-text-secondary uppercase">Interoperabilidad Externa</span>
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-headline-sm">lan</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-xl text-headline-xl text-text-primary font-bold">29</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">/ 48 Requisitos</span>
+</div>
+<div class="mt-space-xs flex items-center justify-between text-text-tertiary font-data-mono text-data-mono">
+<span>SAT • INE • CFE • RPPyC</span>
+<span class="text-tertiary font-semibold">60.4% Cero-Papel</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full mt-space-xs overflow-hidden">
+<div class="h-full bg-secondary w-[60%] rounded-full"></div>
+</div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface-card/90 backdrop-blur-md rounded-xl p-space-md shadow-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-md text-label-md text-text-secondary uppercase">Nivel Madurez Digital</span>
+<div class="w-10 h-10 rounded-lg bg-surface-elevated flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed text-headline-sm">verified</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-xl text-headline-xl text-text-primary font-bold">Nivel 2.6</span>
+<span class="font-label-sm text-label-sm text-text-secondary font-medium">Escala LNETB 0-3</span>
+</div>
+<div class="mt-space-xs flex items-center justify-between text-text-tertiary font-data-mono text-data-mono">
+<span>9 Acciones Simplif.</span>
+<span class="text-primary font-semibold">2 Digitaliz. Integral</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full mt-space-xs overflow-hidden flex gap-1">
+<div class="h-full bg-gov-gold-light w-1/4 rounded-full"></div>
+<div class="h-full bg-gov-gold-light w-1/4 rounded-full"></div>
+<div class="h-full bg-gov-gold-light w-1/4 rounded-full"></div>
+<div class="h-full bg-surface-container-high w-1/4 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Catalog Workspace Container -->
+<div class="w-full max-w-[1440px] mx-auto px-gutter-desktop py-space-sm">
+<div class="flex flex-col gap-space-md">
+<!-- Catalog Selector Segmented Tabs -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest p-space-2xs rounded-xl shadow-inner">
+<div class="flex flex-wrap items-center gap-1" id="catalog-tab-group">
+<!-- Tab 1: Trámites (Default Active) -->
+<button class="catalog-tab-btn active-tab px-space-md py-space-xs rounded-lg font-title-md text-body-sm font-semibold flex items-center gap-space-xs bg-surface-card text-primary shadow-sm" data-target="cat-tramites">
+<span class="material-symbols-outlined text-headline-sm">folder_shared</span>
+<span>Trámites y Servicios Oficiales</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-primary font-data-mono text-label-sm">212</span>
+</button>
+<!-- Tab 2: Requisitos M:N -->
+<button class="catalog-tab-btn px-space-md py-space-xs rounded-lg font-title-md text-body-sm font-medium flex items-center gap-space-xs text-text-secondary hover:text-text-primary hover:bg-surface-container transition" data-target="cat-requisitos">
+<span class="material-symbols-outlined text-headline-sm">dynamic_form</span>
+<span>Requisitos Reutilizables (M:N)</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-low text-text-secondary font-data-mono text-label-sm">48</span>
+</button>
+<!-- Tab 3: Acciones LNETB -->
+<button class="catalog-tab-btn px-space-md py-space-xs rounded-lg font-title-md text-body-sm font-medium flex items-center gap-space-xs text-text-secondary hover:text-text-primary hover:bg-surface-container transition" data-target="cat-acciones">
+<span class="material-symbols-outlined text-headline-sm">tune</span>
+<span>Acciones Simplificación &amp; Digitalización</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-low text-text-secondary font-data-mono text-label-sm">11</span>
+</button>
+<!-- Tab 4: Sub-Actividades y Entregables -->
+<button class="catalog-tab-btn px-space-md py-space-xs rounded-lg font-title-md text-body-sm font-medium flex items-center gap-space-xs text-text-secondary hover:text-text-primary hover:bg-surface-container transition" data-target="cat-entregables">
+<span class="material-symbols-outlined text-headline-sm">verified_user</span>
+<span>Sub-Actividades &amp; Entregables Vinculados</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-low text-text-secondary font-data-mono text-label-sm">94</span>
+</button>
+</div>
+<div class="hidden xl:flex items-center gap-space-xs pr-space-xs">
+<span class="font-data-mono text-data-mono text-text-tertiary">Esquema RDBMS: PostgreSQL 16 • GIS Chiapas-84</span>
+</div>
+</div>
+<!-- Advanced Filter & Search Toolbar -->
+<div class="bg-surface-card/90 backdrop-blur-md p-space-md rounded-xl shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<!-- Search Input -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary text-title-md">search</span>
+<input class="w-full pl-10 pr-space-md py-2.5 bg-surface-recessed rounded-lg text-text-primary placeholder:text-text-tertiary font-body-md text-body-md focus:outline-none focus:bg-surface-container-highest transition shadow-inner" id="catalog-search-input" placeholder="Buscar por Homoclave CNA, nombre oficial, fundamento normativo o UID..." type="text"/>
+</div>
+<!-- Filter Selectors -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<!-- Dependencia Filter -->
+<div class="relative min-w-[220px]">
+<select class="w-full appearance-none bg-surface-recessed text-text-primary pl-space-md pr-space-xl py-2.5 rounded-lg font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition cursor-pointer">
+<option value="">Todas las Dependencias (18)</option>
+<option value="sedum">Desarrollo Urbano y Movilidad (SEDUM)</option>
+<option value="tesoreria">Tesorería Municipal / Ingresos</option>
+<option value="medioambiente">Medio Ambiente e Historia Natural</option>
+<option value="proteccioncivil">Protección Civil Municipal</option>
+<option value="salud">Dirección de Salud Pública</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-text-secondary text-title-md">unfold_more</span>
+</div>
+<!-- Tipo Actor Filter -->
+<div class="relative min-w-[160px]">
+<select class="w-full appearance-none bg-surface-recessed text-text-primary pl-space-md pr-space-xl py-2.5 rounded-lg font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition cursor-pointer">
+<option value="">Todos los Tipos</option>
+<option value="ciudadano">Ciudadano (B2C)</option>
+<option value="empresarial">Empresarial (B2B)</option>
+<option value="mixto">Uso Mixto</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-text-secondary text-title-md">unfold_more</span>
+</div>
+<!-- Digital Maturity Level Filter -->
+<div class="relative min-w-[150px]">
+<select class="w-full appearance-none bg-surface-recessed text-text-primary pl-space-md pr-space-xl py-2.5 rounded-lg font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition cursor-pointer">
+<option value="">Nivel Madurez</option>
+<option value="0">Nivel 0: Informativo</option>
+<option value="1">Nivel 1: Descarga Formatos</option>
+<option value="2">Nivel 2: Interacción Parcial</option>
+<option value="3">Nivel 3: Cero-Papel 100%</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-text-secondary text-title-md">filter_list</span>
+</div>
+<!-- Clear / Reset -->
+<button class="p-2.5 rounded-lg bg-surface-recessed hover:bg-surface-container-high text-text-secondary hover:text-text-primary transition" title="Restablecer filtros">
+<span class="material-symbols-outlined text-title-md">restart_alt</span>
+</button>
+</div>
+</div>
+<!-- Tab Content Area 1: Catálogo Oficial de Trámites y Servicios -->
+<div class="catalog-view flex flex-col gap-space-md" id="cat-tramites">
+<!-- Main Dense Data Table Container -->
+<div class="bg-surface-card/95 backdrop-blur-md rounded-xl overflow-hidden shadow-lg">
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-sm">
+<thead class="bg-surface-container-lowest/80 text-text-secondary font-label-md text-label-md uppercase tracking-wider">
+<tr>
+<th class="py-space-sm px-space-md">Homoclave CNA</th>
+<th class="py-space-sm px-space-md min-w-[280px]">Nombre Oficial del Trámite / Servicio</th>
+<th class="py-space-sm px-space-md">Dependencia Responsable</th>
+<th class="py-space-sm px-space-md">Destinatario</th>
+<th class="py-space-sm px-space-md text-center">Reqs. M:N</th>
+<th class="py-space-sm px-space-md">Madurez LNETB</th>
+<th class="py-space-sm px-space-md">Estatus</th>
+<th class="py-space-sm px-space-md text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition group cursor-pointer" onclick="openDrawer('TUX-SEDUM-2026-004')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="font-data-mono text-data-mono text-primary font-bold">TUX-SEDUM-004</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary" title="Sincronizado con CNA Federal"></span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col">
+<span class="font-title-md text-body-sm text-text-primary font-semibold group-hover:text-primary transition">Licencia de Construcción Tipo B (Comercial y Mixta)</span>
+<span class="font-label-sm text-label-sm text-text-tertiary">Reglamento de Construcción Mpal. Art. 44 • Ventanilla Única SEDUM</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="px-space-xs py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Desarrollo Urbano (SEDUM)</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-secondary font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-label-md">store</span> Empresarial
+                    </span>
+</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-data-mono text-data-mono font-semibold">9 reqs</span>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-1.5">
+<div class="flex gap-0.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-high"></span>
+</div>
+<span class="font-data-mono text-label-sm text-text-secondary">N2.5 Parcial</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="px-space-xs py-1 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Vigente 2026
+                    </span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-space-2xs" onclick="event.stopPropagation()">
+<button class="p-1.5 rounded hover:bg-surface-elevated text-text-secondary hover:text-primary transition" onclick="openDrawer('TUX-SEDUM-2026-004')" title="Editar Ficha Integral">
+<span class="material-symbols-outlined text-title-md">edit_note</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-elevated text-text-secondary hover:text-secondary transition" title="Ver Grafo Relacional">
+<span class="material-symbols-outlined text-title-md">account_tree</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition group cursor-pointer" onclick="openDrawer('TUX-TESO-2026-012')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="font-data-mono text-data-mono text-primary font-bold">TUX-TESO-012</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary" title="Sincronizado con CNA Federal"></span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col">
+<span class="font-title-md text-body-sm text-text-primary font-semibold group-hover:text-primary transition">Certificado de No Adeudo de Impuesto Predial</span>
+<span class="font-label-sm text-label-sm text-text-tertiary">Código Hacendario de Tuxtla Gtz. Art. 129 • Interoperable SAT</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="px-space-xs py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Tesorería Municipal</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-tertiary font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-label-md">person</span> Ciudadano
+                    </span>
+</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-data-mono text-data-mono font-semibold">2 reqs</span>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-1.5">
+<div class="flex gap-0.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+</div>
+<span class="font-data-mono text-label-sm text-tertiary font-bold">N3 Cero-Papel</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="px-space-xs py-1 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Vigente 2026
+                    </span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-space-2xs" onclick="event.stopPropagation()">
+<button class="p-1.5 rounded hover:bg-surface-elevated text-text-secondary hover:text-primary transition" onclick="openDrawer('TUX-TESO-2026-012')" title="Editar Ficha Integral">
+<span class="material-symbols-outlined text-title-md">edit_note</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-elevated text-text-secondary hover:text-secondary transition" title="Ver Grafo Relacional">
+<span class="material-symbols-outlined text-title-md">account_tree</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition group cursor-pointer" onclick="openDrawer('TUX-PROTC-2026-002')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="font-data-mono text-data-mono text-primary font-bold">TUX-PROTC-002</span>
+<span class="w-1.5 h-1.5 rounded-full bg-status-warning" title="Revisión pendiente en Cabildo"></span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col">
+<span class="font-title-md text-body-sm text-text-primary font-semibold group-hover:text-primary transition">Dictamen de Medidas Preventivas de Protección Civil</span>
+<span class="font-label-sm text-label-sm text-text-tertiary">Ley de Protección Civil del Edo. Chiapas Art. 68 • Giro Alto Impacto</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="px-space-xs py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Protección Civil Municipal</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-secondary font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-label-md">store</span> Empresarial
+                    </span>
+</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-data-mono text-data-mono font-semibold">7 reqs</span>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-1.5">
+<div class="flex gap-0.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-high"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-high"></span>
+</div>
+<span class="font-data-mono text-label-sm text-text-secondary">N1 Formatos</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="px-space-xs py-1 rounded-full bg-status-warning/20 text-status-warning font-label-sm text-label-sm font-semibold flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 rounded-full bg-status-warning"></span> En Simplificación
+                    </span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-space-2xs" onclick="event.stopPropagation()">
+<button class="p-1.5 rounded hover:bg-surface-elevated text-text-secondary hover:text-primary transition" onclick="openDrawer('TUX-PROTC-2026-002')" title="Editar Ficha Integral">
+<span class="material-symbols-outlined text-title-md">edit_note</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-elevated text-text-secondary hover:text-secondary transition" title="Ver Grafo Relacional">
+<span class="material-symbols-outlined text-title-md">account_tree</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition group cursor-pointer" onclick="openDrawer('TUX-SMAHN-2026-015')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="font-data-mono text-data-mono text-primary font-bold">TUX-SMAHN-015</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col">
+<span class="font-title-md text-body-sm text-text-primary font-semibold group-hover:text-primary transition">Constancia de Manejo Integral de Residuos Sólidos Urbanos</span>
+<span class="font-label-sm text-label-sm text-text-tertiary">Bando de Policía y Gobierno Municipal Art. 112</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="px-space-xs py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">Medio Ambiente Municipal</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-primary-fixed font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-label-md">corporate_fare</span> Mixto
+                    </span>
+</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-data-mono text-data-mono font-semibold">4 reqs</span>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-1.5">
+<div class="flex gap-0.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-high"></span>
+</div>
+<span class="font-data-mono text-label-sm text-text-secondary">N2 Interacción</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="px-space-xs py-1 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm font-semibold flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Vigente 2026
+                    </span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-space-2xs" onclick="event.stopPropagation()">
+<button class="p-1.5 rounded hover:bg-surface-elevated text-text-secondary hover:text-primary transition" onclick="openDrawer('TUX-SMAHN-2026-015')" title="Editar Ficha Integral">
+<span class="material-symbols-outlined text-title-md">edit_note</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-elevated text-text-secondary hover:text-secondary transition" title="Ver Grafo Relacional">
+<span class="material-symbols-outlined text-title-md">account_tree</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination Footer -->
+<div class="p-space-md bg-surface-container-lowest flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+<span class="font-label-md text-label-md text-text-tertiary">Mostrando <span class="text-text-primary font-bold">1–4</span> de <span class="text-text-primary font-bold">212</span> trámites homologados</span>
+<div class="flex items-center gap-1">
+<button class="px-space-xs py-1 rounded bg-surface-container text-text-secondary hover:text-text-primary text-label-md disabled:opacity-40" disabled="">Anterior</button>
+<button class="px-space-xs py-1 rounded bg-primary text-on-primary font-bold text-label-md">1</button>
+<button class="px-space-xs py-1 rounded bg-surface-container text-text-secondary hover:text-text-primary text-label-md">2</button>
+<button class="px-space-xs py-1 rounded bg-surface-container text-text-secondary hover:text-text-primary text-label-md">3</button>
+<span class="text-text-tertiary px-1">...</span>
+<button class="px-space-xs py-1 rounded bg-surface-container text-text-secondary hover:text-text-primary text-label-md">22</button>
+<button class="px-space-xs py-1 rounded bg-surface-container text-text-secondary hover:text-text-primary text-label-md">Siguiente</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Tab Content Area 2: Catálogo Maestro de Requisitos M:N -->
+<div class="catalog-view hidden flex flex-col gap-space-md" id="cat-requisitos">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md">
+<!-- Requisito Card 1 -->
+<div class="bg-surface-card/90 backdrop-blur-md p-space-md rounded-xl shadow-md flex flex-col justify-between hover:bg-surface-elevated/80 transition cursor-pointer" onclick="openRequirementModal('REQ-SAT-RFC')">
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-0.5 rounded bg-secondary-container/20 text-secondary font-data-mono text-label-sm font-semibold">EXTERNO • SAT</span>
+<span class="text-primary font-data-mono text-label-sm font-bold">Usado en 142 Trámites</span>
+</div>
+<h3 class="font-title-md text-title-md text-text-primary mt-1">Constancia de Situación Fiscal (RFC Vigente)</h3>
+<p class="font-body-sm text-body-sm text-text-secondary">Consulta automatizada mediante API SAT WS-ID. No requiere carga de archivo PDF por parte del ciudadano.</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-label-sm">check_circle</span> Verificación Criptográfica
+              </span>
+<span class="font-data-mono text-label-sm text-text-tertiary">REQ-UUID-001</span>
+</div>
+</div>
+<!-- Requisito Card 2 -->
+<div class="bg-surface-card/90 backdrop-blur-md p-space-md rounded-xl shadow-md flex flex-col justify-between hover:bg-surface-elevated/80 transition cursor-pointer" onclick="openRequirementModal('REQ-INE-ID')">
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-0.5 rounded bg-secondary-container/20 text-secondary font-data-mono text-label-sm font-semibold">EXTERNO • INE / SEGOB</span>
+<span class="text-primary font-data-mono text-label-sm font-bold">Usado en 198 Trámites</span>
+</div>
+<h3 class="font-title-md text-title-md text-text-primary mt-1">Identificación Oficial Vigente (INE / Pasaporte)</h3>
+<p class="font-body-sm text-body-sm text-text-secondary">Validación de lista nominal INE mediante OCR biométrico municipal y token temporal federado.</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-label-sm">verified</span> Reutilización Cero-Copia
+              </span>
+<span class="font-data-mono text-label-sm text-text-tertiary">REQ-UUID-002</span>
+</div>
+</div>
+<!-- Requisito Card 3 -->
+<div class="bg-surface-card/90 backdrop-blur-md p-space-md rounded-xl shadow-md flex flex-col justify-between hover:bg-surface-elevated/80 transition cursor-pointer" onclick="openRequirementModal('REQ-TUX-PRED')">
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-0.5 rounded bg-tertiary-container/20 text-tertiary font-data-mono text-label-sm font-semibold">INTERNO • CATASTRO TUXTLA</span>
+<span class="text-primary font-data-mono text-label-sm font-bold">Usado en 84 Trámites</span>
+</div>
+<h3 class="font-title-md text-title-md text-text-primary mt-1">Clave Catastral Municipal Homologada</h3>
+<p class="font-body-sm text-body-sm text-text-secondary">Interconexión directa con el Sistema Cartográfico y de Padrón Catastral de Tuxtla Gutiérrez.</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-label-sm">lock_reset</span> Interoperable Interno
+              </span>
+<span class="font-data-mono text-label-sm text-text-tertiary">REQ-UUID-003</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tab Content Area 3: Catálogo de Acciones LNETB (9 Simplificación + 2 Digitalización) -->
+<div class="catalog-view hidden flex flex-col gap-space-md" id="cat-acciones">
+<div class="bg-surface-card/90 backdrop-blur-md p-space-md rounded-xl shadow-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between pb-space-sm gap-space-xs">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-text-primary">Marco Operativo LNETB 2026: Acciones Tipificadas</h2>
+<p class="font-body-sm text-body-sm text-text-secondary">Las dependencias solo pueden imputar compromisos basados en estas 11 modalidades normativas oficiales.</p>
+</div>
+<span class="px-space-xs py-1 rounded bg-gov-gold-muted text-primary font-label-sm text-label-sm font-bold uppercase">9 Simplificación • 2 Digitalización</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-sm mt-space-sm">
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-6 h-6 rounded bg-primary-container text-on-primary-container font-data-mono text-label-sm font-bold flex items-center justify-center">A01</span>
+<span class="font-title-md text-body-sm text-text-primary font-semibold">Eliminación Directa de Requisito Obsoleto</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-secondary mt-2">Aplica cuando la información ya reside en el expediente único municipal.</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-6 h-6 rounded bg-primary-container text-on-primary-container font-data-mono text-label-sm font-bold flex items-center justify-center">A02</span>
+<span class="font-title-md text-body-sm text-text-primary font-semibold">Reducción del Plazo Legal de Respuesta</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-secondary mt-2">Disminución vinculante de días hábiles mediante automatización de dictámenes.</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-6 h-6 rounded bg-primary-container text-on-primary-container font-data-mono text-label-sm font-bold flex items-center justify-center">A03</span>
+<span class="font-title-md text-body-sm text-text-primary font-semibold">Extensión de Vigencia del Acto Administrativo</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-secondary mt-2">Pase de vigencia anual a multianual o permanente condicionado a inspección.</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-6 h-6 rounded bg-secondary-container text-on-secondary-container font-data-mono text-label-sm font-bold flex items-center justify-center">D01</span>
+<span class="font-title-md text-body-sm text-text-primary font-semibold">Digitalización de Recepción y Pago En Línea</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-secondary mt-2">Implementación de pasarela CoDi/SPEI y carga de documentos con firma electrónica avanzada.</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-6 h-6 rounded bg-secondary-container text-on-secondary-container font-data-mono text-label-sm font-bold flex items-center justify-center">D02</span>
+<span class="font-title-md text-body-sm text-text-primary font-semibold">Resolución Automatizada de Extremo a Extremo</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-secondary mt-2">Emisión instantánea de licencia o constancia con sellado criptográfico y QR SHA-256.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tab Content Area 4: Sub-Actividades y Entregables Vinculados -->
+<div class="catalog-view hidden flex flex-col gap-space-md" id="cat-entregables">
+<div class="bg-surface-card/90 backdrop-blur-md p-space-md rounded-xl shadow-md">
+<h2 class="font-headline-sm text-headline-sm text-text-primary mb-space-2xs">Sub-Actividades Homologadas y Formatos de Entregable Oficial</h2>
+<p class="font-body-sm text-body-sm text-text-secondary mb-space-md">Cadena de custodia de entregables para validación por parte del Órgano de Control Interno y Cabildo.</p>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-sm">
+<thead class="bg-surface-container-lowest/80 text-text-secondary font-label-md text-label-md uppercase">
+<tr>
+<th class="py-space-xs px-space-sm">Código Sub-Actividad</th>
+<th class="py-space-xs px-space-sm">Descripción del Entregable Obligatorio</th>
+<th class="py-space-xs px-space-sm">Formato Válido</th>
+<th class="py-space-xs px-space-sm">Firmante Requerido</th>
+<th class="py-space-xs px-space-sm">Nivel de Inspección</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<tr class="hover:bg-surface-container-low transition">
+<td class="py-space-sm px-space-sm font-data-mono text-primary">ACT-SEDUM-04-A</td>
+<td class="py-space-sm px-space-sm text-text-primary font-medium">Dictamen Técnico de Alineamiento y Compatibilidad Urbanística</td>
+<td class="py-space-sm px-space-sm"><span class="px-2 py-0.5 rounded bg-surface-container font-data-mono text-label-sm">PDF/A-1b Cripto</span></td>
+<td class="py-space-sm px-space-sm text-text-secondary">Director de Desarrollo Urbano</td>
+<td class="py-space-sm px-space-sm"><span class="text-tertiary font-label-sm font-semibold">Ex-ante OBLIGATORIO</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition">
+<td class="py-space-sm px-space-sm font-data-mono text-primary">ACT-PROTC-02-B</td>
+<td class="py-space-sm px-space-sm text-text-primary font-medium">Acta Circunstanciada de Inspección Físico-Estructural con Geo-tag</td>
+<td class="py-space-sm px-space-sm"><span class="px-2 py-0.5 rounded bg-surface-container font-data-mono text-label-sm">GeoJSON + Fotográfico</span></td>
+<td class="py-space-sm px-space-sm text-text-secondary">Inspector Certificado PC</td>
+<td class="py-space-sm px-space-sm"><span class="text-status-warning font-label-sm font-semibold">In Situ Aleatorio</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Persistent Lateral Slide-Over / Edit Panel (Drawer) -->
+<div class="fixed inset-0 z-50 pointer-events-none transition-all duration-300" id="catalog-drawer">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-surface-container-lowest/80 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="drawer-backdrop"></div>
+<!-- Drawer Body -->
+<div class="absolute right-0 top-0 bottom-0 w-full max-w-2xl bg-surface-elevated/95 backdrop-blur-2xl shadow-2xl p-space-lg flex flex-col justify-between translate-x-full transition-transform duration-300 overflow-y-auto pointer-events-auto" id="drawer-panel">
+<div class="flex flex-col gap-space-md">
+<!-- Header -->
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-data-mono text-data-mono text-primary font-bold" id="drawer-id">TUX-SEDUM-004</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-text-secondary font-label-sm text-label-sm">Versión LNETB 2026.2</span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-text-secondary hover:text-text-primary transition" id="btn-close-drawer">
+<span class="material-symbols-outlined text-headline-sm">close</span>
+</button>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-text-primary" id="drawer-title">Licencia de Construcción Tipo B (Comercial y Mixta)</h2>
+<p class="font-body-sm text-body-sm text-text-secondary mt-1">Configuración del grafo de dependencias, matriz de requisitos reutilizables y reglas de simplificación.</p>
+</div>
+<!-- Form Edit Fields -->
+<div class="flex flex-col gap-space-sm mt-space-2xs">
+<!-- Homoclave CNA & Dependencia -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Homoclave Federal CNA</label>
+<input class="bg-surface-recessed rounded p-2.5 text-text-primary font-data-mono text-body-sm focus:outline-none focus:ring-1 focus:ring-primary transition" type="text" value="TUX-SEDUM-2026-004"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Dependencia Gestora</label>
+<select class="bg-surface-recessed rounded p-2.5 text-text-primary font-body-sm focus:outline-none focus:ring-1 focus:ring-primary transition">
+<option selected="">Desarrollo Urbano (SEDUM)</option>
+<option>Tesorería Municipal</option>
+<option>Protección Civil</option>
+</select>
+</div>
+</div>
+<!-- Nivel de Digitalización Actual (0 a 3) -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Nivel de Digitalización LNETB (0 a 3)</label>
+<div class="grid grid-cols-4 gap-2">
+<label class="flex flex-col items-center p-2 rounded-lg bg-surface-recessed hover:bg-surface-container cursor-pointer transition">
+<input class="sr-only" name="madurez" type="radio" value="0"/>
+<span class="font-headline-sm text-headline-sm text-text-secondary">0</span>
+<span class="font-label-sm text-label-sm text-text-tertiary text-center">Informativo</span>
+</label>
+<label class="flex flex-col items-center p-2 rounded-lg bg-surface-recessed hover:bg-surface-container cursor-pointer transition">
+<input class="sr-only" name="madurez" type="radio" value="1"/>
+<span class="font-headline-sm text-headline-sm text-text-secondary">1</span>
+<span class="font-label-sm text-label-sm text-text-tertiary text-center">Descarga PDF</span>
+</label>
+<label class="flex flex-col items-center p-2 rounded-lg bg-surface-recessed hover:bg-surface-container cursor-pointer transition border border-tertiary/40">
+<input checked="" class="sr-only" name="madurez" type="radio" value="2"/>
+<span class="font-headline-sm text-headline-sm text-tertiary">2</span>
+<span class="font-label-sm text-label-sm text-tertiary text-center font-bold">Ventanilla Web</span>
+</label>
+<label class="flex flex-col items-center p-2 rounded-lg bg-surface-recessed hover:bg-surface-container cursor-pointer transition">
+<input class="sr-only" name="madurez" type="radio" value="3"/>
+<span class="font-headline-sm text-headline-sm text-text-secondary">3</span>
+<span class="font-label-sm text-label-sm text-text-tertiary text-center">Cero-Papel 100%</span>
+</label>
+</div>
+</div>
+<!-- M:N Requisitos Vinculados (Interoperabilidad) -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Requisitos Vinculados al Trámite (M:N)</label>
+<button class="text-primary font-label-sm text-label-sm hover:underline flex items-center gap-0.5">
+<span class="material-symbols-outlined text-label-sm">add</span> Asociar Requisito
+              </button>
+</div>
+<div class="flex flex-col gap-1.5 max-h-48 overflow-y-auto pr-1">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-2 bg-surface-recessed rounded-lg">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-title-md">token</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-text-primary font-medium">Constancia de Situación Fiscal (SAT)</span>
+<span class="font-label-sm text-label-sm text-tertiary">Validación API Directa • Cero Copia</span>
+</div>
+</div>
+<button class="text-text-tertiary hover:text-status-danger p-1">
+<span class="material-symbols-outlined text-title-md">delete</span>
+</button>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-2 bg-surface-recessed rounded-lg">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-title-md">token</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-text-primary font-medium">Dictamen de Medidas Preventivas de Protección Civil</span>
+<span class="font-label-sm text-label-sm text-text-secondary">Vinculado a TUX-PROTC-002</span>
+</div>
+</div>
+<button class="text-text-tertiary hover:text-status-danger p-1">
+<span class="material-symbols-outlined text-title-md">delete</span>
+</button>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between p-2 bg-surface-recessed rounded-lg">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-title-md">home_pin</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-text-primary font-medium">Alineamiento Oficial y Número Oficial</span>
+<span class="font-label-sm text-label-sm text-text-secondary">Emitido por Catastro Municipal</span>
+</div>
+</div>
+<button class="text-text-tertiary hover:text-status-danger p-1">
+<span class="material-symbols-outlined text-title-md">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Acciones de Simplificación Comprometidas FASD 2026 -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Acción de Transformación Comprometida</label>
+<div class="p-space-sm bg-surface-recessed rounded-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold">A02 • Reducción Plazo Legal</span>
+<span class="font-data-mono text-tertiary font-bold text-label-md">-65% Plazo (de 15 a 5 días)</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-secondary">Implementación de firma electrónica para los peritos directores responsables de obra (DRO).</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Drawer Bottom Persistent Actions -->
+<div class="pt-space-md mt-space-md border-t border-surface-container flex items-center justify-between gap-space-xs">
+<button class="px-space-md py-space-xs rounded bg-surface-container hover:bg-surface-container-high text-text-secondary font-title-md text-body-sm transition" id="btn-cancel-drawer">
+          Descartar Cambios
+        </button>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-md py-space-xs rounded bg-surface-container-high text-text-primary font-title-md text-body-sm flex items-center gap-1 hover:bg-surface-elevated transition">
+<span class="material-symbols-outlined text-body-sm">history</span> Historial
+          </button>
+<button class="px-space-lg py-space-xs rounded bg-gradient-to-r from-primary-container to-gov-gold-light hover:brightness-110 text-on-primary-container font-title-md text-body-sm font-semibold flex items-center gap-space-xs shadow-md transition">
+<span class="material-symbols-outlined text-body-md">save</span>
+<span>Guardar en Catálogo Oficial</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal: Registrar Nuevo Elemento / Requisito Maestro -->
+<div class="fixed inset-0 z-50 hidden items-center justify-center p-space-md" id="creator-modal">
+<div class="absolute inset-0 bg-surface-container-lowest/80 backdrop-blur-md" onclick="closeCreatorModal()"></div>
+<div class="relative w-full max-w-xl bg-surface-card rounded-xl shadow-2xl p-space-lg flex flex-col gap-space-md z-10">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-8 h-8 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-headline-sm">add_box</span>
+</span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary">Registrar Elemento de Catálogo</h3>
+<span class="font-label-sm text-label-sm text-text-secondary">Conforme al Marco de Interoperabilidad LNETB</span>
+</div>
+</div>
+<button class="p-1 rounded text-text-secondary hover:text-text-primary" onclick="closeCreatorModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Tipo de Elemento a Catalogar</label>
+<select class="bg-surface-recessed rounded p-2.5 text-text-primary font-body-sm focus:outline-none focus:ring-1 focus:ring-primary" id="modal-cat-type">
+<option value="tramite">Nuevo Trámite Oficial (Con Homoclave CNA)</option>
+<option selected="" value="requisito">Requisito Maestro Reutilizable (M:N)</option>
+<option value="accion">Acción / Sub-Actividad Regulatoria</option>
+<option value="entregable">Formato de Entregable Oficial</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Nombre / Título Oficial</label>
+<input class="bg-surface-recessed rounded p-2.5 text-text-primary font-body-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Ej. Opinión de Cumplimiento de Obligaciones Fiscales Estatales" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Clasificación Origen</label>
+<select class="bg-surface-recessed rounded p-2.5 text-text-primary font-body-sm focus:outline-none focus:ring-1 focus:ring-primary">
+<option>Externo Federal (SAT, INE, CFE)</option>
+<option>Externo Estatal (Hacienda Chiapas, RPPyC)</option>
+<option>Interno Municipal (Tuxtla Gutiérrez)</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Mecanismo Intercambio</label>
+<select class="bg-surface-recessed rounded p-2.5 text-text-primary font-body-sm focus:outline-none focus:ring-1 focus:ring-primary">
+<option>API REST JSON (M2M Directo)</option>
+<option>Token Federado IAM</option>
+<option>Carga Digital con Hash SHA-256</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase">Fundamento Legal / Decreto Municipal</label>
+<textarea class="bg-surface-recessed rounded p-2 text-text-primary font-body-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Citar artículo, fracción y publicación en el Periódico Oficial del Estado..." rows="2"></textarea>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-xs pt-space-xs">
+<button class="px-space-md py-space-xs rounded bg-surface-container text-text-secondary font-title-md text-body-sm hover:bg-surface-container-high transition" onclick="closeCreatorModal()">
+          Cancelar
+        </button>
+<button class="px-space-lg py-space-xs rounded bg-gradient-to-r from-primary-container to-gov-gold-light hover:brightness-110 text-on-primary-container font-title-md text-body-sm font-semibold shadow-md transition" onclick="saveAndCloseModal()">
+          Aprobar e Insertar en Catálogo
+        </button>
+</div>
+</div>
+</div>
+<!-- Sticky Mobile Action Trigger Safe Area -->
+<div class="lg:hidden sticky bottom-0 z-40 w-full bg-surface-card/95 backdrop-blur-md p-space-sm border-t border-surface-container flex items-center justify-between gap-space-xs pb-[env(safe-area-inset-bottom,0.75rem)]">
+<div class="flex items-center gap-space-2xs text-text-secondary font-data-mono text-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> 212 Registros
+    </div>
+<button class="px-space-md py-space-xs bg-primary text-on-primary font-title-md text-body-sm font-semibold rounded shadow-md flex items-center gap-1" onclick="openCreatorModal()">
+<span class="material-symbols-outlined text-title-md">add</span> Elemento
+    </button>
+</div>
+</div>
+<!-- Inline Logic for Dynamic Workspace Interactivity -->
+<script>
+  // Tab Switching Engine
+  const tabButtons = document.querySelectorAll('.catalog-tab-btn');
+  const catalogViews = document.querySelectorAll('.catalog-view');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      
+      // Update Tab Styles
+      tabButtons.forEach(b => {
+        b.classList.remove('bg-surface-card', 'text-primary', 'shadow-sm', 'font-semibold');
+        b.classList.add('text-text-secondary', 'font-medium');
+      });
+      btn.classList.add('bg-surface-card', 'text-primary', 'shadow-sm', 'font-semibold');
+      btn.classList.remove('text-text-secondary', 'font-medium');
+
+      // Toggle Views
+      catalogViews.forEach(view => {
+        if (view.id === targetId) {
+          view.classList.remove('hidden');
+        } else {
+          view.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Slide-Over Drawer Controls
+  const drawer = document.getElementById('catalog-drawer');
+  const drawerPanel = document.getElementById('drawer-panel');
+  const drawerBackdrop = document.getElementById('drawer-backdrop');
+  const btnCloseDrawer = document.getElementById('btn-close-drawer');
+  const btnCancelDrawer = document.getElementById('btn-cancel-drawer');
+
+  function openDrawer(recordId) {
+    if (recordId) {
+      document.getElementById('drawer-id').innerText = recordId;
+      if (recordId === 'TUX-TESO-2026-012') {
+        document.getElementById('drawer-title').innerText = 'Certificado de No Adeudo de Impuesto Predial';
+      } else if (recordId === 'TUX-PROTC-2026-002') {
+        document.getElementById('drawer-title').innerText = 'Dictamen de Medidas Preventivas de Protección Civil';
+      } else {
+        document.getElementById('drawer-title').innerText = 'Licencia de Construcción Tipo B (Comercial y Mixta)';
+      }
+    }
+    drawer.classList.remove('pointer-events-none');
+    drawerBackdrop.classList.remove('opacity-0');
+    drawerBackdrop.classList.add('opacity-100');
+    drawerPanel.classList.remove('translate-x-full');
+    drawerPanel.classList.add('translate-x-0');
+  }
+
+  function closeDrawer() {
+    drawerBackdrop.classList.remove('opacity-100');
+    drawerBackdrop.classList.add('opacity-0');
+    drawerPanel.classList.remove('translate-x-0');
+    drawerPanel.classList.add('translate-x-full');
+    setTimeout(() => {
+      drawer.classList.add('pointer-events-none');
+    }, 300);
+  }
+
+  if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', closeDrawer);
+  if (btnCancelDrawer) btnCancelDrawer.addEventListener('click', closeDrawer);
+  if (drawerBackdrop) drawerBackdrop.addEventListener('click', closeDrawer);
+
+  // Modal Creator Controls
+  const creatorModal = document.getElementById('creator-modal');
+  const btnOpenCreator = document.getElementById('btn-open-creator');
+
+  function openCreatorModal() {
+    creatorModal.classList.remove('hidden');
+    creatorModal.classList.add('flex');
+  }
+
+  function closeCreatorModal() {
+    creatorModal.classList.remove('flex');
+    creatorModal.classList.add('hidden');
+  }
+
+  function saveAndCloseModal() {
+    closeCreatorModal();
+  }
+
+  if (btnOpenCreator) btnOpenCreator.addEventListener('click', openCreatorModal);
+
+  function openRequirementModal(reqCode) {
+    openDrawer(reqCode);
+  }
+
+  // Quick Client-Side Filter by text input
+  const searchInput = document.getElementById('catalog-search-input');
+  if (searchInput) {
+    searchInput.addEventListener('keyup', (e) => {
+      const term = e.target.value.toLowerCase();
+      const rows = document.querySelectorAll('#cat-tramites tbody tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(term) ? '' : 'none';
+      });
+    });
+  }
+</script></main><footer class="w-full bg-surface-container-lowest py-space-xl"><div class="w-full px-gutter-desktop mx-auto max-w-[1440px] flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary">Gobierno Municipal de Tuxtla Gutiérrez</span><span class="font-body-sm text-body-sm text-on-surface-variant">Agenda de Simplificación y Digitalización Regulatoria • FASD 2026</span></div></div><div class="flex flex-col md:items-end text-center md:text-right gap-space-2xs"><span class="font-label-md text-label-md text-on-surface-variant">© 2026 Ayuntamiento de Tuxtla Gutiérrez, Chiapas. Conforme a la Ley Nacional de Eficiencia y Transformación Burocrática (LNETB).</span><span class="font-data-mono text-data-mono text-text-tertiary">Seguridad e Identidad Criptográfica • Nodo MS02 IAM Oficial</span></div></div></footer></body></html>

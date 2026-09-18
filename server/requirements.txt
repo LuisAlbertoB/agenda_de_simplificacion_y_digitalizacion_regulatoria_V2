@@ -1,0 +1,28 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Agenda de Simplificación y Digitalización Regulatoria — Dependencias Python
+# Django 5.x + DRF + PostgreSQL + JWT + Pillow + Bcrypt
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Django core (5.x — estándar 2026)
+Django>=5.1,<6.0
+
+# Django REST Framework
+djangorestframework>=3.15
+
+# JWT Authentication
+djangorestframework-simplejwt>=5.4
+
+# PostgreSQL driver
+psycopg2-binary>=2.9
+
+# Variables de entorno (.env)
+python-decouple>=3.8
+
+# CORS Headers (para frontends externos)
+django-cors-headers>=4.6
+
+# Procesamiento de imágenes (incluido por consistencia con el stack; no requerido en Sprint 1)
+Pillow>=11.0
+
+# Hashing de contraseñas con Bcrypt
+bcrypt>=4.2

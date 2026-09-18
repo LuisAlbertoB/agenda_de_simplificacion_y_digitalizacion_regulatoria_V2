@@ -1,0 +1,783 @@
+<!DOCTYPE html><html class="dark" lang="es" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error-container": "#ffdad6", "on-primary-container": "#472e00", "surface-bright": "#353944", "gov-gold-dark": "#92400e", "tech-cyan-glow": "#38bdf8", "on-surface": "#dfe2f1", "status-warning": "#f59e0b", "on-error": "#690005", "tertiary-container": "#00b17b", "on-background": "#dfe2f1", "background": "#0f131d", "tertiary": "#4edea3", "error-container": "#93000a", "border-gold": "rgba(198, 146, 59, 0.35)", "surface-variant": "#313540", "on-primary-fixed-variant": "#614000", "gov-gold-muted": "rgba(198, 146, 59, 0.15)", "surface-container": "#1c1f2a", "primary-fixed": "#ffddaf", "border-prominent": "rgba(255, 255, 255, 0.16)", "secondary-fixed": "#cce5ff", "surface-card": "rgba(17, 24, 39, 0.85)", "status-danger": "#f43f5e", "border-subtle": "rgba(255, 255, 255, 0.08)", "on-secondary": "#003351", "on-tertiary": "#003824", "surface-dim": "#0f131d", "on-primary": "#442c00", "on-surface-variant": "#d4c4b2", "on-primary-fixed": "#281800", "secondary-container": "#3198dc", "gov-gold-light": "#d97706", "text-secondary": "#94a3b8", "surface-container-high": "#262a35", "primary-container": "#c6923b", "surface-container-lowest": "#0a0e18", "primary": "#f6bd61", "outline-variant": "#504537", "surface-elevated": "#1e293b", "secondary": "#93ccff", "tertiary-fixed-dim": "#4edea3", "surface-base": "#0b0f19", "on-secondary-fixed": "#001d31", "surface-container-low": "#171b26", "secondary-fixed-dim": "#93ccff", "primary-fixed-dim": "#f6bd61", "on-tertiary-fixed": "#002113", "border-tech": "rgba(2, 132, 199, 0.35)", "on-tertiary-container": "#003b26", "surface-container-highest": "#313540", "on-secondary-fixed-variant": "#004b73", "inverse-on-surface": "#2c303b", "surface-recessed": "rgba(11, 15, 25, 0.65)", "text-primary": "#f8fafc", "inverse-primary": "#805600", "error": "#ffb4ab", "surface-tint": "#f6bd61", "inverse-surface": "#dfe2f1", "on-tertiary-fixed-variant": "#005236", "tertiary-fixed": "#6ffbbe", "outline": "#9c8f7e", "surface": "#0f131d", "on-secondary-container": "#002c47", "text-tertiary": "#64748b" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.5rem", "gutter-desktop": "1.5rem", "space-2xs": "0.25rem", "space-2xl": "3rem", "space-xl": "2rem", "space-lg": "1.5rem", "space-sm": "0.75rem", "space-3xl": "4rem", "container-max": "1440px", "space-md": "1rem", "gutter-mobile": "1rem" }, "fontFamily": { "headline-lg-mobile": ["Outfit"], "headline-sm": ["Outfit"], "headline-xl": ["Outfit"], "headline-xl-mobile": ["Outfit"], "headline-md": ["Outfit"], "data-mono": ["Inter"], "headline-lg": ["Outfit"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "title-md": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "body-lg": ["Plus Jakarta Sans"], "label-md": ["Inter"] }, "fontSize": { "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "data-mono": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }] } } } }</script></head><body class="bg-surface-base font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-card/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-20 w-full px-gutter-desktop mx-auto max-w-[1440px] flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><img alt="logo.jpeg" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1V9kiu3hqM8QVHOB4-QpFQd61ykgccze0fNUFEV6DJRzpbR-GbEQrJqDHECNMDXWledLsNtT5wUBMSMU8yu-zsFcqw151KW6XYG5gPSz6G8gI78u0cXchFmOLdwcOm4tyCKDzY0imPgl7OQA1TNOZdT2_hWU8S1ddEhaSmkCYP973RGKOXz1WxTmLwqeNzDvmQQX7u2fPFsUk6va__uqdJoTwYp_Lrq47MGk6MKcJ9U_Mi1kydFHob3EkwofDkeBOsh5I3dPif03Q"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-tight tracking-tight">FASD 2026</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Tuxtla Gutiérrez • LNETB</span></div></div><div class="hidden xl:flex items-center gap-space-xs px-space-xs py-space-2xs bg-surface-recessed rounded"><span class="material-symbols-outlined text-primary text-title-md">account_balance</span><div class="flex flex-col"><span class="font-label-sm text-label-sm text-on-surface-variant leading-none">Dependencia</span><span class="font-data-mono text-data-mono text-on-surface font-semibold leading-tight">Coordinación General de Mejora Regulatoria</span></div><span class="material-symbols-outlined text-on-surface-variant text-label-md">arrow_drop_down</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded"><a class="px-space-sm py-space-xs font-title-md text-body-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded" data-path="panel-general" href="#">Panel General</a><a class="px-space-sm py-space-xs font-title-md text-body-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded" data-path="gestion-de-catalogos" href="#">Gestión de Catálogos (Trámites, Requisitos, Acciones)</a><a class="px-space-sm py-space-xs font-title-md text-body-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded" data-path="matriz-fasd" href="#">Matriz FASD</a><a class="px-space-sm py-space-xs font-title-md text-body-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded" data-path="centro-de-emision-y-exportacion-documental" href="#">Centro de Emisión y Exportación Documental</a></nav><div class="flex items-center gap-space-sm"><div class="hidden md:flex items-center gap-space-xs px-space-xs py-space-2xs bg-surface-container-lowest rounded"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><span class="font-data-mono text-data-mono text-tertiary">API v1.0 MS02 IAM</span></div><div class="flex items-center gap-space-xs bg-surface-container-low px-space-xs py-space-2xs rounded"><div class="hidden sm:flex flex-col text-right"><span class="font-data-mono text-data-mono text-on-surface leading-none">TUX-890214-HCS</span><span class="font-label-sm text-label-sm text-primary leading-tight">Validador Titular</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WlEJANNgOttuUApUfdJRuYf2Pi4hrUgKdJsDSzOdITHD2sbe9kMeDmFPy7PjdRFzBTv_KqN5gW0GF68jjc0F9PvGIN8LDaA4K-JNzfMgpvK_kTLnlW_Bheq7hoSl05Gueq3HONu_o05veApCRA8ocwgfC3ZZNodHK44inWLJqiewcCz6RlltmCdAkPqwnbe1JRwZy5TE7FrKDScUhuPsqswH2xJEV51r1QNeqA3GlPLc30x59U6LlcW8uvdShJyR9nXY5UAqLopR0"></div></div></div></header><main class="w-full pt-20 bg-surface-base min-h-screen"><div class="flex flex-col w-full">
+<!-- Dynamic Notification / Top Telemetry Ribbon -->
+<div class="w-full bg-surface-container-lowest px-gutter-desktop py-space-xs flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-tertiary-container/20 text-tertiary font-label-sm uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>
+        Nodo Validador Conectado
+      </span>
+<span class="font-data-mono text-data-mono text-text-secondary truncate">
+        Sello Criptográfico Activo • Registro LNETB-CHIS-TUX-2026-00492
+      </span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+        Certificado Raíz Vigente (TSA-Tuxtla-Gutiérrez-2026)
+      </span>
+<span class="text-text-tertiary font-data-mono text-data-mono hidden md:inline">RFC: MTG850101-AAA</span>
+</div>
+</div>
+<div class="w-full max-w-[1440px] mx-auto px-gutter-desktop py-space-xl flex flex-col gap-space-xl">
+<!-- Breadcrumb & Control Topbar -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center gap-2 text-text-tertiary font-label-md">
+<span class="">Agenda Regulatoria</span>
+<span class="">/</span>
+<span class="">FASD 2026</span>
+<span class="">/</span>
+<span class="text-primary font-semibold">Emisión y Fe Documental</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight flex items-center gap-space-xs">
+          Centro de Emisión y Exportación Documental
+          <span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</h1>
+<p class="font-body-md text-body-md text-text-secondary max-w-3xl">
+          Generación, foliado digital y compulsa de los 9 instrumentos reglamentarios conforme a la <span class="text-on-surface font-medium">Ley Nacional de Eficiencia y Transformación Burocrática (LNETB)</span> y el marco municipal de Tuxtla Gutiérrez, Chiapas.
+        </p>
+</div>
+<!-- Quick Summary Badges -->
+<div class="flex flex-wrap items-center gap-space-xs bg-surface-container-low p-2 rounded-xl">
+<div class="px-space-sm py-space-2xs rounded bg-surface-card flex flex-col">
+<span class="font-label-sm text-label-sm text-text-tertiary">Fojas Foliadas</span>
+<span class="font-headline-sm text-headline-sm text-primary">52 / 52</span>
+</div>
+<div class="px-space-sm py-space-2xs rounded bg-surface-card flex flex-col">
+<span class="font-label-sm text-label-sm text-text-tertiary">Estatus Firma</span>
+<span class="font-data-mono text-data-mono text-tertiary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span> 100% Signado
+          </span>
+</div>
+<div class="px-space-sm py-space-2xs rounded bg-surface-card flex flex-col">
+<span class="font-label-sm text-label-sm text-text-tertiary">Gaceta</span>
+<span class="font-data-mono text-data-mono text-secondary font-semibold">TUX-GAC-26-08</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout: Main Cryptographic Panel + Global Package CTA -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch">
+<!-- Panel de Control de Firma Electrónica y Hash SHA-256 (7 Cols) -->
+<div class="lg:col-span-7 rounded-xl bg-surface-card p-space-lg flex flex-col justify-between relative overflow-hidden shadow-xl">
+<div class="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-gradient-to-br from-primary/10 via-tech-cyan-glow/5 to-transparent blur-3xl pointer-events-none"></div>
+<div class="flex flex-col gap-space-md z-10">
+<div class="flex items-start justify-between gap-space-md flex-wrap">
+<div class="flex items-center gap-space-xs">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">policy</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-text-primary">Firma Electrónica Avanzada Municipal (FIEL-TUX)</span>
+<span class="font-label-sm text-label-sm text-text-secondary">Validez Plena según Artículo 34 de la LNETB • Acuse Oficial con No Repudio</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-tertiary/15 text-tertiary font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+              Sello Hash Válido
+            </span>
+</div>
+<!-- Hash Display & Algorithmic Fingerprint -->
+<div class="bg-surface-recessed p-space-md rounded-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-tertiary uppercase tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-tech-cyan-glow text-[16px]">fingerprint</span>
+                Cadena SHA-256 del Expediente Maestro
+              </span>
+<button class="text-tech-cyan-glow hover:text-white font-label-sm flex items-center gap-1 transition-colors" onclick="navigator.clipboard.writeText('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'); alert('Hash copiado al portapapeles');">
+<span class="material-symbols-outlined text-[14px]">content_copy</span> Copiar Hash
+              </button>
+</div>
+<p class="font-data-mono text-data-mono text-on-surface select-all break-all bg-surface-container-lowest p-2 rounded">
+              e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855b51b033e387ef...[256-bit]
+            </p>
+<div class="flex items-center justify-between text-text-tertiary font-label-sm pt-1">
+<span class="">Timestamp TSA: 2026-03-31T09:41:22.842-06:00</span>
+<span class="text-primary font-medium">Algoritmo: RSA-SHA256 4096 bits</span>
+</div>
+</div>
+<!-- QR Verification Container and Authority Info -->
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-md"><div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-md w-full"><div class="flex items-center gap-space-md"><div class="w-10 h-10 rounded-full bg-primary/10 border border-border-gold flex items-center justify-center text-primary shrink-0"><span class="material-symbols-outlined text-[22px]">person_check</span></div><div class="flex flex-col gap-1"><span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Autoridad Validadora Titular</span><span class="font-title-md text-title-md text-text-primary">Mtro. Rodrigo Gómez Palacios</span><span class="font-body-sm text-body-sm text-text-secondary">Coordinador General de Mejora Regulatoria y Simplificación Integral</span><div class="flex items-center gap-2 pt-1 font-data-mono text-label-sm text-text-tertiary"><span class="px-2 py-0.5 rounded bg-surface-variant text-on-surface">ID Sello: 0x9D4A...7F12</span><span class="text-tertiary flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">verified</span> Notariado Digital</span></div></div></div><div class="flex items-center gap-3 bg-surface-recessed p-2.5 rounded-lg border border-border-tech shrink-0"><div class="bg-white p-1.5 rounded flex items-center justify-center shrink-0 shadow"><svg class="w-16 h-16" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="white"></rect><rect x="10" y="10" width="28" height="28" fill="#0b0f19"></rect><rect x="14" y="14" width="20" height="20" fill="white"></rect><rect x="18" y="18" width="12" height="12" fill="#0b0f19"></rect><rect x="62" y="10" width="28" height="28" fill="#0b0f19"></rect><rect x="66" y="14" width="20" height="20" fill="white"></rect><rect x="70" y="18" width="12" height="12" fill="#0b0f19"></rect><rect x="10" y="62" width="28" height="28" fill="#0b0f19"></rect><rect x="14" y="66" width="20" height="20" fill="white"></rect><rect x="18" y="70" width="12" height="12" fill="#0b0f19"></rect><rect x="44" y="10" width="8" height="8" fill="#0b0f19"></rect><rect x="44" y="24" width="8" height="8" fill="#0b0f19"></rect><rect x="44" y="38" width="8" height="8" fill="#0b0f19"></rect><rect x="10" y="44" width="8" height="8" fill="#0b0f19"></rect><rect x="24" y="44" width="8" height="8" fill="#0b0f19"></rect><rect x="62" y="44" width="8" height="8" fill="#0b0f19"></rect><rect x="76" y="44" width="8" height="8" fill="#0b0f19"></rect><rect x="54" y="54" width="10" height="10" fill="#0b0f19"></rect><rect x="70" y="62" width="8" height="8" fill="#0b0f19"></rect><rect x="84" y="62" width="6" height="16" fill="#0b0f19"></rect><rect x="44" y="70" width="14" height="8" fill="#0b0f19"></rect><rect x="62" y="78" width="12" height="12" fill="#0b0f19"></rect><rect x="44" y="84" width="8" height="6" fill="#0b0f19"></rect><rect x="80" y="84" width="10" height="6" fill="#0b0f19"></rect><rect x="45" y="45" width="10" height="10" fill="#c6923b"></rect></svg></div><div class="flex flex-col gap-0.5 min-w-0 max-w-[190px]"><span class="font-label-sm text-[11px] text-tech-cyan-glow uppercase tracking-wider font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">qr_code_scanner</span> Validación QR</span><span class="font-body-sm text-[11px] leading-tight text-on-surface-variant">Escanear para verificar en Sede Electrónica Oficial (<span class="text-secondary font-medium">sede.tuxtla.gob.mx</span>)</span><div class="flex items-center gap-1 pt-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span><span class="font-data-mono text-[10px] text-tertiary">Certificado Vigente</span></div><span class="font-data-mono text-[10px] text-text-tertiary">Folio: TUX-2026-VAL-492</span></div></div></div></div>
+</div>
+<div class="flex items-center justify-between pt-space-md text-text-secondary font-label-md z-10">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]">lock_clock</span>
+            Validez garantizada ante tribunales administrativos y federación
+          </span>
+<span class="text-primary hover:underline cursor-pointer flex items-center gap-1">
+            Ver Constancia LNETB <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</span>
+</div>
+</div>
+<!-- Descarga Integral Paquete ZIP (5 Cols) -->
+<div class="lg:col-span-5 rounded-xl bg-gradient-to-br from-surface-card via-surface-card to-surface-container p-space-lg flex flex-col justify-between shadow-xl relative overflow-hidden">
+<div class="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-primary/10 blur-2xl pointer-events-none"></div>
+<div class="flex flex-col gap-space-md z-10">
+<div class="flex items-center justify-between">
+<span class="px-3 py-1 rounded-full bg-primary/15 text-primary font-label-sm font-semibold tracking-wider uppercase flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">inventory_2</span>
+              Expediente Compilado
+            </span>
+<span class="font-data-mono text-data-mono text-text-tertiary">Tamaño: 28.4 MB</span>
+</div>
+<div class="flex flex-col gap-space-2xs">
+<h2 class="font-headline-md text-headline-md text-text-primary tracking-tight">
+              Paquete Integral Oficial FASD 2026
+            </h2>
+<p class="font-body-sm text-body-sm text-text-secondary">
+              Archivo comprimido consolidado en estándar ZIP con firma pericial. Incluye las 52 fojas normativas foliadas, anexos técnicos vectoriales, matriz Excel interoperable y metadatos JSON para el PIGR.
+            </p>
+</div>
+<!-- Included Artifacts Breakdown -->
+<div class="grid grid-cols-2 gap-2 bg-surface-recessed p-space-sm rounded-lg text-body-sm">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">picture_as_pdf</span>
+<span class="font-data-mono text-data-mono">9 Fichas Homologadas PDF</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-tech-cyan-glow text-[18px]">data_object</span>
+<span class="font-data-mono text-data-mono">1 Esquema PIGR JSON</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-[18px]">auto_stories</span>
+<span class="font-data-mono text-data-mono">Gaceta Digital Oficial</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-gov-gold-light text-[18px]">key</span>
+<span class="font-data-mono text-data-mono">Manifiesto Firma XML</span>
+</div>
+</div>
+<!-- Visual Progress of Integrity -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between font-label-sm text-label-sm text-text-secondary">
+<span class="">Auditoría de Integridad Documental</span>
+<span class="text-tertiary font-bold">100% Compilado y Foliado</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary via-tertiary to-tech-cyan-glow rounded-full w-full"></div>
+</div>
+</div>
+</div>
+<!-- Download Action -->
+<div class="pt-space-md z-10 flex flex-col gap-2">
+<button class="w-full py-3.5 px-space-md rounded-lg bg-gradient-to-r from-gov-gold-dark via-primary-container to-gov-gold-light text-white font-title-md shadow-lg hover:shadow-primary/30 transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2" onclick="triggerPackageDownload()">
+<span class="material-symbols-outlined text-[20px]">download_for_offline</span>
+            Descargar Paquete Integral ZIP (.zip • 52 Fojas)
+          </button>
+<div class="flex items-center justify-center gap-2 text-text-tertiary font-label-sm">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+            Comprobación MD5: 9f8a27d14... • Acreditado por SFP Chiapas
+          </div>
+</div>
+</div>
+</div>
+<!-- Filter and Categorization Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md bg-surface-card p-space-md rounded-xl shadow-md">
+<!-- Document Category Switcher -->
+<div class="flex flex-wrap items-center gap-2">
+<button class="filter-tab-btn px-space-md py-2 rounded-lg font-title-md text-body-sm bg-primary-container text-white flex items-center gap-2 transition-colors" id="filter-all" onclick="filterDocs('all')">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+          Todos los Instrumentos (9)
+        </button>
+<button class="filter-tab-btn px-space-md py-2 rounded-lg font-title-md text-body-sm bg-surface-container-high text-on-surface-variant hover:text-white flex items-center gap-2 transition-colors" id="filter-fichas" onclick="filterDocs('fichas')">
+<span class="material-symbols-outlined text-[18px]">description</span>
+          Fichas FASD Individuales (6)
+        </button>
+<button class="filter-tab-btn px-space-md py-2 rounded-lg font-title-md text-body-sm bg-surface-container-high text-on-surface-variant hover:text-white flex items-center gap-2 transition-colors" id="filter-agregados" onclick="filterDocs('agregados')">
+<span class="material-symbols-outlined text-[18px]">collections_bookmark</span>
+          Documentos Agregados &amp; Maestro (3)
+        </button>
+</div>
+<!-- Quick Search & Batch Controls -->
+<div class="flex items-center gap-space-sm w-full md:w-auto">
+<div class="relative flex-1 md:w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary text-[18px]">search</span>
+<input class="w-full bg-surface-recessed text-on-surface text-body-sm pl-9 pr-3 py-2 rounded-lg focus:outline-none focus:bg-surface-elevated transition-all" id="searchInput" onkeyup="searchDocuments()" placeholder="Buscar por clave, título o folio..." type="text">
+</div>
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-white font-label-md flex items-center gap-1.5 transition-colors" onclick="selectAllToBatch()" title="Seleccionar todos para descarga por lote">
+<span class="material-symbols-outlined text-[18px]">library_add_check</span>
+<span class="hidden sm:inline">Seleccionar Todo</span>
+</button>
+</div>
+</div>
+<!-- Document Grid: The 9 Official Instruments of LNETB -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-space-lg" id="documents-grid">
+<!-- 1. FASD 06 Diagnóstico -->
+<div class="doc-card group rounded-xl bg-surface-card p-space-md flex flex-col justify-between gap-space-md shadow-md hover:shadow-xl transition-all" data-category="fichas">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-data-mono text-label-md text-primary font-bold">
+              FASD 06
+            </span>
+<div class="flex items-center gap-1 text-tertiary font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              Fojas 01-08 (Validada)
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-primary transition-colors">
+            Diagnóstico Integral de Cargas y Trámites
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Medición de Costo Social Regulatorio y balance de fricción ciudadana en ventanillas de Tuxtla Gutiérrez.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Formato:</span>
+<span class="text-on-surface">PDF Homologado Carta</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Checksum:</span>
+<span class="text-on-surface text-label-sm">SHA: 7a82...d910</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('FASD 06 Diagnóstico', '8 Fojas • Evaluado con Modelo LNETB')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-primary-container text-white font-title-md text-body-sm hover:bg-gov-gold-light flex items-center gap-1.5 transition-colors" onclick="downloadSingleDoc('FASD_06_Diagnostico_TUX.pdf')">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Descargar PDF
+          </button>
+</div>
+</div>
+<!-- 2. FASD 01 Priorización -->
+<div class="doc-card group rounded-xl bg-surface-card p-space-md flex flex-col justify-between gap-space-md shadow-md hover:shadow-xl transition-all" data-category="fichas">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-data-mono text-label-md text-primary font-bold">
+              FASD 01
+            </span>
+<div class="flex items-center gap-1 text-tertiary font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              Fojas 09-14 (Validada)
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-primary transition-colors">
+            Matriz de Priorización de Trámites de Alto Impacto
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Ponderación multicriterio basada en volumen anual de trámites, costo transaccional y vulnerabilidad de sectores clave.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Formato:</span>
+<span class="text-on-surface">PDF Homologado Carta</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Checksum:</span>
+<span class="text-on-surface text-label-sm">SHA: c912...e304</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('FASD 01 Priorización', '6 Fojas • 14 Trámites Ponderados')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-primary-container text-white font-title-md text-body-sm hover:bg-gov-gold-light flex items-center gap-1.5 transition-colors" onclick="downloadSingleDoc('FASD_01_Priorizacion_TUX.pdf')">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Descargar PDF
+          </button>
+</div>
+</div>
+<!-- 3. FASD 02 Ficha Técnica -->
+<div class="doc-card group rounded-xl bg-surface-card p-space-md flex flex-col justify-between gap-space-md shadow-md hover:shadow-xl transition-all" data-category="fichas">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-data-mono text-label-md text-primary font-bold">
+              FASD 02
+            </span>
+<div class="flex items-center gap-1 text-tertiary font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              Fojas 15-22 (Validada)
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-primary transition-colors">
+            Ficha Técnica Descriptiva del Catálogo Municipal
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Mapeo formal de dependencias ejecutoras, fundamentos legales, vigencias, plazos máximos y derecho de afirmativa ficta.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Formato:</span>
+<span class="text-on-surface">PDF Homologado Carta</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Checksum:</span>
+<span class="text-on-surface text-label-sm">SHA: 11f4...882a</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('FASD 02 Ficha Técnica', '8 Fojas • Marco Operativo Regulatorio')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-primary-container text-white font-title-md text-body-sm hover:bg-gov-gold-light flex items-center gap-1.5 transition-colors" onclick="downloadSingleDoc('FASD_02_Ficha_Tecnica_TUX.pdf')">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Descargar PDF
+          </button>
+</div>
+</div>
+<!-- 4. FASD 03 Cédula Acciones -->
+<div class="doc-card group rounded-xl bg-surface-card p-space-md flex flex-col justify-between gap-space-md shadow-md hover:shadow-xl transition-all" data-category="fichas">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-data-mono text-label-md text-primary font-bold">
+              FASD 03
+            </span>
+<div class="flex items-center gap-1 text-tertiary font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              Fojas 23-28 (Validada)
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-primary transition-colors">
+            Cédula de Acciones y Compromisos de Mejora
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Desglose de eliminación de requisitos no previstos en ley, fusión de formatos y reducción porcentual de tiempos de respuesta.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Formato:</span>
+<span class="text-on-surface">PDF Homologado Carta</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Checksum:</span>
+<span class="text-on-surface text-label-sm">SHA: bb33...45fa</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('FASD 03 Cédula Acciones', '6 Fojas • Compromisos Vinculantes')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-primary-container text-white font-title-md text-body-sm hover:bg-gov-gold-light flex items-center gap-1.5 transition-colors" onclick="downloadSingleDoc('FASD_03_Cedula_Acciones_TUX.pdf')">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Descargar PDF
+          </button>
+</div>
+</div>
+<!-- 5. FASD 04 Cronograma Simplificación Gantt -->
+<div class="doc-card group rounded-xl bg-surface-card p-space-md flex flex-col justify-between gap-space-md shadow-md hover:shadow-xl transition-all" data-category="fichas">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-data-mono text-label-md text-primary font-bold">
+              FASD 04
+            </span>
+<div class="flex items-center gap-1 text-tertiary font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              Fojas 29-33 (Validada)
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-primary transition-colors">
+            Cronograma Gantt de Simplificación (Meses 1-12)
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Líneas de tiempo operativas para desregulación administrativa y eliminación de inspecciones redundantes en campo.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Formato:</span>
+<span class="text-on-surface">PDF Carta Horizontal / Gantt Vectorial</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Checksum:</span>
+<span class="text-on-surface text-label-sm">SHA: fe19...99a0</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('FASD 04 Cronograma Simplificación Gantt', '5 Fojas • Plan de Desregulación')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-primary-container text-white font-title-md text-body-sm hover:bg-gov-gold-light flex items-center gap-1.5 transition-colors" onclick="downloadSingleDoc('FASD_04_Gantt_Simplificacion_TUX.pdf')">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Descargar PDF
+          </button>
+</div>
+</div>
+<!-- 6. FASD 05 Cronograma Digitalización Gantt -->
+<div class="doc-card group rounded-xl bg-surface-card p-space-md flex flex-col justify-between gap-space-md shadow-md hover:shadow-xl transition-all" data-category="fichas">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-data-mono text-label-md text-primary font-bold">
+              FASD 05
+            </span>
+<div class="flex items-center gap-1 text-tertiary font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              Fojas 34-38 (Validada)
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-primary transition-colors">
+            Cronograma Gantt de Digitalización y Portales
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Hitos de despliegue de módulos web, integración a la Llave MX y pasarelas de pago electrónico SPEI/CoDi.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Formato:</span>
+<span class="text-on-surface">PDF Carta Horizontal / Hitos TIC</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Checksum:</span>
+<span class="text-on-surface text-label-sm">SHA: aa48...10ef</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('FASD 05 Cronograma Digitalización Gantt', '5 Fojas • Despliegue Tecnológico')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-primary-container text-white font-title-md text-body-sm hover:bg-gov-gold-light flex items-center gap-1.5 transition-colors" onclick="downloadSingleDoc('FASD_05_Gantt_Digitalizacion_TUX.pdf')">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Descargar PDF
+          </button>
+</div>
+</div>
+<!-- 7. Documento G Agenda Simplificación -->
+<div class="doc-card group rounded-xl bg-surface-card p-space-md flex flex-col justify-between gap-space-md shadow-md hover:shadow-xl transition-all" data-category="agregados">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-secondary-container/20 font-data-mono text-label-md text-secondary font-bold">
+              DOC G
+            </span>
+<div class="flex items-center gap-1 text-tertiary font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              Fojas 39-44 (Consolidado)
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-secondary transition-colors">
+            Agenda Semestral de Simplificación Regulatoria
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Compendio semestral de acuerdos de Cabildo, metas de reducción de requisitos y supresión de duplicidades.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Formato:</span>
+<span class="text-on-surface">PDF Carta Homologado</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Checksum:</span>
+<span class="text-on-surface text-label-sm">SHA: 832b...031c</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('Documento G Agenda Simplificación', '6 Fojas • Aprobación Semestral')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-secondary-container text-white font-title-md text-body-sm hover:bg-secondary flex items-center gap-1.5 transition-colors" onclick="downloadSingleDoc('Documento_G_Agenda_Simplificacion_TUX.pdf')">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Descargar PDF
+          </button>
+</div>
+</div>
+<!-- 8. Documento H Agenda Digitalización -->
+<div class="doc-card group rounded-xl bg-surface-card p-space-md flex flex-col justify-between gap-space-md shadow-md hover:shadow-xl transition-all" data-category="agregados">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-secondary-container/20 font-data-mono text-label-md text-secondary font-bold">
+              DOC H
+            </span>
+<div class="flex items-center gap-1 text-tertiary font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              Fojas 45-50 (Consolidado)
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-secondary transition-colors">
+            Agenda Semestral de Digitalización Integral
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Estrategia de adopción de expedientes digitales únicos y política municipal de interoperabilidad cero papel.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Formato:</span>
+<span class="text-on-surface">PDF Carta Homologado</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Checksum:</span>
+<span class="text-on-surface text-label-sm">SHA: de41...bb89</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('Documento H Agenda Digitalización', '6 Fojas • Transformación Digital')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-secondary-container text-white font-title-md text-body-sm hover:bg-secondary flex items-center gap-1.5 transition-colors" onclick="downloadSingleDoc('Documento_H_Agenda_Digitalizacion_TUX.pdf')">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Descargar PDF
+          </button>
+</div>
+</div>
+<!-- 9. Documento Maestro Completo I con Gaceta y PIGR JSON -->
+<div class="doc-card group rounded-xl bg-gradient-to-b from-surface-card to-surface-container-high p-space-md flex flex-col justify-between gap-space-md shadow-lg hover:shadow-2xl transition-all" data-category="agregados">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-start justify-between gap-2">
+<span class="px-2 py-0.5 rounded bg-primary text-on-primary font-data-mono text-label-md font-bold">
+              DOC MAESTRO I
+            </span>
+<div class="flex items-center gap-1 text-primary font-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">stars</span>
+              Fojas 01-52 + Gaceta + JSON
+            </div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary group-hover:text-primary transition-colors">
+            Expediente Maestro FASD 2026 (Publicación Oficial)
+          </h3>
+<p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">
+            Instrumento plenipotenciario para depósito ante la Comisión Nacional de Mejora Regulatoria (CONAMER) y publicación en Gaceta Municipal.
+          </p>
+</div>
+<div class="bg-surface-recessed p-2.5 rounded-lg flex flex-col gap-1 text-body-sm font-data-mono text-text-tertiary">
+<div class="flex justify-between text-data-mono">
+<span class="">Incluye:</span>
+<span class="text-tertiary font-medium">Esquema PIGR.json + Edicto Gaceta</span>
+</div>
+<div class="flex justify-between text-data-mono">
+<span class="">Validación:</span>
+<span class="text-on-surface text-label-sm">Criptograma de Bloque 4096</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 pt-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-1.5 transition-colors" onclick="previewDocument('Documento Maestro I Consolidado', '52 Fojas Totales • Formato PIGR Oficial')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+            Vista Previa
+          </button>
+<button class="px-3 py-2 rounded-lg bg-gradient-to-r from-gov-gold-dark to-primary-container text-white font-title-md text-body-sm hover:from-primary-container hover:to-gov-gold-light flex items-center gap-1.5 transition-colors shadow" onclick="downloadMasterDocument()">
+<span class="material-symbols-outlined text-[16px]">military_tech</span>
+            Descargar Maestro
+          </button>
+</div>
+</div>
+</div>
+<!-- Institutional Context & Photographic Visual Feature -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg items-center rounded-xl bg-surface-card p-space-lg shadow-xl overflow-hidden relative">
+<div class="lg:col-span-2 flex flex-col gap-space-sm z-10">
+<div class="inline-flex items-center gap-2 text-primary font-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+          H. Ayuntamiento Constitucional de Tuxtla Gutiérrez • 2024–2027
+        </div>
+<h2 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">
+          Certeza Jurídica para la Ciudadanía y la Inversión Productiva
+        </h2>
+<p class="font-body-md text-body-md text-text-secondary leading-relaxed">
+          Los documentos generados en este módulo constituyen prueba plena de los requerimientos exigibles a las personas físicas y morales en el Municipio de Tuxtla Gutiérrez. Ningún funcionario municipal podrá solicitar trámites, cobros ni requisitos adicionales no contemplados en estas 52 fojas foliadas, bajo sanción administrativa estipulada en el Título Quinto de la Ley Nacional para Eliminar Trámites Burocráticos.
+        </p>
+<div class="flex flex-wrap items-center gap-space-md pt-2">
+<div class="flex items-center gap-2 text-text-secondary font-label-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+            Depósito en Plataforma Nacional de Regulaciones
+          </div>
+<div class="flex items-center gap-2 text-text-secondary font-label-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+            Garantía de Cero Corrupción en Trámites
+          </div>
+</div>
+</div>
+<!-- High Quality Institutional Atmosphere Image -->
+<div class="lg:col-span-1 h-64 lg:h-full min-h-[220px] rounded-xl overflow-hidden relative shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Palacio Municipal de Tuxtla Gutierrez de noche, iluminado majestuosamente con cálidas luces doradas y azuladas, con la plaza cívica despejada y arquitectura gubernamental contemporánea transmitiendo transparencia, solemnidad institucional y modernidad tecnológica en Chiapas, México." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOC3dLaZNh-ytUmNJ7HXTtIT01EWOH4iQHbyUJGzNwxjKM_ylynoZCHHdddbbZ2T295onnePn8qInGEyFM_70sx8V1o4f_80HPotMmh_fzQmOWtns6WXQwOk0V0iZ_PPIeZ5_RgpRIkiW2h-QdKrWIxUfv18a_SA96bxfatN8OVi2bx6urZzv7I_8bGKHvn1uFojFeC-WQ2ZdeSzglOmc9Q3zyLwmjJuJdjgMrsL8TWkgUuxX63-RhkA">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-base/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white font-label-sm bg-surface-base/70 backdrop-blur-md p-2 rounded">
+<span class="">Palacio Municipal • Tuxtla Gtz.</span>
+<span class="text-primary font-data-mono">Ventanilla Única</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Persistent Modal for Document Preview (Mockup Interaction) -->
+<div class="fixed inset-0 z-50 bg-surface-base/80 backdrop-blur-sm hidden items-center justify-center p-4" id="previewModal">
+<div class="bg-surface-card rounded-xl max-w-2xl w-full p-space-lg flex flex-col gap-space-md shadow-2xl relative">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]">description</span>
+<h3 class="font-headline-sm text-headline-sm text-text-primary" id="modalDocTitle">Vista Previa</h3>
+</div>
+<button class="text-text-tertiary hover:text-white p-1 rounded" onclick="closePreviewModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="bg-surface-recessed p-space-md rounded-lg flex flex-col gap-space-sm text-body-md">
+<div class="flex items-center justify-between">
+<span class="font-data-mono text-data-mono text-text-secondary" id="modalDocSubtitle">Metadatos del Documento</span>
+<span class="px-2 py-0.5 rounded bg-tertiary/20 text-tertiary font-label-sm">Foliado Verificado</span>
+</div>
+<!-- Visual Simulation of PDF Paper -->
+<div class="w-full h-64 bg-surface-container-lowest rounded p-space-md flex flex-col justify-between overflow-hidden relative shadow-inner">
+<div class="flex items-center justify-between text-text-tertiary font-label-sm border-b pb-2 border-white/5">
+<div class="flex items-center gap-2">
+<span class="font-bold text-primary">TUXTLA GUTIÉRREZ</span> • <span class="">FASD 2026</span>
+</div>
+<span class="font-data-mono">FOJA OFICIAL CERTIFICADA</span>
+</div>
+<div class="flex flex-col gap-2 my-auto text-center py-4">
+<span class="material-symbols-outlined text-primary text-[48px] mx-auto opacity-70">article</span>
+<span class="font-title-md text-title-md text-text-primary">Instrumento Digitalizado con Sello de Tiempo RFC 3161</span>
+<p class="font-body-sm text-body-sm text-text-secondary max-w-md mx-auto">
+              Este documento cuenta con cadena original de firma electrónica expedida por el sistema del Ayuntamiento de Tuxtla Gutiérrez, Chiapas.
+            </p>
+</div>
+<div class="flex items-center justify-between text-text-tertiary font-data-mono text-[11px] pt-2 border-t border-white/5">
+<span class="">HASH: 4fa9b012...8e21c099</span>
+<span class="">NORMATIVA LNETB ART. 34</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-2">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-high text-on-surface font-title-md text-body-sm" onclick="closePreviewModal()">
+          Cerrar
+        </button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-white font-title-md text-body-sm flex items-center gap-1.5 hover:bg-gov-gold-light" onclick="alert('Descargando archivo foliado oficial...'); closePreviewModal();">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+          Descargar Este Documento
+        </button>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Audit & Authentication Bar (Sticky Footer) -->
+<div class="sticky bottom-0 z-40 w-full bg-surface-card/95 backdrop-blur-md shadow-2xl py-space-sm px-gutter-desktop">
+<div class="w-full max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-space-sm pb-[env(safe-area-inset-bottom,0.5rem)]">
+<!-- User Identification & CURP Clearance -->
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-elevated flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-title-md text-body-md text-text-primary font-semibold">Sesión de Auditoría Activa</span>
+<span class="px-2 py-0.5 rounded bg-tertiary/20 text-tertiary font-label-sm font-semibold">Validado por RENAPO</span>
+</div>
+<div class="flex items-center gap-2 text-text-tertiary font-data-mono text-data-mono truncate">
+<span class="">CURP: GAPR-850412-HCSMLR09</span>
+<span class="">•</span>
+<span class="text-tech-cyan-glow">IP Auditora: 189.240.112.94 (Red Segura TUX)</span>
+</div>
+</div>
+</div>
+<!-- Global Actions Triggered from Footer -->
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:text-white font-title-md text-body-sm flex items-center gap-2 transition-colors" onclick="printOfficialManifest()">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span class="hidden sm:inline">Imprimir Acuse de Entrega</span>
+</button>
+<button class="px-space-md py-2.5 rounded-lg bg-gradient-to-r from-primary-container to-gov-gold-light text-white font-title-md text-body-sm flex items-center gap-2 shadow-md hover:shadow-primary/20 transition-all" onclick="triggerPackageDownload()">
+<span class="material-symbols-outlined text-[18px]">archive</span>
+<span class="">Exportar Todo (ZIP)</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Interactive Logic Scripts for Search, Filtering and Downloads -->
+<script>
+    function filterDocs(category) {
+      // Update Buttons State
+      document.querySelectorAll('.filter-tab-btn').forEach(btn => {
+        btn.classList.remove('bg-primary-container', 'text-white');
+        btn.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+      });
+
+      if (category === 'all') {
+        document.getElementById('filter-all').classList.add('bg-primary-container', 'text-white');
+        document.getElementById('filter-all').classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+      } else if (category === 'fichas') {
+        document.getElementById('filter-fichas').classList.add('bg-primary-container', 'text-white');
+        document.getElementById('filter-fichas').classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+      } else if (category === 'agregados') {
+        document.getElementById('filter-agregados').classList.add('bg-primary-container', 'text-white');
+        document.getElementById('filter-agregados').classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+      }
+
+      // Filter Cards
+      const cards = document.querySelectorAll('.doc-card');
+      cards.forEach(card => {
+        if (category === 'all') {
+          card.classList.remove('hidden');
+          card.classList.add('flex');
+        } else {
+          if (card.getAttribute('data-category') === category) {
+            card.classList.remove('hidden');
+            card.classList.add('flex');
+          } else {
+            card.classList.add('hidden');
+            card.classList.remove('flex');
+          }
+        }
+      });
+    }
+
+    function searchDocuments() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.doc-card');
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        if (text.includes(query)) {
+          card.classList.remove('hidden');
+          card.classList.add('flex');
+        } else {
+          card.classList.add('hidden');
+          card.classList.remove('flex');
+        }
+      });
+    }
+
+    function previewDocument(title, subtitle) {
+      document.getElementById('modalDocTitle').innerText = title;
+      document.getElementById('modalDocSubtitle').innerText = subtitle;
+      const modal = document.getElementById('previewModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closePreviewModal() {
+      const modal = document.getElementById('previewModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function downloadSingleDoc(filename) {
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-24 right-6 z-50 bg-surface-elevated text-on-surface p-4 rounded-xl shadow-2xl flex items-center gap-3 border border-border-gold transition-all transform animate-bounce';
+      toast.innerHTML = '<span class="material-symbols-outlined text-primary">download_done</span><div><div class="font-bold text-sm">Descarga Iniciada</div><div class="text-xs text-text-secondary">' + filename + ' (Fojas certificadas con SHA-256)</div></div>';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    function triggerPackageDownload() {
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-24 right-6 z-50 bg-surface-elevated text-on-surface p-4 rounded-xl shadow-2xl flex items-center gap-3 border border-border-tech transition-all';
+      toast.innerHTML = '<span class="material-symbols-outlined text-tech-cyan-glow animate-spin">sync</span><div><div class="font-bold text-sm">Compilando 52 Fojas Foliadas</div><div class="text-xs text-text-secondary">Generando ZIP integral con sello municipal SHA-256...</div></div>';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.innerHTML = '<span class="material-symbols-outlined text-tertiary">check_circle</span><div><div class="font-bold text-sm">Paquete ZIP Generado (28.4 MB)</div><div class="text-xs text-text-secondary">FASD_2026_TUXTLA_GUTIERREZ_OFICIAL.zip</div></div>';
+        setTimeout(() => toast.remove(), 4000);
+      }, 1500);
+    }
+
+    function downloadMasterDocument() {
+      downloadSingleDoc('Documento_Maestro_FASD2026_Gaceta_PIGR.pdf');
+    }
+
+    function selectAllToBatch() {
+      alert('Se han marcado los 9 instrumentos oficiales para empaquetado y exportación de respaldo.');
+    }
+
+    function printOfficialManifest() {
+      window.print();
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest py-space-xl"><div class="w-full px-gutter-desktop mx-auto max-w-[1440px] flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary">Gobierno Municipal de Tuxtla Gutiérrez</span><span class="font-body-sm text-body-sm text-on-surface-variant">Agenda de Simplificación y Digitalización Regulatoria • FASD 2026</span></div></div><div class="flex flex-col md:items-end text-center md:text-right gap-space-2xs"><span class="font-label-md text-label-md text-on-surface-variant">© 2026 Ayuntamiento de Tuxtla Gutiérrez, Chiapas. Conforme a la Ley Nacional de Eficiencia y Transformación Burocrática (LNETB).</span><span class="font-data-mono text-data-mono text-text-tertiary">Seguridad e Identidad Criptográfica • Nodo MS02 IAM Oficial</span></div></div></footer>
+
+</body></html>

@@ -1,0 +1,258 @@
+from django.db import models
+
+
+class Ficha(models.Model):
+    """
+    Ficha de diagnóstico y digitalización de un trámite/servicio dentro de una agenda.
+    Es la entidad más grande y compleja del modelo.
+    Tabla: fichas
+    """
+
+    # Tipo de solicitud (SQL comentario)
+    SOLICITUD_NUEVA_APERTURA = 0
+    SOLICITUD_RENOVACION = 1
+    SOLICITUD_MODIFICACION = 2
+    SOLICITUD_BAJA = 3
+    SOLICITUD_TIPO_CHOICES = [
+        (SOLICITUD_NUEVA_APERTURA, 'Nueva apertura'),
+        (SOLICITUD_RENOVACION,     'Renovación'),
+        (SOLICITUD_MODIFICACION,   'Modificación'),
+        (SOLICITUD_BAJA,           'Baja'),
+    ]
+
+    # Nivel de digitalización actual (SQL comentario)
+    NIVEL_PRESENCIAL = 0
+    NIVEL_INFORMATIVO = 1
+    NIVEL_INTERACTIVO_PARCIAL = 2
+    NIVEL_DIGITAL_END_TO_END = 3
+    NIVEL_DIGITALIZACION_CHOICES = [
+        (NIVEL_PRESENCIAL,         'Presencial'),
+        (NIVEL_INFORMATIVO,        'Informativo'),
+        (NIVEL_INTERACTIVO_PARCIAL, 'Interactivo parcial'),
+        (NIVEL_DIGITAL_END_TO_END, 'Digital end-to-end'),
+    ]
+
+    # Status de la ficha (SQL: status INT DEFAULT 0 CHECK (status >= 0))
+    STATUS_BORRADOR = 0
+    STATUS_REVISION_PENDIENTE = 1
+    STATUS_APROBADA = 2
+    STATUS_RECHAZADA = 3
+    STATUS_CHOICES = [
+        (STATUS_BORRADOR,           'Borrador'),
+        (STATUS_REVISION_PENDIENTE, 'Revisión pendiente'),
+        (STATUS_APROBADA,           'Aprobada'),
+        (STATUS_RECHAZADA,          'Rechazada'),
+    ]
+
+    id_ficha = models.BigAutoField(
+        primary_key=True,
+        db_column='id_ficha',
+        verbose_name="ID de Ficha"
+    )
+
+    # ── Relaciones principales ──────────────────────────────────────────────────
+    id_agenda = models.ForeignKey(
+        'src.Agenda',
+        on_delete=models.CASCADE,
+        related_name='fichas',
+        db_column='id_agenda',
+        verbose_name="Agenda",
+        help_text="Agenda a la que pertenece esta ficha (ON DELETE CASCADE)"
+    )
+    id_tramite_servicio = models.ForeignKey(
+        'src.TramiteOServicio',
+        on_delete=models.PROTECT,
+        related_name='fichas',
+        db_column='id_tramite_servicio',
+        verbose_name="Trámite o Servicio",
+        help_text="Trámite o servicio diagnosticado en esta ficha"
+    )
+
+    # ── Información General del Trámite o Servicio ─────────────────────────────
+    solicitud_tipo = models.IntegerField(
+        choices=SOLICITUD_TIPO_CHOICES,
+        blank=True,
+        null=True,
+        verbose_name="Tipo de solicitud",
+        help_text="0=nueva apertura, 1=renovación, 2=modificación, 3=baja"
+    )
+    plazo_maximo_resolucion_dias = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Plazo máximo de resolución (días)",
+        help_text="Número de días máximo para la resolución del trámite (>= 0)"
+    )
+    is_dia_habil_o_inhabil = models.BooleanField(
+        blank=True,
+        null=True,
+        verbose_name="¿Días hábiles?",
+        help_text="True = días hábiles, False = días naturales"
+    )
+    vigencia_del_documento_obtenido = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Vigencia del documento obtenido",
+        help_text="Descripción de la vigencia del documento que emite el trámite/servicio"
+    )
+    poblacion_prioritaria_atencion_preferente = models.BooleanField(
+        blank=True,
+        null=True,
+        verbose_name="Población prioritaria / atención preferente",
+        help_text="True = atiende a personas vulnerables o con atención preferente"
+    )
+    solicitudes_recibidas_semestre_anterior = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Solicitudes recibidas semestre anterior",
+        help_text="Número de solicitudes recibidas en el semestre anterior (>= 0)"
+    )
+    resoluciones_positivas = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Resoluciones positivas",
+        help_text="Número de resoluciones positivas del semestre anterior (>= 0)"
+    )
+    areas_administrativas_interfieren = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Áreas administrativas que interfieren",
+        help_text="Número de áreas administrativas involucradas en el proceso (>= 0)"
+    )
+    condiciones_o_criterios_de_resolucion = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Condiciones o criterios de resolución",
+        help_text="Descripción de las condiciones o criterios para la resolución"
+    )
+
+    # ── Diagnóstico Operativo y Medios de Atención ─────────────────────────────
+    habile_ventanilla_presencial = models.BooleanField(
+        default=False,
+        verbose_name="Habilitado: ventanilla presencial",
+        help_text="True = el trámite/servicio se puede realizar en ventanilla presencial"
+    )
+    habile_portal_web_municipal = models.BooleanField(
+        default=False,
+        verbose_name="Habilitado: portal web municipal",
+        help_text="True = el trámite/servicio se puede realizar por portal web"
+    )
+    habile_app_mobile = models.BooleanField(
+        default=False,
+        verbose_name="Habilitado: app móvil",
+        help_text="True = el trámite/servicio se puede realizar por aplicación móvil"
+    )
+    habile_linea_telefonica = models.BooleanField(
+        default=False,
+        verbose_name="Habilitado: línea telefónica",
+        help_text="True = el trámite/servicio se puede realizar por teléfono"
+    )
+
+    # ── Análisis Operativo FASD 06 (Cuellos de botella) ───────────────────────
+    cuellos_de_botella = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Cuellos de botella",
+        help_text="Descripción de los cuellos de botella identificados en el proceso"
+    )
+    requisitos_sin_valor = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Requisitos sin valor",
+        help_text="Requisitos identificados como innecesarios o sin valor agregado"
+    )
+    propuestas_de_mejora = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Propuestas de mejora",
+        help_text="Propuestas de mejora identificadas en el análisis"
+    )
+
+    # ── Fundamentos Jurídicos y Esquema de Cobro ───────────────────────────────
+    regulacion_fundamenta_existencia_tramite = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Regulación que fundamenta el trámite",
+        help_text="Base jurídica que sustenta la existencia del trámite o servicio"
+    )
+    fundamento_en_ley_de_ingresos = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Fundamento en Ley de Ingresos",
+        help_text="Referencia al fundamento en la Ley de Ingresos (si aplica cobro)"
+    )
+
+    # ── Matriz de Diagnóstico y Nivel de Madurez Digital ──────────────────────
+    nivel_digitalizacion_actual = models.IntegerField(
+        choices=NIVEL_DIGITALIZACION_CHOICES,
+        blank=True,
+        null=True,
+        verbose_name="Nivel de digitalización actual",
+        help_text="0=presencial, 1=informativo, 2=interactivo parcial, 3=digital end-to-end"
+    )
+    propuesta_mejora_transaccion_tecnologica = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Propuesta de mejora tecnológica",
+        help_text="Propuesta de mejora para la transacción tecnológica del trámite/servicio"
+    )
+
+    # ── Estado General de la Ficha ─────────────────────────────────────────────
+    status = models.IntegerField(
+        choices=STATUS_CHOICES,
+        default=STATUS_BORRADOR,
+        verbose_name="Estado de la ficha",
+        help_text="0=borrador, 1=revisión pendiente, 2=aprobada, 3=rechazada"
+    )
+
+    created_by = models.ForeignKey(
+        'src.Usuario',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='fichas_creadas',
+        db_column='created_by_id',
+        verbose_name="Creada por"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Última actualización")
+
+    class Meta:
+        db_table = 'fichas'
+        verbose_name = 'Ficha'
+        verbose_name_plural = 'Fichas'
+        ordering = ['-created_at']
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(solicitud_tipo__isnull=True) | (models.Q(solicitud_tipo__gte=0) & models.Q(solicitud_tipo__lte=3)),
+                name='chk_fichas_solicitud_tipo'
+            ),
+            models.CheckConstraint(
+                condition=models.Q(plazo_maximo_resolucion_dias__isnull=True) | models.Q(plazo_maximo_resolucion_dias__gte=0),
+                name='chk_fichas_plazo_maximo'
+            ),
+            models.CheckConstraint(
+                condition=models.Q(solicitudes_recibidas_semestre_anterior__isnull=True) | models.Q(solicitudes_recibidas_semestre_anterior__gte=0),
+                name='chk_fichas_solicitudes_recibidas'
+            ),
+            models.CheckConstraint(
+                condition=models.Q(resoluciones_positivas__isnull=True) | models.Q(resoluciones_positivas__gte=0),
+                name='chk_fichas_resoluciones_positivas'
+            ),
+            models.CheckConstraint(
+                condition=models.Q(areas_administrativas_interfieren__isnull=True) | models.Q(areas_administrativas_interfieren__gte=0),
+                name='chk_fichas_areas_admin'
+            ),
+            models.CheckConstraint(
+                condition=models.Q(nivel_digitalizacion_actual__isnull=True) | (models.Q(nivel_digitalizacion_actual__gte=0) & models.Q(nivel_digitalizacion_actual__lte=3)),
+                name='chk_fichas_nivel_digitalizacion'
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__gte=0),
+                name='chk_fichas_status'
+            ),
+        ]
+
+    def __str__(self):
+        tramite_str = str(self.id_tramite_servicio) if self.id_tramite_servicio_id else "Sin trámite"
+        return f"Ficha #{self.id_ficha} — {tramite_str[:40]} (status: {self.get_status_display()})"

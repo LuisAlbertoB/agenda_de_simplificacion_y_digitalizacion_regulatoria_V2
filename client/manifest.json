@@ -1,0 +1,16 @@
+{
+  "name": "Agenda de Simplificación y Digitalización Regulatoria - Tuxtla Digital",
+  "short_name": "ASDR Tuxtla",
+  "description": "Cliente web de gestión regulatoria FASD 2026 para el H. Ayuntamiento de Tuxtla Gutiérrez",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#0f131d",
+  "icons": [
+    {
+      "src": "https://lh3.googleusercontent.com/aida-public/AB6AXuDen0gSaK0EFLn8_YCccQZ1YLgb1WnoE_klYmVpc-1JxDtxaUSt6HZclInqSB83p3VxVO3sK-dY_XQVTM7ATg23kYg_IvUENBpX0YdW57ptBJ_3HX_9-_RFRE7-CtdAZra4FqO0AGQXLyQZilv047KH5Mke4VdiepnO4KBq1MrUw0lsTz6QRlb9M3WAaA1RU1Z7gq-kUxwdu2mljaJN4GlZcEMZNcmCbnnta2CliSZeccwZdrCb5zonxVrfLWQ4urAfvV0",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

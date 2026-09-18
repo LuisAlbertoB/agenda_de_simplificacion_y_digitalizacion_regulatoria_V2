@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Visor y Generador Maestro FASD 2026 - Tuxtla Gutiérrez</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandGold: '#b38e44',
+            brandDark: '#1a1a1a',
+            govGray: '#374151'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Styles for Sheet Dimensions, Typography and Print Optimizations -->
+<style data-purpose="print-and-page-geometry">
+    @page {
+      size: letter portrait;
+      margin: 8mm 10mm;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .page-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 0 0 0 !important;
+        padding: 6mm 8mm !important;
+        page-break-after: always;
+        break-after: page;
+        width: 100% !important;
+        min-height: 100vh !important;
+      }
+      .page-sheet:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+    }
+    .page-sheet {
+      width: 215.9mm;
+      min-height: 279.4mm;
+      margin: 0 auto 2rem auto;
+      background-color: #ffffff;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+      padding: 10mm 12mm 8mm 12mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+  </style>
+<style data-purpose="table-borders-and-typography">
+    .gov-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid #1f2937;
+      font-size: 10px;
+      line-height: 1.25;
+    }
+    .gov-table th, .gov-table td {
+      border: 1px solid #374151;
+      padding: 3px 5px;
+      vertical-align: middle;
+    }
+    .gov-table th {
+      background-color: #f3f4f6;
+      font-weight: 700;
+      color: #111827;
+      text-align: center;
+    }
+    .gantt-fill {
+      background-color: #9ca3af;
+    }
+    .thin-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: inherit;
+      color: #111827;
+    }
+    .dotted-line {
+      border-bottom: 1px dotted #4b5563;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-gray-900 font-sans antialiased min-h-screen">
+<!-- BEGIN: ControlNavigationHeader -->
+<header class="no-print sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
+<div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-2.5 h-7 bg-amber-600 rounded-sm"></div>
+<div>
+<h1 class="text-sm sm:text-base font-bold text-gray-900 leading-tight">Plataforma Oficial FASD 2026</h1>
+<p class="text-xs text-gray-500">Agenda de Simplificación y Digitalización — Tuxtla Gutiérrez 2024–2027</p>
+</div>
+</div>
+<!-- Quick Selector Filter -->
+<div class="flex items-center gap-3 flex-wrap">
+<label class="text-xs font-semibold text-gray-700" for="doc-selector">Documento:</label>
+<select class="text-xs border-gray-300 rounded-md py-1.5 px-3 bg-gray-50 focus:ring-amber-500 focus:border-amber-500 text-gray-800 font-medium" id="doc-selector" onchange="filterDocuments(this.value)">
+<option value="all">Ver Todos los 10 Documentos (Modo Completo)</option>
+<option value="doc-1">1. FASD 06 - I. Diagnóstico del Trámite a Simplificar</option>
+<option value="doc-2">2. FASD 01 - II. Diagnóstico y Priorización</option>
+<option value="doc-3">3. FASD 02 - II. Ficha Técnica de Análisis</option>
+<option value="doc-4">4. FASD 03 - III. Acciones de Simplificación y Digitalización</option>
+<option value="doc-5">5. FASD 04 - IV. Cronología de Simplificación (Gantt)</option>
+<option value="doc-6">6. FASD 05 - V. Cronología de Digitalización (Gantt)</option>
+<option value="doc-7">7. Anexo Informativo Simplificación (Actividades y Entregables)</option>
+<option value="doc-8">8. Anexo Informativo Fusión de Trámites y Supresión Regulatoria</option>
+<option value="doc-9">9. Informe Semestral de Cumplimiento (Simplificación)</option>
+<option value="doc-10">10. Informe Semestral de Cumplimiento (Digitalización)</option>
+</select>
+<button class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-semibold rounded-md shadow transition" onclick="window.print()" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Imprimir / Guardar PDF
+        </button>
+</div>
+</div>
+</header>
+<!-- END: ControlNavigationHeader -->
+<!-- BEGIN: DocumentContainer -->
+<main class="py-6 sm:py-8 px-2 sm:px-4" id="documents-root">
+<!-- =================================================================== -->
+<!-- DOCUMENTO 1: FASD 06 - Diagnóstico del Trámite o Servicio a Simplificar -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="FASD 06" id="doc-1">
+<div>
+<!-- Top Institutional Header -->
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRw-2n4EGbsMA6gqudh8qScGkBW3oR1wgtQ6kBgWyKMNHi6AWOFOzcirpfBN-phkTcEyxlfUDb6HqfNXHITizG-zMi9OmjkdwXxdfSe--QxDeFu0sDp1d9_ZHu8zqVnaw3Q3v_hQpRhWMuIviR5XzqrBbiW-F2PANylR5YHmlEtsD3gujSiRDkFSA7xBn7r1k-3XWIGJviEr1Y3yMaWMLHxGLEWnHIgam0KnTw1Rz9wz7xmBTXUJAFNoEB6pzckBog1RE"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] text-gray-500 font-semibold mb-0.5">Elija el nombre de la dependencia: <span class="text-gray-900 font-bold underline">SECRETARÍA DE MEDIO AMBIENTE Y MOVILIDAD URBANA</span></div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="flex justify-between items-baseline mb-2">
+<h2 class="text-sm font-bold text-gray-900">I. Diagnóstico del Trámite o Servicio a Simplificar</h2>
+<span class="text-[11px] font-mono font-bold text-gray-700">FASD 06 2026</span>
+</div>
+<!-- Meta Information Block -->
+<div class="border border-gray-700 text-xs mb-3">
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre de la Unidad Administrativa:</div>
+<div class="col-span-8 p-1.5 font-medium">Dirección de Protección Ambiental y Cambio Climático</div>
+</div>
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
+<div class="col-span-8 p-1.5 font-medium">Dictamen de Impacto Ambiental Modalidad A</div>
+</div>
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Alcance de la Simplificación:</div>
+<div class="col-span-8 p-1.5 text-gray-800">Reducción de requisitos documentales, unificación de criterios técnicos y trámite completamente digitalizado con pre-resolución en línea.</div>
+</div>
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Tipo de Simplificación:</div>
+<div class="col-span-8 p-1.5 text-gray-800 italic">Reducción del plazo de resolución / Reducción de requisitos</div>
+</div>
+<div class="grid grid-cols-12">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Objetivos de la Simplificación:</div>
+<div class="col-span-8 p-1.5 text-gray-800">Disminuir el tiempo de respuesta ciudadano de 15 a 5 días hábiles; facilitar el cumplimiento normativo mediante firma electrónica avanzada.</div>
+</div>
+</div>
+<!-- Comparative Metrics Table -->
+<table class="gov-table mb-2">
+<thead>
+<tr>
+<th class="w-1/3" colspan="2">Cantidad de Requisitos</th>
+<th class="w-1/3" colspan="2">Vigencia del Resolutivo</th>
+<th class="w-1/3" colspan="2">Plazo de Resolución (Para Resolver)</th>
+</tr>
+<tr class="bg-gray-50 text-[9px]">
+<th class="w-1/6 font-medium">Actual</th>
+<th class="w-1/6 font-medium bg-amber-50">Plan / Meta</th>
+<th class="w-1/6 font-medium">Actual</th>
+<th class="w-1/6 font-medium bg-amber-50">Plan / Meta</th>
+<th class="w-1/6 font-medium">Actual</th>
+<th class="w-1/6 font-medium bg-amber-50">Plan / Meta</th>
+</tr>
+</thead>
+<tbody class="text-center font-medium">
+<tr>
+<td class="text-sm font-bold">10</td>
+<td class="text-sm font-bold text-blue-900 bg-blue-50">8</td>
+<td>1 Año Fiscal</td>
+<td class="bg-blue-50">Permanente / 2 Años</td>
+<td>15 Días Hábiles</td>
+<td class="bg-blue-50 text-blue-900 font-bold">5 Días Hábiles</td>
+</tr>
+</tbody>
+</table>
+<!-- Operational Factors Table -->
+<table class="gov-table mb-2">
+<thead>
+<tr>
+<th class="w-1/3" colspan="2">Servidores Públicos que Intervienen</th>
+<th class="w-1/3" colspan="2">Canales de Atención</th>
+<th class="w-1/3" colspan="2">Actos de Molestia</th>
+</tr>
+<tr class="bg-gray-50 text-[9px]">
+<th class="w-1/6 font-medium">Actual</th>
+<th class="w-1/6 font-medium bg-amber-50">Plan</th>
+<th class="w-1/6 font-medium">Actual</th>
+<th class="w-1/6 font-medium bg-amber-50">Plan</th>
+<th class="w-1/6 font-medium">Actual</th>
+<th class="w-1/6 font-medium bg-amber-50">Plan</th>
+</tr>
+</thead>
+<tbody class="text-center">
+<tr>
+<td>4 Servidores</td>
+<td class="bg-gray-50 font-bold text-gray-900">2 Servidores</td>
+<td>Ventanilla física únicamente</td>
+<td class="bg-gray-50 font-bold text-gray-900">Digital + Ventanilla</td>
+<td>2 Visitas presenciales</td>
+<td class="bg-gray-50 font-bold text-gray-900">0 Visitas (100% web)</td>
+</tr>
+</tbody>
+</table>
+<!-- Validation Diagnostic Questions -->
+<table class="gov-table mb-3">
+<thead>
+<tr>
+<th class="w-1/3" colspan="2">¿Está en el manual de T y S?</th>
+<th class="w-1/3" colspan="2">¿Tiene soporte digital el proceso?</th>
+<th class="w-1/3" colspan="2">¿Vinculado a otro trámite municipal?</th>
+</tr>
+<tr class="bg-gray-50 text-[9px]">
+<th class="w-1/6">Sí</th>
+<th class="w-1/6">No</th>
+<th class="w-1/6">Sí</th>
+<th class="w-1/6">No</th>
+<th class="w-1/6">Sí</th>
+<th class="w-1/6">No</th>
+</tr>
+</thead>
+<tbody class="text-center font-bold text-xs">
+<tr>
+<td class="bg-green-50 text-green-700">✓</td>
+<td></td>
+<td></td>
+<td class="bg-red-50 text-red-700">✓</td>
+<td class="bg-green-50 text-green-700">✓ (Lic. Func.)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<!-- Qualitative Diagnosis Box -->
+<div class="border border-gray-700 p-2.5 min-h-[90px] mb-3 text-xs bg-gray-50/50">
+<p class="font-bold text-gray-900 mb-1">Problemas identificados:</p>
+<p class="text-gray-800 leading-relaxed">
+            Del proceso del trámite: Duplicidad de copias de identificación y acreditación legal, cuello de botella en firma física de la jefatura de departamento, falta de visualización del estatus por parte del ciudadano e inexistencia de pasarela de pago digital municipal para derechos ambientales.
+          </p>
+</div>
+</div>
+<!-- Signatures Footer & Page Number -->
+<div>
+<table class="gov-table mb-2">
+<thead>
+<tr>
+<th class="w-1/3 py-1 font-bold">Elaboró</th>
+<th class="w-1/3 py-1 font-bold">Revisó</th>
+<th class="w-1/3 py-1 font-bold">Autorizó</th>
+</tr>
+</thead>
+<tbody>
+<tr class="h-14">
+<td class="align-bottom pb-1 text-center font-serif text-[11px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[11px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[11px] text-gray-400">Firma</td>
+</tr>
+<tr class="text-center text-[9px] font-semibold bg-gray-50">
+<td class="p-1">Enlace de Simplificación y Digitalización</td>
+<td class="p-1">Director de la Unidad Administrativa</td>
+<td class="p-1">Titular del Sujeto Obligado</td>
+</tr>
+</tbody>
+</table>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtDfbQncFj6XJ2jZwoZEEqXVWiurFS3MXRGVPlD4Y_I-P0PA2AyPfffZutnMRmnZuzyEtC3i5V6-45l5ZfY2vOr4gnSC4CISkZRTAiwGuDseyplSARHDRVlJ1nbQbnBU6WKufRxaxABBCTJYYRfEiNKAqv2EuKn6BpbTjc1yD5ug50WadaOYLu-htow3bKskqET8_XBw-1afHw-c9PEdEriDDhKAS9Ex84TDf1K2MT-f4apIb03n01E43szFWzY-i0Y94"/>
+<span class="font-mono">Página 1 de 1</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 2: FASD 01 - Diagnóstico y Priorización de Trámites -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="FASD 01" id="doc-2">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwvCthBNZwmB8Jv80yUoNt8qKp-XWfTwiojKxw5OVWS-Oliixx7DVQrj8jsBz5xoM4qo06eJrtVslPN6DOsHdESdodN50ygjIy0VY8fKW6UOmA915jCPLb9z0fgFWBtsy7GZmD-k6ct5LE9McZGBT82lz3yRHBzNtJQyID8sDbB5tvPLf5iPbWcGs3WjjS3HmBU43cB57IWyfqyFf2XLOmdWyND_-uRwstCKIsjb36or3D06rkTrAad1tHT9p_ncwF3pM"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] text-gray-500 font-semibold mb-0.5">Elija el nombre de la dependencia: <span class="text-gray-900 font-bold underline">SECRETARÍA DE ECONOMÍA Y DESARROLLO</span></div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="flex justify-between items-baseline mb-1">
+<h2 class="text-sm font-bold text-gray-900">II. Diagnóstico y Priorización de Trámites o Servicios</h2>
+<span class="text-[11px] font-mono font-bold text-gray-700">FASD 01 2026</span>
+</div>
+<div class="border border-gray-700 text-[10px] p-1.5 mb-2 bg-gray-50 flex justify-between">
+<span><strong>Nombre de la Unidad Administrativa:</strong> Dirección de Fomento y Mejora Empresarial</span>
+<span><strong>Fecha del levantamiento:</strong> 15 de Enero de 2026</span>
+</div>
+<!-- Repeating Prioritization Rows 1 to 5 -->
+<div class="space-y-2 mb-2 text-[9px]">
+<!-- Item 1 -->
+<div class="border border-gray-700">
+<div class="bg-gray-100 font-bold px-2 py-0.5 border-b border-gray-700">1. - Nombre del trámite o servicio: <span class="font-normal">Licencia de Funcionamiento Giros SARE (Bajo Riesgo)</span></div>
+<div class="grid grid-cols-12 text-center items-center">
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">
+<span class="font-bold block">Tipo de Gestión</span>
+                Presencial: 5<br/>Digital: 2<br/><strong>Ambos: 1 (✓)</strong>
+</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">
+<span class="font-bold block">Tipo / Solicitud</span>
+                No tiene: 10<br/>Escrito libre: 5<br/>Formato: 2<br/><strong>F. Único: 1 (✓)</strong>
+</div>
+<div class="col-span-2 border-r border-gray-700 p-1">
+<span class="font-bold block">Plazo de resolución</span>
+<span class="text-xs font-bold text-blue-900">3 Días H</span>
+</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">
+<span class="font-bold block">¿Fundamento jurídico?</span>
+                ☑ Trámite 20  ☑ Req 05<br/>☑ Plazo 05  ☑ Vig 05<br/>☑ Tipo resolutivo 05
+              </div>
+<div class="col-span-1 border-r border-gray-700 p-1">
+<span class="font-bold block">Cant. Reqs</span>
+<span class="text-xs font-bold">4</span>
+</div>
+<div class="col-span-1 border-r border-gray-700 p-1">
+<span class="font-bold block">Prom. mes</span>
+<span class="text-xs font-bold">142</span>
+</div>
+<div class="col-span-1 border-r border-gray-700 p-1">
+<span class="font-bold block">Vulnerable</span>
+<span class="text-xs">0 / 20</span>
+</div>
+<div class="col-span-1 p-1 bg-amber-50">
+<span class="font-bold block text-amber-900">Suma</span>
+<span class="text-xs font-bold text-amber-950">18 ✓</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="border border-gray-700">
+<div class="bg-gray-100 font-bold px-2 py-0.5 border-b border-gray-700">2. - Nombre del trámite o servicio: <span class="font-normal">Constancia de Alineamiento y Número Oficial</span></div>
+<div class="grid grid-cols-12 text-center items-center">
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">Presencial: 5 (✓)<br/>Digital: 2<br/>Ambos: 1</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">No tiene: 10<br/>Escrito libre: 5<br/>Formato: 2 (✓)<br/>F. Único: 1</div>
+<div class="col-span-2 border-r border-gray-700 p-1"><span class="font-bold block">Plazo</span> 5 Días H</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">☑ Trámite 20  ☑ Req 05<br/>☑ Plazo 05  ☐ Vig 05<br/>☑ Resolutivo 05</div>
+<div class="col-span-1 border-r border-gray-700 p-1">6</div>
+<div class="col-span-1 border-r border-gray-700 p-1">98</div>
+<div class="col-span-1 border-r border-gray-700 p-1">0 / 20</div>
+<div class="col-span-1 p-1 bg-amber-50 font-bold text-xs text-amber-950">8 ✓</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="border border-gray-700">
+<div class="bg-gray-100 font-bold px-2 py-0.5 border-b border-gray-700">3. - Nombre del trámite o servicio: <span class="font-normal">Factibilidad de Uso de Suelo</span></div>
+<div class="grid grid-cols-12 text-center items-center">
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">Presencial: 5 (✓)<br/>Digital: 2<br/>Ambos: 1</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">No tiene: 10<br/>Escrito libre: 5 (✓)<br/>Formato: 2<br/>F. Único: 1</div>
+<div class="col-span-2 border-r border-gray-700 p-1"><span class="font-bold block">Plazo</span> 10 Días H</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">☑ Trámite 20  ☑ Req 05<br/>☑ Plazo 05  ☑ Vig 05<br/>☑ Resolutivo 05</div>
+<div class="col-span-1 border-r border-gray-700 p-1">8</div>
+<div class="col-span-1 border-r border-gray-700 p-1">75</div>
+<div class="col-span-1 border-r border-gray-700 p-1">0 / 20</div>
+<div class="col-span-1 p-1 bg-amber-50 font-bold text-xs text-amber-950">11 ✓</div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="border border-gray-700">
+<div class="bg-gray-100 font-bold px-2 py-0.5 border-b border-gray-700">4. - Nombre del trámite o servicio: <span class="font-normal">Permiso de Anuncio Publicitario Temporal</span></div>
+<div class="grid grid-cols-12 text-center items-center">
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">Presencial: 5<br/>Digital: 2<br/>Ambos: 1 (✓)</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">No tiene: 10<br/>Escrito libre: 5<br/>Formato: 2 (✓)<br/>F. Único: 1</div>
+<div class="col-span-2 border-r border-gray-700 p-1"><span class="font-bold block">Plazo</span> 3 Días H</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">☑ Trámite 20  ☑ Req 05<br/>☑ Plazo 05  ☐ Vig 05<br/>☑ Resolutivo 05</div>
+<div class="col-span-1 border-r border-gray-700 p-1">3</div>
+<div class="col-span-1 border-r border-gray-700 p-1">45</div>
+<div class="col-span-1 border-r border-gray-700 p-1">0 / 20</div>
+<div class="col-span-1 p-1 bg-amber-50 font-bold text-xs text-amber-950">2 ✓</div>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="border border-gray-700">
+<div class="bg-gray-100 font-bold px-2 py-0.5 border-b border-gray-700">5. - Nombre del trámite o servicio: <span class="font-normal">Certificado de No Adeudo Predial</span></div>
+<div class="grid grid-cols-12 text-center items-center">
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">Presencial: 5<br/>Digital: 2 (✓)<br/>Ambos: 1</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">No tiene: 10<br/>Escrito libre: 5<br/>Formato: 2<br/>F. Único: 1 (✓)</div>
+<div class="col-span-2 border-r border-gray-700 p-1"><span class="font-bold block">Plazo</span> Inmediato</div>
+<div class="col-span-2 border-r border-gray-700 p-1 text-left">☑ Trámite 20  ☑ Req 05<br/>☑ Plazo 05  ☑ Vig 05<br/>☑ Resolutivo 05</div>
+<div class="col-span-1 border-r border-gray-700 p-1">2</div>
+<div class="col-span-1 border-r border-gray-700 p-1">310</div>
+<div class="col-span-1 border-r border-gray-700 p-1">20 / 20</div>
+<div class="col-span-1 p-1 bg-amber-50 font-bold text-xs text-amber-950">15 ✓</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Institutional Signatures Footer -->
+<div>
+<table class="gov-table mb-2">
+<thead>
+<tr>
+<th class="w-1/3 py-1 font-bold">Elaboró</th>
+<th class="w-1/3 py-1 font-bold">Revisó</th>
+<th class="w-1/3 py-1 font-bold">Autorizó</th>
+</tr>
+</thead>
+<tbody>
+<tr class="h-10">
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+</tr>
+<tr class="text-center text-[9px] font-semibold bg-gray-50">
+<td class="p-1">Enlace de Simplificación y Digitalización</td>
+<td class="p-1">Director de la Unidad Administrativa</td>
+<td class="p-1">Titular del Sujeto Obligado</td>
+</tr>
+</tbody>
+</table>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFR4y3nE3uiHC621GIXXSuWO5bwoLSodQm2ckHzRY9sTyUdLXfs4kZaK-sjQaX4wpQIzYJPNPsBGhNTdIUZszfv9QLORBuvSTWTtZTGoiWhb7kKdLieDn1d92tqIKEZn5uXGCjEpILR5P_ANJRdw76CAEljvZeLIyLiFBOd98MOI8eP0kclbP74BBdUv7domYdhVTjv2cQF734CKRGq85O6V8vRVfSHYuMRa0TW-10H7iRK82t402iivObLnyKZUzKNzc"/>
+<span class="font-mono">Página 1 de 7</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 3: FASD 02 - Ficha Técnica de Análisis a Simplificar -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="FASD 02" id="doc-3">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfCaMrB1VPbLdOrWoO5xH64eCtezXgBXuV8qrGfV5I55lc6wYsj8N3tKfhdiueVttY0GlVW5jeBn88gFDJvPaU06eQgi_sgA4HwOcrEldBDnWAu7r7qhixOsDI73yb2fl91LE8U6OM9HlfZsv0GsEEtAyNG544leNWjylQVn9nXPN3pNjFB1X6Ohpw7TF03pXhNMJI0dSWJ_NrotVPHonIBAZbI0kUkjVPpHZc9S5et_Pk5Zqd2VyIWTKP8XHSHfnr18s"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] text-gray-500 font-semibold mb-0.5">Elija el nombre de la dependencia: <span class="text-gray-900 font-bold underline">SECRETARÍA DE DESARROLLO URBANO</span></div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="flex justify-between items-baseline mb-1">
+<h2 class="text-sm font-bold text-gray-900">III. Ficha Técnica de Análisis a Simplificar</h2>
+<span class="text-[11px] font-mono font-bold text-gray-700">FASD 02 2026</span>
+</div>
+<div class="border border-gray-700 text-xs mb-2">
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1 font-bold bg-gray-100 border-r border-gray-700">Nombre de la Unidad Administrativa:</div>
+<div class="col-span-8 p-1">Dirección de Administración Urbana</div>
+</div>
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1 font-bold bg-gray-100 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
+<div class="col-span-8 p-1 font-medium">Permiso de Construcción Obra Menor (hasta 60 m²)</div>
+</div>
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1 font-bold bg-gray-100 border-r border-gray-700">Homoclave del trámite en CNARTyS:</div>
+<div class="col-span-8 p-1 font-mono">TUX-SDU-DAU-042-2026</div>
+</div>
+<div class="grid grid-cols-12 border-b border-gray-700 items-center">
+<div class="col-span-2 p-1 font-bold bg-gray-100 border-r border-gray-700">Seleccione:</div>
+<div class="col-span-4 p-1 flex gap-4">
+<label class="flex items-center gap-1 font-semibold"><input checked="" class="rounded text-gray-800 focus:ring-0" type="checkbox"/> Trámite</label>
+<label class="flex items-center gap-1"><input class="rounded text-gray-800 focus:ring-0" type="checkbox"/> Servicio</label>
+</div>
+<div class="col-span-3 p-1 font-bold bg-gray-100 border-l border-r border-gray-700">Tiempo de vigencia resolutivo:</div>
+<div class="col-span-3 p-1">12 Meses Calendario</div>
+</div>
+<div class="grid grid-cols-12 border-b border-gray-700 items-center">
+<div class="col-span-2 p-1 font-bold bg-gray-100 border-r border-gray-700">Requisitos generales:</div>
+<div class="col-span-10 p-1 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
+<label class="flex items-center gap-1"><input checked="" class="rounded" type="checkbox"/> Identificación oficial</label>
+<label class="flex items-center gap-1"><input checked="" class="rounded" type="checkbox"/> CURP</label>
+<label class="flex items-center gap-1"><input checked="" class="rounded" type="checkbox"/> Comprobante de domicilio</label>
+<label class="flex items-center gap-1"><input class="rounded" type="checkbox"/> Carta poder simple</label>
+<label class="flex items-center gap-1"><input class="rounded" type="checkbox"/> Acta constitutiva</label>
+<label class="flex items-center gap-1"><input class="rounded" type="checkbox"/> Poder notarial</label>
+</div>
+</div>
+<div class="grid grid-cols-12">
+<div class="col-span-2 p-1 font-bold bg-gray-100 border-r border-gray-700">Fundamento jurídico del Trámite o servicio:</div>
+<div class="col-span-10 p-1 text-[10px]">
+<div class="flex gap-4 mb-1">
+<label class="flex items-center gap-1 font-semibold"><input checked="" class="rounded" type="checkbox"/> Reglamento de la materia</label>
+<label class="flex items-center gap-1"><input class="rounded" type="checkbox"/> Otro reglamento o ley</label>
+<label class="flex items-center gap-1"><input checked="" class="rounded" type="checkbox"/> Ley de ingresos</label>
+</div>
+<div class="grid grid-cols-3 gap-2 border-t border-gray-300 pt-1">
+<div><span class="font-bold">Artículo y fracción:</span> Art. 45 Fracc. II</div>
+<div><span class="font-bold">Artículo y fracción:</span> Art. 18 BIS</div>
+<div><span class="font-bold">Artículo y fracción:</span> Art. 92 Inciso B</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Requisitos Table 1 to 15 -->
+<div class="mb-1 text-[10px] font-bold text-gray-700 flex justify-between">
+<span>Otros requisitos que se adjuntan a la solicitud:</span>
+<span class="text-gray-500 font-normal italic">M/E = Municipal o Externo | FJ = Fundamento Jurídico</span>
+</div>
+<table class="gov-table text-[9px] mb-2">
+<thead>
+<tr>
+<th class="w-8">#</th>
+<th>Nombre del requisito</th>
+<th class="w-16">M / E</th>
+<th class="w-12">FJ</th>
+</tr>
+</thead>
+<tbody>
+<tr><td class="text-center font-bold">1</td><td>Título de propiedad o escritura inscrita en RPP</td><td class="text-center">Externo</td><td class="text-center">☑</td></tr>
+<tr><td class="text-center font-bold">2</td><td>Croquis de localización o plano arquitectónico simplificado</td><td class="text-center">Municipal</td><td class="text-center">☑</td></tr>
+<tr><td class="text-center font-bold">3</td><td>Boleta predial al corriente del ejercicio fiscal</td><td class="text-center">Municipal</td><td class="text-center">☑</td></tr>
+<tr><td class="text-center font-bold">4</td><td>Fotografías del predio o fachada actual (2 vistas)</td><td class="text-center">Externo</td><td class="text-center">☑</td></tr>
+<tr><td class="text-center font-bold">5</td><td>Memoria descriptiva de los trabajos a ejecutar</td><td class="text-center">Externo</td><td class="text-center">☑</td></tr>
+<tr><td class="text-center font-bold">6</td><td>Visto Bueno de Protección Civil para áreas de riesgo</td><td class="text-center">Municipal</td><td class="text-center">☑</td></tr>
+<tr><td class="text-center font-bold">7</td><td>Carta responsiva de perito colegiado (si aplica)</td><td class="text-center">Externo</td><td class="text-center">☐</td></tr>
+<tr><td class="text-center font-bold">8</td><td>-</td><td class="text-center">-</td><td class="text-center">☐</td></tr>
+<tr><td class="text-center font-bold">9</td><td>-</td><td class="text-center">-</td><td class="text-center">☐</td></tr>
+<tr><td class="text-center font-bold">10</td><td>-</td><td class="text-center">-</td><td class="text-center">☐</td></tr>
+<tr><td class="text-center font-bold">11</td><td>-</td><td class="text-center">-</td><td class="text-center">☐</td></tr>
+<tr><td class="text-center font-bold">12</td><td>-</td><td class="text-center">-</td><td class="text-center">☐</td></tr>
+<tr><td class="text-center font-bold">13</td><td>-</td><td class="text-center">-</td><td class="text-center">☐</td></tr>
+<tr><td class="text-center font-bold">14</td><td>-</td><td class="text-center">-</td><td class="text-center">☐</td></tr>
+<tr><td class="text-center font-bold">15</td><td>-</td><td class="text-center">-</td><td class="text-center">☐</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<table class="gov-table mb-2">
+<thead>
+<tr>
+<th class="w-1/3 py-1 font-bold">Elaboró</th>
+<th class="w-1/3 py-1 font-bold">Revisó</th>
+<th class="w-1/3 py-1 font-bold">Autorizó</th>
+</tr>
+</thead>
+<tbody>
+<tr class="h-10">
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+</tr>
+<tr class="text-center text-[9px] font-semibold bg-gray-50">
+<td class="p-1">Enlace de Simplificación y Digitalización</td>
+<td class="p-1">Director de la Unidad Administrativa</td>
+<td class="p-1">Titular del Sujeto Obligado</td>
+</tr>
+</tbody>
+</table>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA32khFDtbPU3EoMwT-asmklMxNQKM49psoyJlrdZscScsixi7ES8Q8er11lDCbeRGaTnpzAXY3vDwWWFL8uPSDd4eBbgkryF-kqzq4PfcM3iQ0eDRlsP8y6fbleNnughoCIIt93HIg6yYdCC_xzBu7rpYk54uoC1QjKSXyRt827bZNi39szdTrSFZLTFBMR2UXsUSrrtG7Vm5egxWmvVQDEnWSDQwhyMdORjXAv1DKtV2pZQOgNjvaos_PPY5K6a1OdgE"/>
+<span class="font-mono">Página 2 de 7</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 4: FASD 03 - Acciones de Simplificación y Digitalización -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="FASD 03" id="doc-4">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzYKUibhNkhiobrpZaZ4QpFYaEpG99GGFSb8PAYUooXf8qp-of7RH_txR5JF3Z0BvjqT-cy4JzBXFANRZ4yYveXwBlkd36tPZIqpBuq4TRsO142haUEAqON7HuQ7jeHxPomsYWErtNsx2LV7iZ-W9hGn35ZscWiQFt7U-OL_IqF4X4y0wW5XCNiikrsoGeZbEBJWTSWJvqQ0OGnjv_t_BzoYxAcEg31Tag-vf9NP8ZtpFKl8nSDG3UC1KmIrm4CBPHI38"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] text-gray-500 font-semibold mb-0.5">Elija el nombre de la dependencia: <span class="text-gray-900 font-bold underline">SECRETARÍA DE SERVICIOS MUNICIPALES</span></div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="flex justify-between items-baseline mb-2">
+<h2 class="text-sm font-bold text-gray-900">III. Acciones de Simplificación y Digitalización</h2>
+<span class="text-[11px] font-mono font-bold text-gray-700">FASD 03 2026</span>
+</div>
+<div class="border border-gray-700 text-xs mb-3">
+<div class="grid grid-cols-12">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
+<div class="col-span-8 p-1.5 font-medium">Asignación y Refrendo de Fosa en Panteones Municipales</div>
+</div>
+</div>
+<!-- Simplification Actions Table 1-9 -->
+<table class="gov-table text-[10px] mb-3">
+<thead>
+<tr>
+<th class="text-left py-1 text-xs" colspan="2">Acciones de Simplificación</th>
+<th class="w-12 text-center">Aplica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="w-8 text-center font-bold">1.</td>
+<td>Ampliar la vigencia del trámite o servicio</td>
+<td class="text-center font-bold text-blue-900">☑</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">2.</td>
+<td>Reducir el plazo de resolución</td>
+<td class="text-center font-bold text-blue-900">☑</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">3.</td>
+<td>Reducir los requisitos del trámite o servicio</td>
+<td class="text-center font-bold text-blue-900">☑</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">4.</td>
+<td>Eliminar requisitos del trámite o servicio</td>
+<td class="text-center font-bold text-blue-900">☑</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">5.</td>
+<td>Fusionar trámites y/o modalidades</td>
+<td class="text-center font-bold">☐</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">6.</td>
+<td>Supresión de obligaciones regulatorias que representen costos burocráticos para las personas</td>
+<td class="text-center font-bold">☐</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">7.</td>
+<td>Conversión de trámites en avisos o manifestaciones</td>
+<td class="text-center font-bold">☐</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">8.</td>
+<td>Implementar o simplificar formatos</td>
+<td class="text-center font-bold text-blue-900">☑</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">9.</td>
+<td>Cualquier otra acción que contribuya a la simplificación administrativa, la eficiencia regulatoria o a mejorar la experiencia de las personas usuarias</td>
+<td class="text-center font-bold">☐</td>
+</tr>
+</tbody>
+</table>
+<!-- Digitalization Actions Table 1-2 -->
+<table class="gov-table text-[10px] mb-4">
+<thead>
+<tr>
+<th class="text-left py-1 text-xs" colspan="2">Acciones de Digitalización</th>
+<th class="w-12 text-center">Aplica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="w-8 text-center font-bold">1.</td>
+<td>Incorporar el trámite o servicio a la Ventanilla Única Digital</td>
+<td class="text-center font-bold text-blue-900">☑</td>
+</tr>
+<tr>
+<td class="w-8 text-center font-bold">2.</td>
+<td>Implementar otras soluciones tecnológicas que permitan eficientar el trámite o servicio (Firma electrónica, expediente interoperable, pasarela bancaria)</td>
+<td class="text-center font-bold text-blue-900">☑</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table class="gov-table mb-2">
+<thead>
+<tr>
+<th class="w-1/3 py-1 font-bold">Elaboró</th>
+<th class="w-1/3 py-1 font-bold">Revisó</th>
+<th class="w-1/3 py-1 font-bold">Autorizó</th>
+</tr>
+</thead>
+<tbody>
+<tr class="h-12">
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+</tr>
+<tr class="text-center text-[9px] font-semibold bg-gray-50">
+<td class="p-1">Enlace de Simplificación y Digitalización</td>
+<td class="p-1">Director de la Unidad Administrativa</td>
+<td class="p-1">Titular del Sujeto Obligado</td>
+</tr>
+</tbody>
+</table>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU46Flhi5zmG59UyD4-bFAd5bqY4zBZETRpK1vbeKUDQUhQuh8xCnRyi7ChnY4pO-tsYnT3CH2KGL7yul8FEq4wtByHt-anDKMjbpjfhgx28qJhrw2ewv062-_cVYspi_7LNXXSRbgarLEWfw1lw8LsREhaA8WFXGFtmi1rZrbjdckxvExO3FdGymM6IcO2QpJwnKqgnuBbM70YWtS0jbJ40umiI2qjv_H_Zj6viYYU4x420orCn9mnG7kgMmsCRPVrsA"/>
+<span class="font-mono">Página 3 de 7</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 5: FASD 04 - Cronología de la Agenda de Simplificación -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="FASD 04" id="doc-5">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQWQ76h8r-wT0XZXg8nQefJsdlmfe0zFVBnIKz_UgWcspioqnJhwscxLFNWns9NEfgWhErW_6Wo_Qm0aTMJO8NV1bZ02Hdw8WCMIVqsDMpWGFtvVgRydefhtYXrwA516mzsXMoJHH3JZ8xuI0ohihed_l33FUEuQkrRg5ut3z5nNE4m0lnYk9cM5eF8NdroipOYDUiQCjE3eltEFdpkO97iNax3-17O84v9faQKldAF1ifoG_Mdb4K1qPv7Y7XnI2N8cU"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] text-gray-500 font-semibold mb-0.5">Elija el nombre de la dependencia: <span class="text-gray-900 font-bold underline">SECRETARÍA DE PROTECCIÓN CIVIL</span></div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="flex justify-between items-baseline mb-2">
+<h2 class="text-sm font-bold text-gray-900">IV. Cronología de Integración de la Agenda de Simplificación</h2>
+<span class="text-[11px] font-mono font-bold text-gray-700">FASD 04 2026</span>
+</div>
+<div class="border border-gray-700 text-xs mb-2">
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-3 p-1 font-bold bg-gray-100 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
+<div class="col-span-9 p-1 font-medium">Dictamen de Medidas Preventivas para Establecimientos Mercantiles</div>
+</div>
+<div class="grid grid-cols-12">
+<div class="col-span-3 p-1 font-bold bg-gray-100 border-r border-gray-700">Nombre de la acción:</div>
+<div class="col-span-9 p-1 font-medium italic">Reducción del plazo de resolución y reingeniería técnica</div>
+</div>
+</div>
+<!-- Gantt Chart Table -->
+<table class="gov-table text-[9px] mb-2">
+<thead>
+<tr>
+<th class="w-6" rowspan="2">No</th>
+<th class="w-1/3" rowspan="2">Actividades</th>
+<th class="text-center" colspan="6">Meses (Año 2026)</th>
+<th class="w-1/3" rowspan="2">Entregables</th>
+</tr>
+<tr class="text-[8px] bg-gray-100">
+<th class="w-6">Ene</th>
+<th class="w-6">Feb</th>
+<th class="w-6">Mzo</th>
+<th class="w-6">Abr</th>
+<th class="w-6">M/J</th>
+<th class="w-6">Jul</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="text-center font-bold">1</td>
+<td class="font-medium">Integración del equipo de trabajo e inicio de las actividades de simplificación</td>
+<td class="gantt-fill text-center text-white font-bold">✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="text-[8.5px]">
+                • Minuta que describa la integración del equipo de trabajo y acuerdan la acción para simplificar.<br/>
+                • Diagnóstico del trámite o servicio a simplificar, identificando el alcance y los objetivos.
+              </td>
+</tr>
+<tr>
+<td class="text-center font-bold">2</td>
+<td class="font-medium">Reingeniería del proceso</td>
+<td class="gantt-fill"></td>
+<td class="gantt-fill"></td>
+<td class="gantt-fill text-center text-white font-bold">✓</td>
+<td class="gantt-fill"></td>
+<td></td>
+<td></td>
+<td class="text-[8.5px]">
+                • Descripción de actividades del proceso actual y simplificado (Identificando las acciones que no agregan valor al proceso, desarrollando alternativas del proceso, que garantice la operatividad del nuevo proceso).
+              </td>
+</tr>
+<tr>
+<td class="text-center font-bold">3</td>
+<td class="font-medium">Elaboración y firma del acuerdo donde se aprueba la acción a simplificar</td>
+<td></td>
+<td></td>
+<td></td>
+<td class="gantt-fill text-center text-white font-bold">✓</td>
+<td></td>
+<td></td>
+<td class="text-[8.5px]">
+                • Acuerdo firmado y oficio de envío a la Coordinación Municipal de Mejora Regulatoria.
+              </td>
+</tr>
+<tr>
+<td class="text-center font-bold">4</td>
+<td class="font-medium">Puesta en marcha de las mejoras implementadas</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="gantt-fill"></td>
+<td class="gantt-fill text-center text-white font-bold">✓</td>
+<td class="text-[8px]">
+                • Recepción de la autorización por Acuerdo del Cabildo.<br/>
+                • Aviso público circular o comunicado de las mejoras implementadas.<br/>
+                • Captura de pantalla de la actualización en el portal ciudadano único de trámites y servicios.<br/>
+                • Evidencia de la difusión del nuevo proceso entre los servidores públicos involucrados.<br/>
+                • Folletos publicitarios.<br/>
+                • Propuesta y justificación de costos o derechos antes y después.<br/>
+                • Encuestas de satisfacción del usuario del trámite y/o servicio simplificado.
+              </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6XVMhwr4HoQUx8Zv5R2eN9l5tqQu1ufEc0o5shqhmCtRYxioDg9f4g33hJ7JpvJ9RMy5y6JzN_U5d0n_b7VDTxjPLUb1pBzoDzL9hwzyGsRH69MfThxanedh-mBvooq9L8BFDMcmiV-ovnqGb7EMJKSSDvYr7-Diaet46kW-2BWpNj4IWNXEHDeX2PRALcR3Xdlcm4dz_SxkrZybNRCI7d0xoB-JFgMisJrYIbLuojzOiHeRurEL38XAm5IHd_zM6Zjo"/>
+<span class="font-mono">Página 4 de 7</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 6: FASD 05 - Cronología de la Agenda de Digitalización -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="FASD 05" id="doc-6">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9QCzOYotfF9pL-pF_c7vI5kBPVygVe4g9_5kt1oqE2U8j5KeTycGA13RlUU3FLq-UoJdyu8WSWJFeczEhj7-uPWjhsYUd_dXOOse29cQjxpNbTqXHiManb5agK5mdZs3I2GjnakZHwmR-DvsVhPfDiD0293Yvozdof_TblmIz4edrysyKyUNNKMix0jpJyEo21-F9tP5VMJ6rATDUXAylqI-gWCUlKPeUATn3ieNBThPwrxuU6y1ID-nJiDmkLH4OA_k"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] text-gray-500 font-semibold mb-0.5">Elija el nombre de la dependencia: <span class="text-gray-900 font-bold underline">COORDINACIÓN DE TECNOLOGÍAS DE INFORMACIÓN (CTIC)</span></div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="flex justify-between items-baseline mb-2">
+<h2 class="text-sm font-bold text-gray-900">V. Cronología de Integración de la Agenda de Digitalización</h2>
+<span class="text-[11px] font-mono font-bold text-gray-700">FASD 05 2026</span>
+</div>
+<div class="border border-gray-700 text-xs mb-2">
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-3 p-1 font-bold bg-gray-100 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
+<div class="col-span-9 p-1 font-medium">Cédula de Empadronamiento para Comercio Establecido</div>
+</div>
+<div class="grid grid-cols-12">
+<div class="col-span-3 p-1 font-bold bg-gray-100 border-r border-gray-700">Nombre de la acción:</div>
+<div class="col-span-9 p-1 font-medium italic">Digitalización integral de punta a punta en Ventanilla Única Digital</div>
+</div>
+</div>
+<!-- Gantt 6 Phases Digitalization -->
+<table class="gov-table text-[9px] mb-2">
+<thead>
+<tr>
+<th class="w-6" rowspan="2">No</th>
+<th class="w-1/3" rowspan="2">Actividades</th>
+<th class="text-center" colspan="6">Meses (Año 2026)</th>
+<th class="w-1/3" rowspan="2">Entregables</th>
+</tr>
+<tr class="text-[8px] bg-gray-100">
+<th class="w-6">Ene</th>
+<th class="w-6">Feb</th>
+<th class="w-6">Mzo</th>
+<th class="w-6">Abr</th>
+<th class="w-6">M/J</th>
+<th class="w-6">Jul</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="text-center font-bold">1</td>
+<td class="font-medium">Integración del equipo de trabajo e inicio de las actividades de digitalización</td>
+<td class="gantt-fill text-center text-white font-bold">✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="text-[8.5px]">
+                • Minuta que describa la integración del equipo de trabajo en donde se nombre al o los enlaces del sujeto obligado con toma de decisiones y conocimiento amplio del proceso del trámite o servicio y se apruebe la digitalización del trámite o servicio.
+              </td>
+</tr>
+<tr>
+<td class="text-center font-bold">2</td>
+<td class="font-medium">Planificación.- Identificar los requisitos del proyecto</td>
+<td class="gantt-fill"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="text-[8.5px]">
+                • Descripción de actividades, diagrama de flujo y formatos del trámite o servicio a digitalizar.<br/>
+                • Copia del oficio dirigido a la CTIC y CMR donde dan a conocer que la mejora del proceso la están adoptando en la práctica.
+              </td>
+</tr>
+<tr>
+<td class="text-center font-bold">3</td>
+<td class="font-medium">Análisis del proyecto (Recopilar y revisar los datos sobre los requisitos, pasos e información general del proyecto)</td>
+<td class="gantt-fill"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="text-[8px]">
+                • Copia del acuerdo interno entre el sujeto obligado, la CMR y la CTIC que plasme las acciones que se realizarán para digitalización del trámite o servicio y calendario de cumplimiento y nombramiento de los enlaces que validará los módulos del proyecto.
+              </td>
+</tr>
+<tr>
+<td class="text-center font-bold">4</td>
+<td class="font-medium">Desarrollo (Construcción técnica del módulo por CTIC)</td>
+<td></td>
+<td class="gantt-fill"></td>
+<td class="gantt-fill"></td>
+<td class="gantt-fill text-center text-white font-bold">✓</td>
+<td></td>
+<td></td>
+<td class="text-center font-bold text-gray-700 bg-gray-50">
+                CTIC (Código fuente, base de datos y diseño UX)
+              </td>
+</tr>
+<tr>
+<td class="text-center font-bold">5</td>
+<td class="font-medium">Pruebas (Revisar el código, ejecutar, validar y eliminar errores)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="gantt-fill text-center text-white font-bold">✓</td>
+<td></td>
+<td class="text-[8px]">
+                • Copia del documento donde el sujeto obligado valida los módulos del proyecto final.<br/>
+                • Evidencia de que el servidor público designado por el sujeto obligado para capacitar al personal involucrado acudió a las capacitaciones del proyecto finalizado y validado.
+              </td>
+</tr>
+<tr>
+<td class="text-center font-bold">6</td>
+<td class="font-medium">Despliegue (Implementar el código en el entorno de producción)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="gantt-fill"></td>
+<td class="gantt-fill text-center text-white font-bold">✓</td>
+<td class="text-[8.5px]">
+                • Presentación del proyecto final y capacitación.<br/>
+                • Copia de listas de asistencia y fotografías.
+              </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-zyDKztmkfKXHwVRA9j1HFFXWfgFs-POQAZriLaf-8QZN0bujjRfcesfMKfN9duf51JPNQFguGKRw-kXfd4ob17kCZjsBCSLHACEx5iblPFMyRBOj6ssYtYiEaRedn5P7DM-zL0yM0eqZVWLByVndjnB2q_aC7IZ-4pQ7xjZTXIOy_LvOkvnRTP3NHIQZ3I3kWfZJEgrLHu2vACXdhnjR8IddMYiOrnKQunJA_P3on223ANF4WWzCDK8cg0lcKKn-HDA"/>
+<span class="font-mono">Página 5 de 7</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 7: Anexo Informativo - Actividades de Simplificación -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="Anexo Informativo" id="doc-7">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgN5pXbppt_kvgCOSbnTLbGhjLE85pkdLFXbDHiQJr3XCKk4yg1hgge8Zai7XOY0nQNms6vnVsqiJreGDHq22tWlo-sYA_qqQT-gLVIjX4SsCA3Yp9GCBBwxWgd4e0xTBDX_lN0nAGoxdeCC_iDnXLbvkVOzzZMEgkSP2M0DXEi8nPLZmcDsuQQWNIqvl37_t7oLJ4ITfSOApfSoWte_5ULHsrIGdhngfRJxhMaji4r3JADSAtzachJs8kleM80CHIeY0"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] font-bold text-gray-800 uppercase">Coordinación de Mejora Regulatoria</div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="text-center mb-2">
+<h2 class="text-xs font-bold text-gray-900 uppercase">I. Anexo Informativo para la Integración de las Actividades de Simplificación</h2>
+<span class="text-[10px] font-mono text-gray-500">FASD 04 2026</span>
+</div>
+<!-- Action Box 1: Ampliación de la vigencia -->
+<div class="border border-gray-700 mb-3">
+<div class="bg-gray-100 p-1 font-bold text-xs border-b border-gray-700">
+            Nombre de la Acción: <span class="font-semibold text-gray-900">Ampliación la vigencia del trámite o servicio</span>
+</div>
+<div class="grid grid-cols-12 text-xs">
+<div class="col-span-5 p-2 font-bold bg-gray-50 border-r border-gray-700 text-center">Actividades</div>
+<div class="col-span-7 p-2 font-bold bg-gray-50 text-center">Entregables</div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-400">
+              1. Integración del equipo de trabajo e inicio de las actividades de simplificación
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-400 text-[10px] leading-relaxed">
+<strong>a)</strong> Minuta que describa la integración del equipo de trabajo y acuerdan la acción para simplificar.<br/>
+<strong>b)</strong> Diagnóstico del trámite o servicio a simplificar, identificando el alcance y los objetivos.
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              2. Elaboración y firma del acuerdo donde se aprueba la acción a simplificar
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[10px]">
+<strong>c)</strong> Acuerdo firmado
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              3. Puesta en marcha de la acción de simplificación
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[9.5px] leading-snug">
+<strong>d)</strong> Recepción de la autorización por Acuerdo del Cabildo y puesta en marcha de las mejoras.<br/>
+<strong>e)</strong> Aviso público circular o comunicado de las mejoras implementadas.<br/>
+<strong>f)</strong> Captura de pantalla de la actualización en el portal ciudadano único de trámites y servicios.<br/>
+<strong>g)</strong> Evidencia de la difusión del nuevo proceso entre los servidores públicos involucrados.<br/>
+<strong>h)</strong> Folletos publicitarios.<br/>
+<strong>i)</strong> Propuesta y justificación de costos o derechos antes y después.<br/>
+<strong>j)</strong> Encuestas de satisfacción del usuario del trámite y/o servicio simplificado.
+            </div>
+</div>
+</div>
+<!-- Action Box 2: Reducir el plazo de resolución -->
+<div class="border border-gray-700 mb-2">
+<div class="bg-gray-100 p-1 font-bold text-xs border-b border-gray-700">
+            Nombre de la Acción: <span class="font-semibold text-gray-900">Reducir el plazo de resolución</span>
+</div>
+<div class="grid grid-cols-12 text-xs">
+<div class="col-span-5 p-2 font-bold bg-gray-50 border-r border-gray-700 text-center">Actividades</div>
+<div class="col-span-7 p-2 font-bold bg-gray-50 text-center">Entregables</div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-400">
+              1. Integración del equipo de trabajo e inicio de las actividades de simplificación
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-400 text-[10px]">
+<strong>a)</strong> Minuta que describa la integración del equipo de trabajo y acuerdan la acción para simplificar.<br/>
+<strong>b)</strong> Diagnóstico del trámite o servicio a simplificar, identificando el alcance y los objetivos.
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              2. Reingeniería del proceso
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[10px]">
+<strong>c)</strong> Descripción de actividades del proceso actual y simplificado (Identificando las acciones que no agregan valor al proceso, desarrollando alternativas del proceso, que garantice la operatividad del nuevo proceso).
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              3. Elaboración y firma del acuerdo donde se aprueba la acción a simplificar
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[10px]">
+<strong>d)</strong> Acuerdo firmado
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              4. Puesta en marcha de la acción de simplificación
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[9.5px]">
+<strong>e)</strong> Recepción de la autorización por Acuerdo del Cabildo y puesta en marcha de las mejoras.<br/>
+<strong>f)</strong> Evidencia de la capacitación y difusión del nuevo proceso entre los servidores públicos involucrados.<br/>
+<strong>g)</strong> Encuestas de satisfacción del usuario del trámite y/o servicio simplificado.<br/>
+<strong>h)</strong> Publicidad de las mejoras implementadas (folletos, carteles u otros medios de difusión).<br/>
+<strong>i)</strong> Actualización de la ficha del trámite o servicio en el portal ciudadano único de trámites y servicios, y capturas de pantalla que muestre la actualización.
+            </div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO5ZVMbsn_yN3vYOWP9v0nwxIaOSdHTPS9CJetftdm1mH6NE80piaC85YSlLh0pYDJ0V4XPdKHyE1um38Y5rMhw12Q8l45oU4zpEeopzp35WCLFQiabep9TKueUoFzjd91TJg1elJe8GDNf45j3oqHRS-_LujZYcwFBHvaSlVsY8Sq1v9xHLhBCs_ti1Znz2Kddsaf2F6E0wwIJaQqrDpJe76eau9FeAfi-hI-Ta6fp1eqFWFX8bsx6Jk1Fjnjm753v48"/>
+<span class="font-mono">Página 1 de 4</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 8: Anexo Informativo - Fusión de Trámites y Supresión -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="Anexo Fusión" id="doc-8">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO5rbQka_iipNM-KR4mD2JK6tSmdkHIBeSC0IbTBPgKd2_8SBuVhQ0kBAtlHTAyZV5NVAe8iDoriMLBc4GTwRuTKxnzMQ8wGAtqdXAycsC-xNzP1B7KIJGnyseGLCvMFipITenr_5-tG_MpQ_7FyXv_WjzuQUuJVrFhA5Sqkyg_6_PYt1ksXnUXUPON29nRgwCdPeQKIfzIc0P2QNbN_xCquJgQUbW4VdFVGNC2vxqNHRdlHjqZDpqszcrVWJu-uOVN0o"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] font-bold text-gray-800 uppercase">Coordinación de Mejora Regulatoria</div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<!-- Action Box 3: Fusionar trámites -->
+<div class="border border-gray-700 mb-3">
+<div class="bg-gray-100 p-1 font-bold text-xs border-b border-gray-700">
+            Nombre de la Acción: <span class="font-semibold text-gray-900">Fusionar trámites y/o modalidades</span>
+</div>
+<div class="grid grid-cols-12 text-xs">
+<div class="col-span-5 p-2 font-bold bg-gray-50 border-r border-gray-700 text-center">Actividades</div>
+<div class="col-span-7 p-2 font-bold bg-gray-50 text-center">Entregables</div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-400">
+              1. Integración del equipo de trabajo e inicio de las actividades de simplificación
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-400 text-[10px]">
+<strong>a)</strong> Minuta que describa la integración del equipo de trabajo y acuerdan la acción para simplificar.<br/>
+<strong>b)</strong> Diagnóstico del trámite o servicio a simplificar, identificando el alcance y los objetivos.
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              2. Reingeniería del proceso
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[10px]">
+<strong>c)</strong> Descripción de actividades del proceso actual y simplificado (Identificando las acciones que no agregan valor al proceso, desarrollando alternativas del proceso, que garantice la operatividad del nuevo proceso).
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              3. Elaboración y firma del acuerdo donde se aprueba la acción a simplificar
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[10px]">
+<strong>d)</strong> Acuerdo firmado
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              4. Puesta en marcha de la acción de simplificación
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[9.5px]">
+<strong>e)</strong> Recepción de la autorización por Acuerdo del Cabildo y puesta en marcha de las mejoras.<br/>
+<strong>f)</strong> Recepción de la autorización por Acuerdo del Cabildo.<br/>
+<strong>g)</strong> Justificación técnica (nota técnica o informe donde se explique porque el beneficio de fusión).<br/>
+<strong>h)</strong> Inclusión del nuevo trámite en el formato único de la unidad administrativa.<br/>
+<strong>i)</strong> Evidencia de la capacitación y difusión del nuevo proceso entre los servidores públicos involucrados.<br/>
+<strong>j)</strong> Encuestas de satisfacción del usuario del trámite y/o servicio simplificado.<br/>
+<strong>k)</strong> Publicidad de las mejoras implementadas (folletos, carteles u otros medios de difusión).
+            </div>
+</div>
+</div>
+<!-- Action Box 4: Supresión de obligaciones -->
+<div class="border border-gray-700 mb-2">
+<div class="bg-gray-100 p-1 font-bold text-xs border-b border-gray-700">
+            Nombre de la Acción: <span class="font-semibold text-gray-900">Supresión de obligaciones regulatorias que representen costos burocráticos para las personas</span>
+</div>
+<div class="grid grid-cols-12 text-xs">
+<div class="col-span-5 p-2 font-bold bg-gray-50 border-r border-gray-700 text-center">Actividades</div>
+<div class="col-span-7 p-2 font-bold bg-gray-50 text-center">Entregables</div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-400">
+              1. Integración del equipo de trabajo e inicio de las actividades de simplificación
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-400 text-[10px]">
+<strong>a)</strong> Minuta que describa la integración del equipo de trabajo y acuerdan la acción para simplificar.<br/>
+<strong>b)</strong> Diagnóstico del trámite o servicio a simplificar, identificando el alcance y los objetivos.
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              2. Reingeniería del proceso
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[10px]">
+<strong>c)</strong> Descripción de actividades del proceso actual y simplificado.
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              3. Elaboración y firma del acuerdo donde se aprueba la acción a simplificar
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[10px]">
+<strong>d)</strong> Acuerdo firmado
+            </div>
+<div class="col-span-5 p-2 border-r border-gray-700 border-t border-gray-300">
+              4. Puesta en marcha de la acción de simplificación
+            </div>
+<div class="col-span-7 p-2 border-t border-gray-300 text-[9.5px]">
+<strong>e)</strong> Recepción de la autorización por Acuerdo del Cabildo y puesta en marcha de las mejoras.<br/>
+<strong>f)</strong> Recepción de la autorización por Acuerdo del Cabildo.<br/>
+<strong>g)</strong> Justificación técnica (nota técnica o informe donde se explique porque el beneficio de la supresión).<br/>
+<strong>h)</strong> Modificación del formato único de trámites.<br/>
+<strong>i)</strong> Evidencia de la capacitación y difusión del nuevo proceso entre los servidores públicos involucrados.<br/>
+<strong>j)</strong> Encuestas de satisfacción del usuario del trámite y/o servicio simplificado.<br/>
+<strong>k)</strong> Publicidad de las mejoras implementadas (folletos, carteles u otros medios de difusión).
+            </div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2nFryDaQeyfkJGz7AJK8gzJV9WFkDz5v4HqbdNTS82NKXpxb44ZPE3lmOqqM0yMhAXOAlFE-A43pcohBt2SIcWlZAex2KIHO9MMHYwc4PS2wvuF6_BYNK1UNq4d-UNj_MnMzfNGUarMf2DzmorBmbFeS26IWrN0G8qGkOB7NVkOuThMOUAiMWzDFTeftlzyapBIzZBssKmx24MG20FnOyzp4Bx5R709ZU0ouYpohAaPEGn0FP1dNurVitNPRm6fEKVPQ"/>
+<span class="font-mono">Página 3 de 4</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 9: Informe Semestral de Simplificación -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="Informe Simplificación" id="doc-9">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3hDxEMRSR1pYxT4NjekzezCeIvuPOny2HdoUDCbNQb-TvdK5MJFgKbjwfPFt2ytvqMr2_AhYTn6L9DqY5KmkxyfRSIDYiMg8YoqLIX0avn4uYcnMX78rKdKmXqGhSPsJUZD0IQMNGAMT4Nt9enXR_s_SOYZ5E-bjwbhY97pc6g1p2Z43KvdW3LcPzIz8oX181g_3iX6NyyE8-vDAYBM-ko4HDnBJmgILW3et9AwHVghwR7tLFZcMuUlU4bdVcvcsNYkw"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] font-bold text-gray-800 uppercase">Coordinación de Mejora Regulatoria</div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="flex justify-between items-baseline mb-2">
+<h2 class="text-sm font-bold text-gray-900">Informe Semestral de Cumplimiento de la Agenda de Simplificación</h2>
+<span class="text-[11px] font-mono font-bold text-gray-700">FASD-INF-01</span>
+</div>
+<div class="border border-gray-700 text-xs mb-3">
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Periodo Evaluado:</div>
+<div class="col-span-8 p-1.5 font-medium">Primer Semestre 2026 (Enero – Junio de 2026)</div>
+</div>
+<div class="grid grid-cols-12">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Sujeto Obligado / Dependencia:</div>
+<div class="col-span-8 p-1.5 font-medium">Tesorería Municipal / Dirección de Ingresos</div>
+</div>
+</div>
+<!-- Executive Summary Matrix -->
+<table class="gov-table mb-3">
+<thead>
+<tr>
+<th class="w-1/4">Indicador Clave</th>
+<th class="w-1/6">Línea Base 2025</th>
+<th class="w-1/6">Meta 2026</th>
+<th class="w-1/6">Resultado Obtenido</th>
+<th class="w-1/6">% Cumplimiento</th>
+</tr>
+</thead>
+<tbody class="text-center font-medium">
+<tr>
+<td class="text-left font-bold p-1">Trámites Simplificados con Acuerdo</td>
+<td>0</td>
+<td>12</td>
+<td class="font-bold text-emerald-700">14</td>
+<td class="font-bold bg-emerald-50 text-emerald-800">116.6%</td>
+</tr>
+<tr>
+<td class="text-left font-bold p-1">Reducción Promedio de Tiempos (Días)</td>
+<td>14 Días</td>
+<td>5 Días</td>
+<td class="font-bold text-emerald-700">3.8 Días</td>
+<td class="font-bold bg-emerald-50 text-emerald-800">124.0%</td>
+</tr>
+<tr>
+<td class="text-left font-bold p-1">Eliminación de Requisitos Innecesarios</td>
+<td>0 Reqs</td>
+<td>25 Reqs</td>
+<td class="font-bold text-emerald-700">32 Reqs</td>
+<td class="font-bold bg-emerald-50 text-emerald-800">128.0%</td>
+</tr>
+<tr>
+<td class="text-left font-bold p-1">Satisfacción Ciudadana Registrada</td>
+<td>68.4%</td>
+<td>85.0%</td>
+<td class="font-bold text-emerald-700">89.2%</td>
+<td class="font-bold bg-emerald-50 text-emerald-800">104.9%</td>
+</tr>
+</tbody>
+</table>
+<!-- Narrative Results -->
+<div class="border border-gray-700 p-2.5 mb-3 text-xs">
+<h3 class="font-bold text-gray-900 mb-1">Resumen Ejecutivo y Logros Obtenidos:</h3>
+<p class="text-gray-800 leading-relaxed mb-2">
+            Durante el presente ejercicio semestral se consolidó la eliminación de copias fotostáticas simples de CURP e identificaciones oficiales mediante consulta directa a RENAPO y padrones interoperables. Se logró un ahorro presupuestal estimado de $1.2 MDP para la ciudadanía y una disminución de 7,800 horas hombre en visitas a ventanilla municipal.
+          </p>
+<h3 class="font-bold text-gray-900 mb-1">Acciones Correctivas y Retos Siguiente Semestre:</h3>
+<p class="text-gray-800 leading-relaxed">
+            Consolidar el módulo de pasarela electrónica para la totalidad de pagos de derechos y publicar en la Gaceta Municipal las actualizaciones a los manuales de procedimientos correspondientes.
+          </p>
+</div>
+</div>
+<div>
+<table class="gov-table mb-2">
+<thead>
+<tr>
+<th class="w-1/3 py-1 font-bold">Elaboró</th>
+<th class="w-1/3 py-1 font-bold">Revisó</th>
+<th class="w-1/3 py-1 font-bold">Autorizó</th>
+</tr>
+</thead>
+<tbody>
+<tr class="h-12">
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+</tr>
+<tr class="text-center text-[9px] font-semibold bg-gray-50">
+<td class="p-1">Enlace de Simplificación y Digitalización</td>
+<td class="p-1">Director de la Unidad Administrativa</td>
+<td class="p-1">Titular del Sujeto Obligado</td>
+</tr>
+</tbody>
+</table>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDznEKYwHieZAyBjE89oSgs2LvxqnWfeu_m0aQ5CuDt3XZb340DnSkXod-SGxkSfIxhMIjjYhXsaSo01Es89fbs7S70oa-XKpf-MDOeK2l_ecmX9je2CEtTIiyB1OFg6e2uA_y5TXVL0m9gFTSmeKLzfklIxPS0ob2LsHshlKz5oOO8czeh7msJlen0ONk4QLOZwJcYfKoWvwXqLwFJKGoFY9R5caEquoUs-Z2kIeY6MjSvIAPiY5_wj7BrbSaPF_dRb4s"/>
+<span class="font-mono">Página 1 de 1</span>
+</div>
+</div>
+</article>
+<!-- =================================================================== -->
+<!-- DOCUMENTO 10: Informe Semestral de Digitalización -->
+<!-- =================================================================== -->
+<article class="page-sheet doc-item" data-doc-title="Informe Digitalización" id="doc-10">
+<div>
+<div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+<div class="col-span-4 flex items-center">
+<img alt="Tuxtla Gutiérrez Ayuntamiento 2024-2027" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEFxoo68XNs4C0CvKgQUl8d4HXHHspF2JtHmK4afnGaCS0De8J1-Lt9pV2DL-RWf7DjTH9p8QYpQj_8Wxv0npxJKuSVHnH5Uw9FIvka0UZsmyFMl-VlnVEca0nL-JuqFSBMnjTeeWw_7lSiV6jwkeD546CmGZFS2ESzx1b7nqEWhxK4bSb3NzdBIJaRFREWjqodaRP3tXM6_2yMDN8atvQvLExSKDyvPzLMdODOKRqltRDQ81RTPyoQpp4Q5E3LgDO2aE"/>
+</div>
+<div class="col-span-8 pl-3 border-l border-gray-400">
+<div class="text-[12px] font-bold text-gray-800 uppercase">Coordinación de Tecnologías de Información (CTIC)</div>
+<div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+</div>
+</div>
+<div class="flex justify-between items-baseline mb-2">
+<h2 class="text-sm font-bold text-gray-900">Informe Semestral de Cumplimiento de la Agenda de Digitalización</h2>
+<span class="text-[11px] font-mono font-bold text-gray-700">FASD-INF-02</span>
+</div>
+<div class="border border-gray-700 text-xs mb-3">
+<div class="grid grid-cols-12 border-b border-gray-700">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Periodo Evaluado:</div>
+<div class="col-span-8 p-1.5 font-medium">Primer Semestre 2026 (Enero – Junio de 2026)</div>
+</div>
+<div class="grid grid-cols-12">
+<div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Entidad Desarrolladora:</div>
+<div class="col-span-8 p-1.5 font-medium">Coordinación de Tecnologías de Información y Comunicaciones (CTIC)</div>
+</div>
+</div>
+<!-- Digital Solutions Progress -->
+<table class="gov-table mb-3">
+<thead>
+<tr>
+<th class="w-1/3">Módulo / Servicio Digital</th>
+<th class="w-1/6">Estatus CTIC</th>
+<th class="w-1/6">Entorno</th>
+<th class="w-1/6">Transacciones</th>
+<th class="w-1/6">Disponibilidad</th>
+</tr>
+</thead>
+<tbody class="text-center font-medium">
+<tr>
+<td class="text-left font-bold p-1">Ventanilla Única Digital (VUD) 2.0</td>
+<td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">Producción</span></td>
+<td>Cloud Municipal</td>
+<td class="font-bold">24,530</td>
+<td class="text-emerald-700 font-bold">99.8%</td>
+</tr>
+<tr>
+<td class="text-left font-bold p-1">Módulo Firma Electrónica Avanzada</td>
+<td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">Producción</span></td>
+<td>PKI Estatal</td>
+<td class="font-bold">11,200</td>
+<td class="text-emerald-700 font-bold">99.9%</td>
+</tr>
+<tr>
+<td class="text-left font-bold p-1">Billetera de Pagos Digitales Multipago</td>
+<td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">Producción</span></td>
+<td>Bancario Seguro</td>
+<td class="font-bold">18,740</td>
+<td class="text-emerald-700 font-bold">99.7%</td>
+</tr>
+<tr>
+<td class="text-left font-bold p-1">Expediente Ciudadano Digital Interoperable</td>
+<td><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">Fase Beta</span></td>
+<td>Staging / Pruebas</td>
+<td class="font-bold">1,450</td>
+<td class="text-amber-700 font-bold">96.5%</td>
+</tr>
+</tbody>
+</table>
+<!-- Digital Narrative -->
+<div class="border border-gray-700 p-2.5 mb-3 text-xs">
+<h3 class="font-bold text-gray-900 mb-1">Dictamen Técnico de Ciberseguridad y Rendimiento:</h3>
+<p class="text-gray-800 leading-relaxed mb-2">
+            La infraestructura tecnológica municipal no presentó incidentes críticos de seguridad durante el semestre. Se migraron las bases de datos al esquema con encriptación AES-256 en reposo y HTTPS con certificados TLS 1.3 en tránsito.
+          </p>
+<h3 class="font-bold text-gray-900 mb-1">Capacitaciones y Acreditación de Servidores Públicos:</h3>
+<p class="text-gray-800 leading-relaxed">
+            Se completaron 18 jornadas de capacitación técnica dirigidas a 240 servidores públicos de las diferentes dependencias del Ayuntamiento de Tuxtla Gutiérrez, certificando su competencia operativa en la plataforma oficial.
+          </p>
+</div>
+</div>
+<div>
+<table class="gov-table mb-2">
+<thead>
+<tr>
+<th class="w-1/3 py-1 font-bold">Elaboró (CTIC)</th>
+<th class="w-1/3 py-1 font-bold">Revisó (CMR)</th>
+<th class="w-1/3 py-1 font-bold">Autorizó</th>
+</tr>
+</thead>
+<tbody>
+<tr class="h-12">
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+<td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-400">Firma</td>
+</tr>
+<tr class="text-center text-[9px] font-semibold bg-gray-50">
+<td class="p-1">Coordinador de Tecnologías (CTIC)</td>
+<td class="p-1">Coordinador de Mejora Regulatoria</td>
+<td class="p-1">Presidente Municipal Constitucional</td>
+</tr>
+</tbody>
+</table>
+<div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+<img alt="¡Qué viva Tuxtla!" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkUwPLjV2gEsczL2wKZzAuT9oHs1YZAo-32IxQ8H6D1eLu9us8M_MFnKVQ53jzaKDhZ4VNZyIJRkR5PAaijG7RFX4zGfvvx0FjXt1VewqeXTJQtV6Ld-L-qTQ6L3Mff0MPk1STpGJZI1-PT-vsuwAa3fdsurEfUV-xo0aCGU6C0KShKbDKidNI3mk3pHLoXjgp58uA0i6xRoomTP7VC5SC_U_hcfFf39ANgL273VXWMk4BfKrq6GePHYLrtTrWOapaaA8"/>
+<span class="font-mono">Página 1 de 1</span>
+</div>
+</div>
+</article>
+</main>
+<!-- END: DocumentContainer -->
+<!-- JavaScript for Interactive Document Filtering -->
+<script data-purpose="document-filter-interaction">
+    function filterDocuments(selectedVal) {
+      const items = document.querySelectorAll('.doc-item');
+      if (selectedVal === 'all') {
+        items.forEach(doc => {
+          doc.style.display = 'flex';
+        });
+      } else {
+        items.forEach(doc => {
+          if (doc.id === selectedVal) {
+            doc.style.display = 'flex';
+          } else {
+            doc.style.display = 'none';
+          }
+        });
+      }
+    }
+  </script>
+</body></html>

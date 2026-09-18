@@ -1,0 +1,36 @@
+# ─── Entornos virtuales ───────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+
+# ─── Secretos — NUNCA versionar el .env real ──────────────────────────────────
+db_config/.env
+
+# ─── Base de datos SQLite local ───────────────────────────────────────────────
+db.sqlite3
+
+# ─── Archivos de Python compilados ───────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ─── Media generada en desarrollo ─────────────────────────────────────────────
+media/
+
+# ─── Colección estática compilada ─────────────────────────────────────────────
+staticfiles/
+static/
+
+# ─── IDEs ─────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ─── Sistema operativo ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log

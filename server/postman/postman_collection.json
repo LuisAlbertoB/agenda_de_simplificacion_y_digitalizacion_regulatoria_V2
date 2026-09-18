@@ -1,0 +1,349 @@
+{
+	"info": {
+		"_postman_id": "agenda-regulatoria-sprint1",
+		"name": "Agenda de Simplificación y Digitalización Regulatoria — API Sprint 1",
+		"description": "Colección de endpoints para probar la API REST del backend de Agenda Regulatoria (Sprint 1).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Obtener Token JWT (Login)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.access) {",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.access);",
+									"    pm.environment.set(\"access_token\", jsonData.access);",
+									"}",
+									"if (jsonData.refresh) {",
+									"    pm.collectionVariables.set(\"refresh_token\", jsonData.refresh);",
+									"    pm.environment.set(\"refresh_token\", jsonData.refresh);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correo_electronico\": \"admin@gob.mx\",\n    \"password\": \"Admin123456!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/token/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"token",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refrescar Token JWT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/token/refresh/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"token",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Módulo 1 — RBAC y Usuarios",
+			"item": [
+				{
+					"name": "Listar Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/roles/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Permisos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/permisos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"permisos",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Dependencias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/dependencias/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"dependencias",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/usuarios/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								""
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Módulo 2 — Trámites y Agendas",
+			"item": [
+				{
+					"name": "Listar Trámites o Servicios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tramites-o-servicios/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tramites-o-servicios",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Agendas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/agendas/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"agendas",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Fichas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/fichas/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"fichas",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Cobros",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cobros/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cobros",
+								""
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Módulo 3 — Acciones y Actividades",
+			"item": [
+				{
+					"name": "Listar Acciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/acciones/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"acciones",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Actividades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/actividades/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"actividades",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Entregables",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/entregables/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"entregables",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Cronogramas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cronograma/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cronograma",
+								""
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
