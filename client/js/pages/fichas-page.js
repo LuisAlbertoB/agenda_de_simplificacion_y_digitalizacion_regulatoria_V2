@@ -416,16 +416,38 @@ export async function renderFichasPage(container) {
                   <span class="font-data-mono text-xs text-text-tertiary">Clave: ${selectedFicha.id_tramite_servicio?.clave || 'N/A'}</span>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-2 text-xs font-body-sm">
                   <div class="p-2.5 rounded-lg bg-surface-recessed border border-border-subtle">
-                    <span class="font-label-sm text-xs text-text-tertiary block">Plazo de Resolución</span>
-                    <span class="font-data-mono text-body-md font-bold text-primary">${selectedFicha.plazo_maximo_resolucion_dias ?? '-'} Días</span>
+                    <span class="font-label-sm text-text-tertiary block">Plazo de Resolución</span>
+                    <span class="font-data-mono text-body-md font-bold text-primary">${selectedFicha.plazo_maximo_resolucion_dias ?? '-'} Días (${selectedFicha.is_dia_habil_o_inhabil ? 'Hábiles' : 'Inhábiles'})</span>
                   </div>
                   <div class="p-2.5 rounded-lg bg-surface-recessed border border-border-subtle">
-                    <span class="font-label-sm text-xs text-text-tertiary block">Solicitudes Anteriores</span>
-                    <span class="font-data-mono text-body-md font-bold text-secondary">${selectedFicha.solicitudes_recibidas_semestre_anterior ?? '-'} Sol.</span>
+                    <span class="font-label-sm text-text-tertiary block">Solicitudes / Positivas</span>
+                    <span class="font-data-mono text-body-md font-bold text-secondary">${selectedFicha.solicitudes_recibidas_semestre_anterior ?? 0} / ${selectedFicha.resoluciones_positivas ?? 0}</span>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-surface-recessed border border-border-subtle">
+                    <span class="font-label-sm text-text-tertiary block">Esquema de Cobro</span>
+                    <span class="font-data-mono font-bold text-text-primary">${selectedFicha.unidad_de_cobro || 'Gratuito'} (${selectedFicha.importe_tramite || '0'})</span>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-surface-recessed border border-border-subtle">
+                    <span class="font-label-sm text-text-tertiary block">Dirigido A</span>
+                    <span class="font-data-mono font-bold text-text-primary">${selectedFicha.tipo_tramite_dirigido || 'Ciudadano'}</span>
                   </div>
                 </div>
+
+                ${(selectedFicha.analisis_requisitos_json || []).length > 0 ? `
+                  <div class="p-3 rounded-xl bg-surface-recessed border border-border-subtle flex flex-col gap-2">
+                    <span class="font-label-sm text-xs font-bold text-primary uppercase">Análisis Operativo (${selectedFicha.analisis_requisitos_json.length} Requisitos Evaluados)</span>
+                    <div class="space-y-1 max-h-32 overflow-y-auto pr-1">
+                      ${selectedFicha.analisis_requisitos_json.map(r => `
+                        <div class="p-2 rounded bg-surface-container text-xs flex flex-col gap-0.5 border border-border-subtle/60">
+                          <span class="font-bold text-text-primary">${r.requisito}</span>
+                          <span class="text-text-tertiary text-[11px]">${r.observacion || 'Sin observación'}</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
 
                 <div>
                   <span class="font-label-sm text-xs text-text-tertiary uppercase block mb-1">Nivel de Digitalización Actual:</span>

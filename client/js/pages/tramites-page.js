@@ -42,6 +42,7 @@ export async function renderTramitesPage(container) {
           { value: 2, label: '2 = Servicio presencial' },
           { value: 3, label: '3 = Servicio digital' },
           { value: 4, label: '4 = Mixto' },
+          { value: 5, label: '5 = Vía telefónica' },
         ],
       },
       { name: 'tramite_o_servicio', label: '¿Es Trámite? (Marcar = Trámite, Desmarcar = Servicio)', type: 'checkbox' },
@@ -119,7 +120,7 @@ export async function renderTramitesPage(container) {
         field: 'tipo',
         width: 'w-44',
         render: (row) => {
-          const tipos = ['Presencial', 'Digital', 'Serv. Presencial', 'Serv. Digital', 'Mixto'];
+          const tipos = ['Presencial', 'Digital', 'Serv. Presencial', 'Serv. Digital', 'Mixto', 'Vía Telefónica'];
           const label = row.tipo !== null && row.tipo !== undefined ? (tipos[row.tipo] || `Tipo ${row.tipo}`) : 'Sin especificar';
           return renderBadge(label, 'tertiary');
         },

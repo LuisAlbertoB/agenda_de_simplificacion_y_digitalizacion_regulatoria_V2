@@ -13,12 +13,14 @@ class TramiteOServicio(models.Model):
     TIPO_SERVICIO_PRESENCIAL = 2
     TIPO_SERVICIO_DIGITAL = 3
     TIPO_MIXTO = 4
+    TIPO_VIA_TELEFONICA = 5
     TIPO_CHOICES = [
         (TIPO_TRAMITE_PRESENCIAL,  'Trámite presencial'),
         (TIPO_TRAMITE_DIGITAL,     'Trámite digital'),
         (TIPO_SERVICIO_PRESENCIAL, 'Servicio presencial'),
         (TIPO_SERVICIO_DIGITAL,    'Servicio digital'),
         (TIPO_MIXTO,               'Mixto'),
+        (TIPO_VIA_TELEFONICA,      'Vía telefónica'),
     ]
 
     id_tramite_servicio = models.BigAutoField(
@@ -80,7 +82,7 @@ class TramiteOServicio(models.Model):
         ordering = ['clave']
         constraints = [
             models.CheckConstraint(
-                condition=models.Q(tipo__isnull=True) | (models.Q(tipo__gte=0) & models.Q(tipo__lte=4)),
+                condition=models.Q(tipo__isnull=True) | (models.Q(tipo__gte=0) & models.Q(tipo__lte=5)),
                 name='chk_tramites_tipo'
             ),
         ]

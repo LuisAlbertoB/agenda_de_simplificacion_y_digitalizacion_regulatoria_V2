@@ -9,27 +9,29 @@ class Ficha(models.Model):
     """
 
     # Tipo de solicitud (SQL comentario)
-    SOLICITUD_NUEVA_APERTURA = 0
-    SOLICITUD_RENOVACION = 1
-    SOLICITUD_MODIFICACION = 2
-    SOLICITUD_BAJA = 3
+    SOLICITUD_NO_TIENE = 0
+    SOLICITUD_ESCRITO_LIBRE = 1
+    SOLICITUD_FORMATO_ESPECIFICO = 2
+    SOLICITUD_FORMATO_UNICO = 3
     SOLICITUD_TIPO_CHOICES = [
-        (SOLICITUD_NUEVA_APERTURA, 'Nueva apertura'),
-        (SOLICITUD_RENOVACION,     'Renovación'),
-        (SOLICITUD_MODIFICACION,   'Modificación'),
-        (SOLICITUD_BAJA,           'Baja'),
+        (SOLICITUD_NO_TIENE,           'No tiene'),
+        (SOLICITUD_ESCRITO_LIBRE,      'Escrito libre'),
+        (SOLICITUD_FORMATO_ESPECIFICO, 'Formato específico'),
+        (SOLICITUD_FORMATO_UNICO,      'Formato único'),
     ]
 
     # Nivel de digitalización actual (SQL comentario)
     NIVEL_PRESENCIAL = 0
-    NIVEL_INFORMATIVO = 1
-    NIVEL_INTERACTIVO_PARCIAL = 2
-    NIVEL_DIGITAL_END_TO_END = 3
+    NIVEL_1_INFORMATIVO = 1
+    NIVEL_2_FORMATOS = 2
+    NIVEL_3_INTERACTIVO = 3
+    NIVEL_4_DIGITAL_END_TO_END = 4
     NIVEL_DIGITALIZACION_CHOICES = [
-        (NIVEL_PRESENCIAL,         'Presencial'),
-        (NIVEL_INFORMATIVO,        'Informativo'),
-        (NIVEL_INTERACTIVO_PARCIAL, 'Interactivo parcial'),
-        (NIVEL_DIGITAL_END_TO_END, 'Digital end-to-end'),
+        (NIVEL_PRESENCIAL,           'Presencial (Legacy)'),
+        (NIVEL_1_INFORMATIVO,        'Nivel 1: La información del trámite o servicio está publicada en medios electrónicos'),
+        (NIVEL_2_FORMATOS,           'Nivel 2: Los formatos del trámite o servicio están disponibles electrónicamente'),
+        (NIVEL_3_INTERACTIVO,        'Nivel 3: El usuario puede iniciar la gestión, recibir o reenviar la información del trámite'),
+        (NIVEL_4_DIGITAL_END_TO_END, 'Nivel 4: El trámite o servicio se gestiona desde el inicio hasta el final a través de un medio electrónico'),
     ]
 
     # Status de la ficha (SQL: status INT DEFAULT 0 CHECK (status >= 0))
@@ -74,7 +76,7 @@ class Ficha(models.Model):
         blank=True,
         null=True,
         verbose_name="Tipo de solicitud",
-        help_text="0=nueva apertura, 1=renovación, 2=modificación, 3=baja"
+        help_text="0=No tiene, 1=Escrito libre, 2=Formato específico, 3=Formato único"
     )
     plazo_maximo_resolucion_dias = models.IntegerField(
         blank=True,
@@ -86,7 +88,7 @@ class Ficha(models.Model):
         blank=True,
         null=True,
         verbose_name="¿Días hábiles?",
-        help_text="True = días hábiles, False = días naturales"
+        help_text="True = días hábiles, False = días naturales/inhábiles"
     )
     vigencia_del_documento_obtenido = models.CharField(
         max_length=255,
@@ -94,6 +96,19 @@ class Ficha(models.Model):
         null=True,
         verbose_name="Vigencia del documento obtenido",
         help_text="Descripción de la vigencia del documento que emite el trámite/servicio"
+    )
+    conceptos_con_fundamento = models.JSONField(
+        default=list,
+        blank=True,
+        null=True,
+        verbose_name="Conceptos con fundamento",
+        help_text="Lista de conceptos fundamentados (tramite_o_servicio, requisitos, plazo_de_resolucion, vigencia)"
+    )
+    numero_requisitos = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Número de requisitos",
+        help_text="Número de requisitos que posee el trámite/servicio"
     )
     poblacion_prioritaria_atencion_preferente = models.BooleanField(
         blank=True,
@@ -104,19 +119,25 @@ class Ficha(models.Model):
     solicitudes_recibidas_semestre_anterior = models.IntegerField(
         blank=True,
         null=True,
-        verbose_name="Solicitudes recibidas semestre anterior",
-        help_text="Número de solicitudes recibidas en el semestre anterior (>= 0)"
+        verbose_name="Solicitudes recibidas ejercicio anterior",
+        help_text="Número de solicitudes recibidas en el ejercicio inmediato anterior (>= 0)"
     )
     resoluciones_positivas = models.IntegerField(
         blank=True,
         null=True,
         verbose_name="Resoluciones positivas",
-        help_text="Número de resoluciones positivas del semestre anterior (>= 0)"
+        help_text="Número de resoluciones positivas del ejercicio anterior (>= 0)"
+    )
+    cantidad_personas_intervienen = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Cantidad de personas que intervienen",
+        help_text="Número de personas que intervienen en el proceso (>= 0)"
     )
     areas_administrativas_interfieren = models.IntegerField(
         blank=True,
         null=True,
-        verbose_name="Áreas administrativas que interfieren",
+        verbose_name="Áreas administrativas que intervienen",
         help_text="Número de áreas administrativas involucradas en el proceso (>= 0)"
     )
     condiciones_o_criterios_de_resolucion = models.TextField(
@@ -148,24 +169,31 @@ class Ficha(models.Model):
         help_text="True = el trámite/servicio se puede realizar por teléfono"
     )
 
-    # ── Análisis Operativo FASD 06 (Cuellos de botella) ───────────────────────
+    # ── Análisis Operativo y Requisitos ─────────────────────────────────────────
     cuellos_de_botella = models.TextField(
         blank=True,
         null=True,
         verbose_name="Cuellos de botella",
-        help_text="Descripción de los cuellos de botella identificados en el proceso"
+        help_text="¿Dónde están los cuellos de botella generados?"
     )
     requisitos_sin_valor = models.TextField(
         blank=True,
         null=True,
         verbose_name="Requisitos sin valor",
-        help_text="Requisitos identificados como innecesarios o sin valor agregado"
+        help_text="¿Qué requisitos no agregan valor al resolutivo del trámite?"
     )
     propuestas_de_mejora = models.TextField(
         blank=True,
         null=True,
         verbose_name="Propuestas de mejora",
-        help_text="Propuestas de mejora identificadas en el análisis"
+        help_text="¿Indique propuesta de mejora de los problemas detectados?"
+    )
+    analisis_requisitos_json = models.JSONField(
+        default=list,
+        blank=True,
+        null=True,
+        verbose_name="Análisis de requisitos (Clave-Valor)",
+        help_text="Lista de objetos {requisito: string, observacion: string}"
     )
 
     # ── Fundamentos Jurídicos y Esquema de Cobro ───────────────────────────────
@@ -173,13 +201,47 @@ class Ficha(models.Model):
         blank=True,
         null=True,
         verbose_name="Regulación que fundamenta el trámite",
-        help_text="Base jurídica que sustenta la existencia del trámite o servicio"
+        help_text="Nombre, artículo y fracción de la regulación en la que se fundamenta el trámite o servicio"
+    )
+    regulacion_faculta_organo = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Regulación que faculta al órgano administrativo",
+        help_text="Nombre de la regulación que faculta al órgano administrativo"
     )
     fundamento_en_ley_de_ingresos = models.TextField(
         blank=True,
         null=True,
         verbose_name="Fundamento en Ley de Ingresos",
-        help_text="Referencia al fundamento en la Ley de Ingresos (si aplica cobro)"
+        help_text="Referencia al fundamento en la Ley de Ingresos"
+    )
+    unidad_de_cobro = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Unidad de cobro",
+        help_text="UMAs, Moneda Nacional o Gratuito"
+    )
+    importe_tramite = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Importe del trámite",
+        help_text="Importe expresado en string"
+    )
+    tipo_tramite_dirigido = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Tipo de trámite o servicio",
+        help_text="Ciudadano, Empresarial o Ambos"
+    )
+    formas_de_pago = models.JSONField(
+        default=list,
+        blank=True,
+        null=True,
+        verbose_name="Formas de pago",
+        help_text="Caja propia, Bancos, Banca electrónica, Otros"
     )
 
     # ── Matriz de Diagnóstico y Nivel de Madurez Digital ──────────────────────
@@ -188,7 +250,7 @@ class Ficha(models.Model):
         blank=True,
         null=True,
         verbose_name="Nivel de digitalización actual",
-        help_text="0=presencial, 1=informativo, 2=interactivo parcial, 3=digital end-to-end"
+        help_text="1=Nivel 1 Informativo, 2=Nivel 2 Formatos, 3=Nivel 3 Interactivo, 4=Nivel 4 Digital End-to-End"
     )
     propuesta_mejora_transaccion_tecnologica = models.TextField(
         blank=True,
@@ -244,7 +306,7 @@ class Ficha(models.Model):
                 name='chk_fichas_areas_admin'
             ),
             models.CheckConstraint(
-                condition=models.Q(nivel_digitalizacion_actual__isnull=True) | (models.Q(nivel_digitalizacion_actual__gte=0) & models.Q(nivel_digitalizacion_actual__lte=3)),
+                condition=models.Q(nivel_digitalizacion_actual__isnull=True) | (models.Q(nivel_digitalizacion_actual__gte=0) & models.Q(nivel_digitalizacion_actual__lte=4)),
                 name='chk_fichas_nivel_digitalizacion'
             ),
             models.CheckConstraint(

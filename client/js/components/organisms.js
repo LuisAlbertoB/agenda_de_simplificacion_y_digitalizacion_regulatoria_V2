@@ -19,6 +19,7 @@ export function renderTopAppBar(user, currentPath = '#/') {
 
   const navItems = [
     { label: 'Agenda General', path: '#/', icon: 'dashboard' },
+    { label: 'Agendas Regulatorias', path: '#/agendas', icon: 'calendar_today' },
     { label: 'Catálogo de Trámites', path: '#/tramites', icon: 'list_alt' },
     { label: 'Matriz Diagnóstica', path: '#/fichas', icon: 'assignment' },
     { label: 'Cronograma FASD', path: '#/cronograma', icon: 'calendar_month' },
