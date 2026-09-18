@@ -17,6 +17,8 @@ class AgendaSerializer(serializers.ModelSerializer):
         queryset=Dependencia.objects.all(),
         source='id_dependencia',
         write_only=True,
+        required=False,
+        allow_null=True,
         help_text="ID de la dependencia emisora"
     )
     enlace_oficial = UsuarioMinSerializer(read_only=True)

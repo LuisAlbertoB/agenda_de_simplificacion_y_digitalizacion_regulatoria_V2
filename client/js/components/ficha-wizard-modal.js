@@ -1,4 +1,4 @@
-import { agendasService, tramitesService, accionesService, actividadesService } from '../services/crud-factory.js';
+import { agendasService, tramitesService, accionesService, actividadesService, dependenciasService } from '../services/crud-factory.js';
 import { api } from '../services/api.js';
 import { showToast, showFormModal } from './organisms.js';
 import { renderSpinner } from './atoms.js';
@@ -11,6 +11,7 @@ export async function showFichaWizardModal({ onComplete }) {
   let tramitesList = [];
   let accionesList = [];
   let actividadesList = [];
+  let dependenciasList = [];
 
   let wizardData = {
     id_agenda_id: '',
@@ -40,16 +41,18 @@ export async function showFichaWizardModal({ onComplete }) {
   async function loadCatalogs() {
     loadingCatalogs = true;
     try {
-      const [resAg, resTr, resAcc, resAct] = await Promise.all([
+      const [resAg, resTr, resAcc, resAct, resDep] = await Promise.all([
         agendasService.list({ page_size: 100 }),
         tramitesService.list({ page_size: 100 }),
         accionesService.list({ page_size: 100 }),
         actividadesService.list({ page_size: 100 }),
+        dependenciasService.list({ page_size: 100 }),
       ]);
       agendasList = resAg.results || [];
       tramitesList = resTr.results || [];
       accionesList = resAcc.results || [];
       actividadesList = resAct.results || [];
+      dependenciasList = (resDep.results || []).map(d => ({ value: d.id_dependencia, label: `${d.clave} - ${d.nombre_oficial}` }));
     } catch (err) {
       console.error('Error al cargar catálogos en asistente:', err);
       showToast('Error al cargar catálogos del servidor', 'error');
@@ -408,10 +411,13 @@ export async function showFichaWizardModal({ onComplete }) {
 
       if (btnQuickAg) {
         btnQuickAg.addEventListener('click', () => {
+          const user = api.getUser();
+          const userDepId = user?.id_dependencia?.id_dependencia || user?.id_dependencia || '';
           showFormModal({
             title: 'Creación Rápida de Agenda',
             icon: 'calendar_today',
             fields: [
+              { name: 'id_dependencia_id', label: 'Dependencia Gubernamental', type: 'select', options: dependenciasList, defaultValue: userDepId, helpText: 'Si se omite, se asignará la dependencia del usuario.' },
               { name: 'anio', label: 'Año', type: 'number', required: true, defaultValue: 2026 },
               { name: 'semestre', label: 'Semestre', type: 'select', required: true, options: [{ value: 'true', label: '1er Semestre' }, { value: 'false', label: '2do Semestre' }] },
               { name: 'unidad_administrativa', label: 'Unidad Administrativa', type: 'text', required: true },
@@ -419,6 +425,9 @@ export async function showFichaWizardModal({ onComplete }) {
             submitText: 'Crear Agenda',
             onSubmit: async (payload) => {
               payload.semestre = payload.semestre === 'true';
+              if (!payload.id_dependencia_id && userDepId) {
+                payload.id_dependencia_id = userDepId;
+              }
               const created = await agendasService.create(payload);
               showToast('Agenda creada exitosamente', 'success');
               await loadCatalogs();

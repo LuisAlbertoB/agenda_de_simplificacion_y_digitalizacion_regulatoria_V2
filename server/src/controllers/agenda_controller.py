@@ -32,13 +32,18 @@ class AgendaViewSet(ModelViewSet):
         user = self.request.user
         kwargs = {'created_by': user}
 
-        # Regla de propiedad por dependencia: si no es admin, forzar la dependencia del usuario
-        if not es_usuario_admin(user):
-            if not user.id_dependencia:
+        val_dep = serializer.validated_data.get('id_dependencia')
+        if not val_dep or not es_usuario_admin(user):
+            if user and user.id_dependencia:
+                kwargs['id_dependencia'] = user.id_dependencia
+            elif not es_usuario_admin(user):
                 raise serializers.ValidationError({
                     "id_dependencia": "El usuario autenticado no pertenece a ninguna dependencia."
                 })
-            kwargs['id_dependencia'] = user.id_dependencia
+            elif not val_dep:
+                raise serializers.ValidationError({
+                    "id_dependencia_id": "Debe especificar la dependencia a la que pertenece la agenda."
+                })
 
         serializer.save(**kwargs)
 
