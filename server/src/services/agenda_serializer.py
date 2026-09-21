@@ -44,12 +44,37 @@ class AgendaSerializer(serializers.ModelSerializer):
             'titular_unidad_admin',
             'enlace_oficial',
             'enlace_oficial_id',
+            'elaboro_nombre',
+            'elaboro_puesto',
+            'reviso1_nombre',
+            'reviso1_puesto',
+            'reviso2_nombre',
+            'reviso2_puesto',
+            'autorizo_nombre',
+            'autorizo_puesto',
             'status',
             'created_by_id',
             'created_at',
             'updated_at',
         ]
         read_only_fields = ['id_agenda', 'created_by_id', 'created_at', 'updated_at']
+
+    def to_internal_value(self, data):
+        firmantes_fields = [
+            'elaboro_nombre', 'elaboro_puesto',
+            'reviso1_nombre', 'reviso1_puesto',
+            'reviso2_nombre', 'reviso2_puesto',
+            'autorizo_nombre', 'autorizo_puesto'
+        ]
+        if isinstance(data, dict):
+            data = data.copy()
+            for field in firmantes_fields:
+                if field in data:
+                    val = data[field]
+                    if isinstance(val, str):
+                        val_stripped = val.strip()
+                        data[field] = val_stripped if val_stripped != '' else None
+        return super().to_internal_value(data)
 
     def validate(self, attrs):
         id_dependencia = attrs.get('id_dependencia', getattr(self.instance, 'id_dependencia', None))

@@ -50,5 +50,23 @@ class AgendaService:
         agenda_dict = AgendaSerializer(agenda).data
         agenda_dict['fichas'] = fichas_data
         agenda_dict['total_fichas'] = len(fichas_data)
+        agenda_dict['firmantes'] = {
+            "elaboro": {
+                "nombre": agenda.elaboro_nombre,
+                "puesto": agenda.elaboro_puesto
+            },
+            "reviso1": {
+                "nombre": agenda.reviso1_nombre,
+                "puesto": agenda.reviso1_puesto
+            },
+            "reviso2": {
+                "nombre": agenda.reviso2_nombre,
+                "puesto": agenda.reviso2_puesto
+            },
+            "autorizo": {
+                "nombre": agenda.autorizo_nombre,
+                "puesto": agenda.autorizo_puesto
+            }
+        }
 
         return agenda_dict

@@ -70,6 +70,54 @@ class Agenda(models.Model):
         verbose_name="Enlace oficial",
         help_text="Usuario designado como enlace oficial de esta agenda"
     )
+    elaboro_nombre = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Nombre de quien elaboró"
+    )
+    elaboro_puesto = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Puesto de quien elaboró"
+    )
+    reviso1_nombre = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Nombre de quien revisó (1)"
+    )
+    reviso1_puesto = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Puesto de quien revisó (1)"
+    )
+    reviso2_nombre = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Nombre de quien revisó (2)"
+    )
+    reviso2_puesto = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Puesto de quien revisó (2)"
+    )
+    autorizo_nombre = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Nombre de quien autorizó"
+    )
+    autorizo_puesto = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Puesto de quien autorizó"
+    )
     status = models.IntegerField(
         choices=STATUS_CHOICES,
         default=STATUS_BORRADOR,

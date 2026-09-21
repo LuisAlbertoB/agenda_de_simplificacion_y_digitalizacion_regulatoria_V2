@@ -168,8 +168,9 @@ export async function renderAgendasPage(container) {
   async function openConsolidadoModal(item) {
     try {
       const res = await api.get(`/agendas/${item.id_agenda}/consolidado/`);
-      const dataCons = res.agenda || {};
+      const dataCons = res?.agenda ?? res ?? {};
       const fichas = dataCons.fichas || [];
+      const firmantes = dataCons.firmantes || {};
 
       const backdrop = document.createElement('div');
       backdrop.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in';
@@ -196,7 +197,7 @@ export async function renderAgendasPage(container) {
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div class="p-4 rounded-xl bg-surface-container border border-border-subtle flex flex-col">
                 <span class="font-label-sm text-xs text-text-tertiary">Total Fichas Diagnósticas</span>
-                <span class="font-data-mono text-headline-sm font-bold text-primary">${fichas.length}</span>
+                <span class="font-data-mono text-headline-sm font-bold text-primary">${dataCons.total_fichas ?? fichas.length}</span>
               </div>
               <div class="p-4 rounded-xl bg-surface-container border border-border-subtle flex flex-col">
                 <span class="font-label-sm text-xs text-text-tertiary">Dependencia Responsable</span>
@@ -205,6 +206,78 @@ export async function renderAgendasPage(container) {
               <div class="p-4 rounded-xl bg-surface-container border border-border-subtle flex flex-col">
                 <span class="font-label-sm text-xs text-text-tertiary">Estatus Regulatorio</span>
                 <span class="font-data-mono text-body-md font-bold text-secondary">${statusLabels[dataCons.status]?.label || 'BORRADOR'}</span>
+              </div>
+            </div>
+
+            <!-- Sección Firmantes -->
+            <div class="p-4 rounded-xl bg-surface-container border border-border-subtle space-y-4">
+              <div class="flex items-center justify-between border-b border-border-subtle pb-2">
+                <h4 class="font-title-md text-body-md font-bold text-text-primary flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary text-[20px]">draw</span>
+                  Firmantes de la Agenda
+                </h4>
+                <button
+                  type="button"
+                  id="btn-save-firmantes"
+                  class="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-on-primary font-title-md text-xs font-bold shadow transition-colors flex items-center gap-1.5"
+                >
+                  <span class="material-symbols-outlined text-[16px]">save</span>
+                  <span>Guardar firmantes</span>
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <!-- Elaboró -->
+                <div class="p-3 rounded-lg bg-surface-recessed border border-border-subtle space-y-2">
+                  <span class="font-label-sm font-bold text-primary block">Elaboró</span>
+                  <div>
+                    <label class="block text-[11px] text-text-tertiary mb-1">Nombre</label>
+                    <input type="text" id="firmante-elaboro-nombre" value="${firmantes.elaboro?.nombre ?? dataCons.elaboro_nombre ?? ''}" placeholder="Nombre completo" class="w-full px-2.5 py-1.5 rounded bg-surface-card border border-border-subtle text-text-primary text-xs focus:outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-text-tertiary mb-1">Puesto</label>
+                    <input type="text" id="firmante-elaboro-puesto" value="${firmantes.elaboro?.puesto ?? dataCons.elaboro_puesto ?? ''}" placeholder="Cargo / Puesto" class="w-full px-2.5 py-1.5 rounded bg-surface-card border border-border-subtle text-text-primary text-xs focus:outline-none focus:border-primary" />
+                  </div>
+                </div>
+
+                <!-- Revisó 1 -->
+                <div class="p-3 rounded-lg bg-surface-recessed border border-border-subtle space-y-2">
+                  <span class="font-label-sm font-bold text-primary block">Revisó 1</span>
+                  <div>
+                    <label class="block text-[11px] text-text-tertiary mb-1">Nombre</label>
+                    <input type="text" id="firmante-reviso1-nombre" value="${firmantes.reviso1?.nombre ?? dataCons.reviso1_nombre ?? ''}" placeholder="Nombre completo" class="w-full px-2.5 py-1.5 rounded bg-surface-card border border-border-subtle text-text-primary text-xs focus:outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-text-tertiary mb-1">Puesto</label>
+                    <input type="text" id="firmante-reviso1-puesto" value="${firmantes.reviso1?.puesto ?? dataCons.reviso1_puesto ?? ''}" placeholder="Cargo / Puesto" class="w-full px-2.5 py-1.5 rounded bg-surface-card border border-border-subtle text-text-primary text-xs focus:outline-none focus:border-primary" />
+                  </div>
+                </div>
+
+                <!-- Revisó 2 -->
+                <div class="p-3 rounded-lg bg-surface-recessed border border-border-subtle space-y-2">
+                  <span class="font-label-sm font-bold text-primary block">Revisó 2</span>
+                  <div>
+                    <label class="block text-[11px] text-text-tertiary mb-1">Nombre</label>
+                    <input type="text" id="firmante-reviso2-nombre" value="${firmantes.reviso2?.nombre ?? dataCons.reviso2_nombre ?? ''}" placeholder="Nombre completo" class="w-full px-2.5 py-1.5 rounded bg-surface-card border border-border-subtle text-text-primary text-xs focus:outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-text-tertiary mb-1">Puesto</label>
+                    <input type="text" id="firmante-reviso2-puesto" value="${firmantes.reviso2?.puesto ?? dataCons.reviso2_puesto ?? ''}" placeholder="Cargo / Puesto" class="w-full px-2.5 py-1.5 rounded bg-surface-card border border-border-subtle text-text-primary text-xs focus:outline-none focus:border-primary" />
+                  </div>
+                </div>
+
+                <!-- Autorizó -->
+                <div class="p-3 rounded-lg bg-surface-recessed border border-border-subtle space-y-2">
+                  <span class="font-label-sm font-bold text-primary block">Autorizó</span>
+                  <div>
+                    <label class="block text-[11px] text-text-tertiary mb-1">Nombre</label>
+                    <input type="text" id="firmante-autorizo-nombre" value="${firmantes.autorizo?.nombre ?? dataCons.autorizo_nombre ?? ''}" placeholder="Nombre completo" class="w-full px-2.5 py-1.5 rounded bg-surface-card border border-border-subtle text-text-primary text-xs focus:outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-text-tertiary mb-1">Puesto</label>
+                    <input type="text" id="firmante-autorizo-puesto" value="${firmantes.autorizo?.puesto ?? dataCons.autorizo_puesto ?? ''}" placeholder="Cargo / Puesto" class="w-full px-2.5 py-1.5 rounded bg-surface-card border border-border-subtle text-text-primary text-xs focus:outline-none focus:border-primary" />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -286,6 +359,40 @@ export async function renderAgendasPage(container) {
       backdrop.addEventListener('click', (e) => {
         if (e.target === backdrop) closeHandler();
       });
+
+      const btnSaveFirmantes = backdrop.querySelector('#btn-save-firmantes');
+      if (btnSaveFirmantes) {
+        btnSaveFirmantes.addEventListener('click', async () => {
+          const getValue = (id) => {
+            const el = backdrop.querySelector(`#${id}`);
+            const val = el ? el.value.trim() : '';
+            return val === '' ? null : val;
+          };
+
+          const payload = {
+            elaboro_nombre: getValue('firmante-elaboro-nombre'),
+            elaboro_puesto: getValue('firmante-elaboro-puesto'),
+            reviso1_nombre: getValue('firmante-reviso1-nombre'),
+            reviso1_puesto: getValue('firmante-reviso1-puesto'),
+            reviso2_nombre: getValue('firmante-reviso2-nombre'),
+            reviso2_puesto: getValue('firmante-reviso2-puesto'),
+            autorizo_nombre: getValue('firmante-autorizo-nombre'),
+            autorizo_puesto: getValue('firmante-autorizo-puesto'),
+          };
+
+          try {
+            btnSaveFirmantes.disabled = true;
+            const updated = await agendasService.partialUpdate(dataCons.id_agenda, payload);
+            Object.assign(dataCons, updated);
+            showToast('Firmantes actualizados', 'success');
+          } catch (err) {
+            console.error('Error al actualizar firmantes:', err);
+            showToast('Error al actualizar firmantes', 'error');
+          } finally {
+            btnSaveFirmantes.disabled = false;
+          }
+        });
+      }
     } catch (err) {
       console.error('Error al cargar consolidado de agenda:', err);
       showToast('Error al cargar consolidado de agenda', 'error');
