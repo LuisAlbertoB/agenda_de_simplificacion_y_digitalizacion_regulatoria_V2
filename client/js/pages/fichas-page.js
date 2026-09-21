@@ -19,17 +19,20 @@ export async function renderFichasPage(container) {
   let agendasList = [];
   let tramitesList = [];
   let accionesList = [];
+  let actividadesList = [];
 
   async function loadCatalogs() {
     try {
-      const [resAg, resTr, resAcc] = await Promise.all([
+      const [resAg, resTr, resAcc, resAct] = await Promise.all([
         agendasService.list({ page_size: 100 }),
         tramitesService.list({ page_size: 100 }),
         accionesService.list({ page_size: 100 }),
+        actividadesService.list({ page_size: 200 }),
       ]);
       agendasList = (resAg.results || []).map(a => ({ value: a.id_agenda, label: `#AG-${a.id_agenda} | ${a.id_dependencia?.clave || 'Dep'} - ${a.anio}` }));
       tramitesList = (resTr.results || []).map(t => ({ value: t.id_tramite_servicio, label: `${t.clave} - ${t.nombre_oficial}` }));
       accionesList = (resAcc.results || []).map(ac => ({ value: ac.id_accion, label: `${ac.clave} - ${ac.titulo}` }));
+      actividadesList = (resAct.results || []).map(act => ({ value: act.id_actividades, label: `${act.clave} - ${act.titulo}` }));
     } catch (err) {
       console.error('Error al cargar catálogos en fichas:', err);
     }
@@ -195,7 +198,7 @@ export async function renderFichasPage(container) {
       title: `Agregar Calendarización a Ficha #FCH-${fichaId}`,
       icon: 'calendar_month',
       fields: [
-        { name: 'id_accion_id', label: 'Acción Calendarizada', type: 'select', required: true, options: accionesList, fullWidth: true },
+        { name: 'id_actividad_id', label: 'Actividad Calendarizada', type: 'select', required: true, options: actividadesList, fullWidth: true },
         {
           name: 'num_mes_inicio_plazo',
           label: 'Mes de Inicio del Semestre',
@@ -508,8 +511,8 @@ export async function renderFichasPage(container) {
                       ${selectedFichaCronograma.map(cr => `
                         <div class="p-2 rounded bg-surface-container border border-border-subtle flex items-center justify-between text-xs">
                           <div class="flex flex-col">
-                            <span class="font-medium text-text-primary">${cr.id_accion?.titulo || `Acción #${cr.id_accion}`}</span>
-                            <span class="font-data-mono text-[11px] text-text-tertiary">Meses ${cr.num_mes_inicio_plazo} al ${cr.num_mes_final_plazo}</span>
+                            <span class="font-medium text-text-primary">${cr.id_actividad?.titulo || `Actividad #${cr.id_actividad_id || cr.id_actividad}`}</span>
+                            <span class="font-data-mono text-[11px] text-text-tertiary">Acción: ${cr.id_accion?.clave || cr.id_actividad?.id_accion?.clave || 'N/A'} — Meses ${cr.num_mes_inicio_plazo} al ${cr.num_mes_final_plazo}</span>
                           </div>
                           <button type="button" data-action="delete-cronograma-entry" data-id="${cr.id_cronograma}" class="text-status-danger hover:text-status-danger/80 p-0.5" title="Eliminar entry">
                             <span class="material-symbols-outlined text-[16px]">delete</span>

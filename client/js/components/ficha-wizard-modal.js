@@ -1,4 +1,4 @@
-import { agendasService, tramitesService, accionesService, actividadesService, dependenciasService } from '../services/crud-factory.js';
+import { agendasService, tramitesService, accionesService, actividadesService, entregablesService, dependenciasService } from '../services/crud-factory.js';
 import { api } from '../services/api.js';
 import { showToast, showFormModal } from './organisms.js';
 import { renderSpinner } from './atoms.js';
@@ -11,6 +11,7 @@ export async function showFichaWizardModal({ onComplete }) {
   let tramitesList = [];
   let accionesList = [];
   let actividadesList = [];
+  let entregablesList = [];
   let dependenciasList = [];
 
   let wizardData = {
@@ -18,7 +19,7 @@ export async function showFichaWizardModal({ onComplete }) {
     id_tramite_servicio_id: '',
     
     // Apartado 2: Datos Generales
-    solicitud_tipo: 0, // 0: No tiene, 1: Escrito libre, 2: Formato específico, 3: Formato único
+    solicitud_tipo: 0,
     plazo_maximo_resolucion_dias: 15,
     is_dia_habil_o_inhabil: true,
     vigencia_del_documento_obtenido: '1 Año',
@@ -34,19 +35,19 @@ export async function showFichaWizardModal({ onComplete }) {
     regulacion_fundamenta_existencia_tramite: '',
     regulacion_faculta_organo: '',
     fundamento_en_ley_de_ingresos: '',
-    unidad_de_cobro: 'UMAs', // UMAs, Moneda Nacional, Gratuito
+    unidad_de_cobro: 'UMAs',
     importe_tramite: 0,
-    tipo_tramite_dirigido: 'Ciudadano', // Ciudadano, Empresarial, Ambos
-    formas_de_pago: ['caja_propia', 'bancos'], // caja_propia, bancos, banca_electronica, otros
+    tipo_tramite_dirigido: 'Ciudadano',
+    formas_de_pago: ['caja_propia', 'bancos'],
 
-    // Apartado 4: Análisis de la Operación (Clave-Valor)
+    // Apartado 4: Análisis de la Operación
     analisis_requisitos_json: [
       { requisito: 'Identificación Oficial Vigente', observacion: 'Requisito estandarizado sin inconvenientes' },
       { requisito: 'Comprobante de Domicilio', observacion: 'Se sugiere aceptar versión digital' }
     ],
 
     // Apartado 5: Matriz de Diagnóstico
-    niveles_digitalizacion_ids: [1], // Array de números 0 a 4
+    niveles_digitalizacion_ids: [1],
     propuesta_mejora_transaccion_tecnologica: '',
 
     // Apartado 6: Hallazgos y Oportunidades
@@ -54,25 +55,27 @@ export async function showFichaWizardModal({ onComplete }) {
     requisitos_sin_valor: '',
     propuestas_de_mejora: '',
 
-    // Apartado 7 & 8: Acciones LNETB & Cronograma
+    // Apartado 7 & 8: Acciones LNETB & Cronograma por Actividad
     id_accion_ids: [],
-    cronograma_items: [],
+    cronograma_items: [], // Array de { id_actividad_id, num_mes_inicio_plazo, num_mes_final_plazo }
   };
 
   async function loadCatalogs() {
     loadingCatalogs = true;
     try {
-      const [resAg, resTr, resAcc, resAct, resDep] = await Promise.all([
+      const [resAg, resTr, resAcc, resAct, resEnt, resDep] = await Promise.all([
         agendasService.list({ page_size: 100 }),
         tramitesService.list({ page_size: 100 }),
         accionesService.list({ page_size: 100 }),
-        actividadesService.list({ page_size: 100 }),
+        actividadesService.list({ page_size: 200 }),
+        entregablesService.list({ page_size: 500 }),
         dependenciasService.list({ page_size: 100 }),
       ]);
       agendasList = resAg.results || [];
       tramitesList = resTr.results || [];
       accionesList = resAcc.results || [];
       actividadesList = resAct.results || [];
+      entregablesList = resEnt.results || [];
       dependenciasList = (resDep.results || []).map(d => ({ value: d.id_dependencia, label: `${d.clave} - ${d.nombre_oficial}` }));
     } catch (err) {
       console.error('Error al cargar catálogos en asistente:', err);
@@ -93,28 +96,14 @@ export async function showFichaWizardModal({ onComplete }) {
     { stepNum: 5, label: '5. Matriz Diagnóstico', icon: 'equalizer' },
     { stepNum: 6, label: '6. Hallazgos', icon: 'find_in_page' },
     { stepNum: 7, label: '7. Acciones LNETB', icon: 'checklist' },
-    { stepNum: 8, label: '8. Cronograma', icon: 'calendar_month' },
+    { stepNum: 8, label: '8. Cronograma por Actividad', icon: 'calendar_month' },
   ];
 
   function getMonthNames(semestreIsFirst) {
     if (semestreIsFirst) {
-      return {
-        1: 'Enero',
-        2: 'Febrero',
-        3: 'Marzo',
-        4: 'Abril',
-        5: 'Mayo',
-        6: 'Junio'
-      };
+      return { 1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo', 6: 'Junio' };
     } else {
-      return {
-        1: 'Julio',
-        2: 'Agosto',
-        3: 'Septiembre',
-        4: 'Octubre',
-        5: 'Noviembre',
-        6: 'Diciembre'
-      };
+      return { 1: 'Julio', 2: 'Agosto', 3: 'Septiembre', 4: 'Octubre', 5: 'Noviembre', 6: 'Diciembre' };
     }
   }
 
@@ -428,7 +417,6 @@ export async function showFichaWizardModal({ onComplete }) {
             <div class="flex flex-col gap-1">
               <label class="font-label-sm text-xs font-semibold text-text-secondary">Indique el Importe del Trámite</label>
               <input type="number" step="0.01" min="0" id="field-importe" value="${wizardData.importe_tramite !== null && wizardData.importe_tramite !== undefined ? wizardData.importe_tramite : ''}" placeholder="ej. 450.00" class="w-full px-3 py-2 rounded-lg bg-surface-recessed border border-border-subtle text-text-primary font-body-sm" />
-              <span class="field-error text-status-danger font-label-sm text-[11px] hidden"></span>
             </div>
 
             <div class="flex flex-col gap-1 md:col-span-2">
@@ -588,7 +576,7 @@ export async function showFichaWizardModal({ onComplete }) {
           </h4>
 
           <div class="space-y-6 max-h-[52vh] overflow-y-auto pr-1">
-            <!-- Sección 1: Acciones de Simplificación -->
+            <!-- Sección A: Acciones de Simplificación -->
             <div class="space-y-3">
               <div class="flex items-center gap-2 text-primary font-title-md font-bold text-sm">
                 <span class="material-symbols-outlined text-[20px]">architecture</span>
@@ -611,7 +599,7 @@ export async function showFichaWizardModal({ onComplete }) {
               </div>
             </div>
 
-            <!-- Sección 2: Acciones de Digitalización -->
+            <!-- Sección B: Acciones de Digitalización -->
             <div class="space-y-3 pt-2">
               <div class="flex items-center gap-2 text-secondary font-title-md font-bold text-sm">
                 <span class="material-symbols-outlined text-[20px]">devices</span>
@@ -638,7 +626,7 @@ export async function showFichaWizardModal({ onComplete }) {
       `;
     }
 
-    // ── Apartado 8: Cronograma de Actividades ──
+    // ── Apartado 8: Cronograma por Actividad ──
     if (step === 8) {
       const selectedAccionesObjects = accionesList.filter(ac => wizardData.id_accion_ids.includes(ac.id_accion));
       return `
@@ -647,7 +635,7 @@ export async function showFichaWizardModal({ onComplete }) {
             <div>
               <h4 class="font-title-md text-title-md font-bold text-text-primary flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary">calendar_month</span>
-                Apartado 8: Calendarización de Actividades del Cronograma
+                Apartado 8: Calendarización por Actividad de las Acciones Seleccionadas
               </h4>
               <p class="font-body-sm text-xs text-text-secondary mt-0.5">
                 Periodo asignado: <strong>${semestreIsFirst ? '1er Semestre (Enero a Junio)' : '2do Semestre (Julio a Diciembre)'}</strong>
@@ -660,49 +648,70 @@ export async function showFichaWizardModal({ onComplete }) {
               No has seleccionado ninguna acción en el Apartado 7. Regresa al paso anterior para marcar al menos una acción.
             </div>
           ` : `
-            <div class="bg-surface-card rounded-xl border border-border-subtle overflow-hidden">
-              <table class="w-full text-left border-collapse">
-                <thead>
-                  <tr class="bg-surface-container-lowest border-b border-border-subtle text-xs font-semibold text-text-tertiary uppercase">
-                    <th class="px-4 py-3">Acción LNETB</th>
-                    <th class="px-4 py-3">Mes Inicio</th>
-                    <th class="px-4 py-3">Mes Término</th>
-                    <th class="px-4 py-3">Proyección Calendarizada</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-border-subtle/40 font-body-sm text-xs">
-                  ${selectedAccionesObjects.map(ac => {
-                    const cItem = wizardData.cronograma_items.find(ci => ci.id_accion_id === ac.id_accion) || { num_mes_inicio_plazo: 1, num_mes_final_plazo: 6 };
-                    const iniName = monthMap[cItem.num_mes_inicio_plazo] || `Mes ${cItem.num_mes_inicio_plazo}`;
-                    const finName = monthMap[cItem.num_mes_final_plazo] || `Mes ${cItem.num_mes_final_plazo}`;
-                    return `
-                      <tr>
-                        <td class="px-4 py-3 font-semibold text-text-primary">
-                          <span class="font-data-mono text-primary font-bold block">${ac.clave}</span>
-                          <span>${ac.titulo}</span>
-                        </td>
-                        <td class="px-4 py-3">
-                          <select data-crono-inicio="${ac.id_accion}" class="px-2.5 py-1.5 rounded bg-surface-recessed border border-border-subtle text-text-primary">
-                            ${[1, 2, 3, 4, 5, 6].map(m => `<option value="${m}" ${Number(cItem.num_mes_inicio_plazo) === m ? 'selected' : ''}>${monthMap[m]}</option>`).join('')}
-                          </select>
-                        </td>
-                        <td class="px-4 py-3">
-                          <select data-crono-final="${ac.id_accion}" class="px-2.5 py-1.5 rounded bg-surface-recessed border border-border-subtle text-text-primary">
-                            ${[1, 2, 3, 4, 5, 6].map(m => `<option value="${m}" ${Number(cItem.num_mes_final_plazo) === m ? 'selected' : ''}>${monthMap[m]}</option>`).join('')}
-                          </select>
-                        </td>
-                        <td class="px-4 py-3">
-                          <div class="flex items-center gap-1.5">
-                            <span class="px-2.5 py-1 rounded bg-primary/15 border border-border-gold font-data-mono font-bold text-primary">
-                              ${iniName} ➔ ${finName}
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                    `;
-                  }).join('')}
-                </tbody>
-              </table>
+            <div class="space-y-4 max-h-[55vh] overflow-y-auto pr-1">
+              ${selectedAccionesObjects.map(ac => {
+                const acts = actividadesList.filter(a => (a.id_accion?.id_accion || a.id_accion_id || a.id_accion) === ac.id_accion);
+                return `
+                  <div class="p-4 rounded-xl bg-surface-container border border-border-subtle space-y-3">
+                    <div class="flex items-center justify-between border-b border-border-subtle pb-2">
+                      <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded bg-primary/15 text-primary font-data-mono font-bold text-xs">#ACC-${ac.clave}</span>
+                        <span class="font-title-md font-bold text-text-primary text-sm">${ac.titulo}</span>
+                      </div>
+                      <span class="font-data-mono text-xs text-text-tertiary">${acts.length} Actividad(es)</span>
+                    </div>
+
+                    ${acts.length === 0 ? `
+                      <div class="p-3 rounded-lg bg-surface-recessed border border-border-subtle/70 text-text-tertiary text-xs italic flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">info</span>
+                        <span>Esta acción no tiene actividades predefinidas en el catálogo. Se vinculará a la ficha sin entradas de cronograma.</span>
+                      </div>
+                    ` : `
+                      <div class="space-y-3">
+                        ${acts.map(act => {
+                          const cItem = wizardData.cronograma_items.find(ci => ci.id_actividad_id === act.id_actividades) || { num_mes_inicio_plazo: 1, num_mes_final_plazo: 6 };
+                          const ents = entregablesList.filter(e => (e.id_actividad?.id_actividades || e.id_actividad_id || e.id_actividad) === act.id_actividades);
+
+                          return `
+                            <div class="p-3 rounded-lg bg-surface-recessed border border-border-subtle flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                              <div class="flex-1 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                  <span class="px-2 py-0.5 rounded bg-secondary/15 text-secondary font-data-mono text-[11px] font-bold">${act.clave}</span>
+                                  <span class="font-bold text-text-primary text-xs">${act.titulo}</span>
+                                </div>
+                                <div class="pl-2 border-l-2 border-border-gold/50 space-y-0.5">
+                                  <span class="text-[11px] font-bold text-text-tertiary uppercase block">Entregables (Solo Lectura):</span>
+                                  ${ents.length === 0 ? '<p class="text-[11px] text-text-tertiary italic">Sin entregables registrados en catálogo.</p>' : `
+                                    <ul class="list-disc list-inside text-[11px] text-text-secondary space-y-0.5">
+                                      ${ents.map(e => `<li>${e.titulo}</li>`).join('')}
+                                    </ul>
+                                  `}
+                                </div>
+                              </div>
+
+                              <div class="flex items-center gap-2 shrink-0 bg-surface-container p-2 rounded-lg border border-border-subtle">
+                                <div class="flex flex-col">
+                                  <label class="text-[10px] text-text-tertiary">Mes Inicio</label>
+                                  <select data-crono-act-inicio="${act.id_actividades}" class="px-2 py-1 rounded bg-surface-recessed border border-border-subtle text-text-primary font-body-sm text-xs">
+                                    ${[1, 2, 3, 4, 5, 6].map(m => `<option value="${m}" ${Number(cItem.num_mes_inicio_plazo) === m ? 'selected' : ''}>${monthMap[m]}</option>`).join('')}
+                                  </select>
+                                </div>
+                                <span class="text-text-tertiary text-xs pt-3">➔</span>
+                                <div class="flex flex-col">
+                                  <label class="text-[10px] text-text-tertiary">Mes Fin</label>
+                                  <select data-crono-act-final="${act.id_actividades}" class="px-2 py-1 rounded bg-surface-recessed border border-border-subtle text-text-primary font-body-sm text-xs">
+                                    ${[1, 2, 3, 4, 5, 6].map(m => `<option value="${m}" ${Number(cItem.num_mes_final_plazo) === m ? 'selected' : ''}>${monthMap[m]}</option>`).join('')}
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          `;
+                        }).join('')}
+                      </div>
+                    `}
+                  </div>
+                `;
+              }).join('')}
             </div>
           `}
         </div>
@@ -932,36 +941,50 @@ export async function showFichaWizardModal({ onComplete }) {
           if (e.target.checked) {
             if (!wizardData.id_accion_ids.includes(accId)) {
               wizardData.id_accion_ids.push(accId);
-              wizardData.cronograma_items.push({ id_accion_id: accId, num_mes_inicio_plazo: 1, num_mes_final_plazo: 6 });
+              // Inicializar cronograma para todas las actividades de esta acción
+              const acts = actividadesList.filter(a => (a.id_accion?.id_accion || a.id_accion_id || a.id_accion) === accId);
+              acts.forEach(act => {
+                if (!wizardData.cronograma_items.some(ci => ci.id_actividad_id === act.id_actividades)) {
+                  wizardData.cronograma_items.push({ id_actividad_id: act.id_actividades, num_mes_inicio_plazo: 1, num_mes_final_plazo: 6 });
+                }
+              });
             }
           } else {
             wizardData.id_accion_ids = wizardData.id_accion_ids.filter(id => id !== accId);
-            wizardData.cronograma_items = wizardData.cronograma_items.filter(ci => ci.id_accion_id !== accId);
+            const acts = actividadesList.filter(a => (a.id_accion?.id_accion || a.id_accion_id || a.id_accion) === accId);
+            const actIds = acts.map(a => a.id_actividades);
+            wizardData.cronograma_items = wizardData.cronograma_items.filter(ci => !actIds.includes(ci.id_actividad_id));
           }
         });
       });
     }
 
     if (step === 8) {
-      overlay.querySelectorAll('[data-crono-inicio]').forEach(sel => {
+      overlay.querySelectorAll('[data-crono-act-inicio]').forEach(sel => {
         sel.addEventListener('change', (e) => {
-          const accId = Number(e.target.dataset.cronoInicio);
-          const cItem = wizardData.cronograma_items.find(ci => ci.id_accion_id === accId);
-          if (cItem) {
+          const actId = Number(e.target.dataset.cronoActInicio);
+          let cItem = wizardData.cronograma_items.find(ci => ci.id_actividad_id === actId);
+          if (!cItem) {
+            cItem = { id_actividad_id: actId, num_mes_inicio_plazo: Number(e.target.value), num_mes_final_plazo: 6 };
+            wizardData.cronograma_items.push(cItem);
+          } else {
             cItem.num_mes_inicio_plazo = Number(e.target.value);
-            renderWizard();
           }
+          renderWizard();
         });
       });
 
-      overlay.querySelectorAll('[data-crono-final]').forEach(sel => {
+      overlay.querySelectorAll('[data-crono-act-final]').forEach(sel => {
         sel.addEventListener('change', (e) => {
-          const accId = Number(e.target.dataset.cronoFinal);
-          const cItem = wizardData.cronograma_items.find(ci => ci.id_accion_id === accId);
-          if (cItem) {
+          const actId = Number(e.target.dataset.cronoActFinal);
+          let cItem = wizardData.cronograma_items.find(ci => ci.id_actividad_id === actId);
+          if (!cItem) {
+            cItem = { id_actividad_id: actId, num_mes_inicio_plazo: 1, num_mes_final_plazo: Number(e.target.value) };
+            wizardData.cronograma_items.push(cItem);
+          } else {
             cItem.num_mes_final_plazo = Number(e.target.value);
-            renderWizard();
           }
+          renderWizard();
         });
       });
     }

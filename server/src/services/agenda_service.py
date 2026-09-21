@@ -35,7 +35,7 @@ class AgendaService:
 
         for ficha in fichas_qs:
             acciones_qs = FichaHasAccion.objects.filter(id_ficha=ficha).select_related('id_accion')
-            cronograma_qs = CronogramaActividad.objects.filter(id_ficha=ficha).select_related('id_accion')
+            cronograma_qs = CronogramaActividad.objects.filter(id_ficha=ficha).select_related('id_actividad', 'id_actividad__id_accion')
 
             f_serializer = FichaSerializer(ficha)
             a_serializer = FichaHasAccionSerializer(acciones_qs, many=True)

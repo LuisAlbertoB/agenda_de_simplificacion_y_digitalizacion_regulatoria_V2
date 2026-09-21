@@ -9,7 +9,11 @@ class ActividadViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return ActividadService.obtener_todos()
+        qs = ActividadService.obtener_todos()
+        id_accion = self.request.query_params.get('id_accion')
+        if id_accion:
+            qs = qs.filter(id_accion_id=id_accion)
+        return qs
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)

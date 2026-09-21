@@ -1,13 +1,15 @@
 from rest_framework import serializers
 from src.models import Entregable, Actividad
+from src.services.actividad_serializer import ActividadSerializer
 
 
 class EntregableSerializer(serializers.ModelSerializer):
     """Serializer para la entidad Entregable."""
 
-    id_actividades_id = serializers.PrimaryKeyRelatedField(
+    id_actividad = ActividadSerializer(read_only=True)
+    id_actividad_id = serializers.PrimaryKeyRelatedField(
         queryset=Actividad.objects.all(),
-        source='id_actividades',
+        source='id_actividad',
         write_only=True,
         help_text="ID de la actividad asociada"
     )
@@ -17,8 +19,8 @@ class EntregableSerializer(serializers.ModelSerializer):
         model = Entregable
         fields = [
             'id_entregable',
-            'id_actividades',
-            'id_actividades_id',
+            'id_actividad',
+            'id_actividad_id',
             'clave',
             'titulo',
             'descripcion',
@@ -27,4 +29,4 @@ class EntregableSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
-        read_only_fields = ['id_entregable', 'id_actividades', 'created_by_id', 'created_at', 'updated_at']
+        read_only_fields = ['id_entregable', 'created_by_id', 'created_at', 'updated_at']

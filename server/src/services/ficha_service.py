@@ -201,15 +201,16 @@ class FichaService:
                     defaults={'created_by': user if (user and user.is_authenticated) else None}
                 )
 
-        # Registrar elementos de Cronograma
+        # Registrar elementos de Cronograma por Actividad
+        from src.models import Actividad
         for item in cronograma_items:
-            acc_id = item.get('id_accion_id')
+            act_id = item.get('id_actividad_id') or item.get('id_actividad')
             inicio = item.get('num_mes_inicio_plazo', 1)
             final = item.get('num_mes_final_plazo', 6)
-            if acc_id and Accion.objects.filter(pk=acc_id).exists():
+            if act_id and Actividad.objects.filter(pk=act_id).exists():
                 CronogramaActividad.objects.create(
                     id_ficha=ficha,
-                    id_accion_id=acc_id,
+                    id_actividad_id=act_id,
                     num_mes_inicio_plazo=inicio,
                     num_mes_final_plazo=final,
                     created_by=user if (user and user.is_authenticated) else None

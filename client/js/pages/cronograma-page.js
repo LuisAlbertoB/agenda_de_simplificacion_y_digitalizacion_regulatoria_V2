@@ -1,4 +1,4 @@
-import { cronogramaService, fichasService, accionesService } from '../services/crud-factory.js';
+import { cronogramaService, fichasService, actividadesService } from '../services/crud-factory.js';
 import { renderDataTable, renderInstitutionalBanner, showFormModal, showConfirmModal, showToast } from '../components/organisms.js';
 
 export async function renderCronogramaPage(container) {
@@ -7,16 +7,16 @@ export async function renderCronogramaPage(container) {
   let data = [];
   let count = 0;
   let fichasList = [];
-  let accionesList = [];
+  let actividadesList = [];
 
   async function loadCatalogs() {
     try {
-      const [resFch, resAcc] = await Promise.all([
+      const [resFch, resAct] = await Promise.all([
         fichasService.list({ page_size: 100 }),
-        accionesService.list({ page_size: 100 }),
+        actividadesService.list({ page_size: 200 }),
       ]);
       fichasList = (resFch.results || []).map(f => ({ value: f.id_ficha, label: `#FCH-${f.id_ficha} | ${f.id_tramite_servicio?.nombre_oficial || 'Ficha'}` }));
-      accionesList = (resAcc.results || []).map(ac => ({ value: ac.id_accion, label: `${ac.clave} - ${ac.titulo}` }));
+      actividadesList = (resAct.results || []).map(act => ({ value: act.id_actividades, label: `${act.clave} - ${act.titulo}` }));
     } catch (err) {
       console.error('Error al cargar catálogos para cronograma:', err);
     }
@@ -52,7 +52,7 @@ export async function renderCronogramaPage(container) {
     ];
     return [
       { name: 'id_ficha_id', label: 'Ficha Diagnóstica Padre', type: 'select', required: true, options: fichasList, fullWidth: true },
-      { name: 'id_accion_id', label: 'Acción Regulatoria a Calendarizar', type: 'select', required: true, options: accionesList, fullWidth: true },
+      { name: 'id_actividad_id', label: 'Actividad LNETB a Calendarizar', type: 'select', required: true, options: actividadesList, fullWidth: true },
       { name: 'num_mes_inicio_plazo', label: 'Mes de Inicio del Semestre (0..6)', type: 'select', required: true, options: mesOptions },
       { name: 'num_mes_final_plazo', label: 'Mes Final del Semestre (0..6)', type: 'select', required: true, options: mesOptions },
     ];
@@ -60,12 +60,13 @@ export async function renderCronogramaPage(container) {
 
   function openCreateModal() {
     showFormModal({
-      title: 'Calendarizar Acción en Cronograma',
+      title: 'Calendarizar Actividad en Cronograma',
       icon: 'calendar_add_on',
       fields: getFormFields(),
       submitText: 'Guardar en Cronograma',
       onSubmit: async (payload) => {
         await cronogramaService.create(payload);
+        showToast('Actividad agregada al cronograma', 'success');
         await fetchPage(currentPage);
       },
     });
@@ -75,7 +76,7 @@ export async function renderCronogramaPage(container) {
     const initial = {
       ...item,
       id_ficha_id: item.id_ficha?.id_ficha || item.id_ficha_id,
-      id_accion_id: item.id_accion?.id_accion || item.id_accion_id,
+      id_actividad_id: item.id_actividad?.id_actividades || item.id_actividad_id,
     };
     showFormModal({
       title: `Editar Registro de Cronograma #${item.id_cronograma}`,
@@ -85,6 +86,7 @@ export async function renderCronogramaPage(container) {
       submitText: 'Actualizar Cronograma',
       onSubmit: async (payload) => {
         await cronogramaService.partialUpdate(item.id_cronograma, payload);
+        showToast('Registro de cronograma actualizado', 'success');
         await fetchPage(currentPage);
       },
     });
@@ -93,7 +95,7 @@ export async function renderCronogramaPage(container) {
   function confirmDelete(id) {
     showConfirmModal({
       title: '¿Eliminar Calendarización?',
-      message: 'Esta acción removerá esta acción del cronograma de la ficha.',
+      message: 'Esta acción removerá esta actividad del cronograma de la ficha.',
       onConfirm: async () => {
         await cronogramaService.remove(id);
         showToast('Registro de cronograma eliminado', 'success');
@@ -116,14 +118,21 @@ export async function renderCronogramaPage(container) {
         render: (row) => row.id_ficha ? `<span class="font-body-sm font-semibold text-secondary">#FCH-${row.id_ficha.id_ficha || row.id_ficha}</span>` : '<span class="text-text-tertiary">-</span>',
       },
       {
-        header: 'Acción Calendarizada',
-        field: 'id_accion.titulo',
-        render: (row) => row.id_accion ? `
-          <div class="flex flex-col">
-            <span class="font-title-md font-semibold text-text-primary">${row.id_accion.titulo || row.id_accion.clave}</span>
-            <span class="font-data-mono text-xs text-text-tertiary">Clave: ${row.id_accion.clave || 'N/A'}</span>
-          </div>
-        ` : '<span class="text-text-tertiary">-</span>',
+        header: 'Actividad Calendarizada',
+        field: 'id_actividad.titulo',
+        render: (row) => {
+          const act = row.id_actividad;
+          const acc = row.id_accion || act?.id_accion;
+          return act ? `
+            <div class="flex flex-col">
+              <span class="font-title-md font-semibold text-text-primary">${act.titulo || act.clave}</span>
+              <div class="flex items-center gap-2 mt-0.5">
+                <span class="font-data-mono text-xs text-primary font-bold">Actividad: ${act.clave || 'N/A'}</span>
+                ${acc ? `<span class="font-data-mono text-xs text-text-tertiary">Acción: ${acc.clave || 'N/A'}</span>` : ''}
+              </div>
+            </div>
+          ` : '<span class="text-text-tertiary">-</span>';
+        },
       },
       {
         header: 'Rango de Meses (Semestre)',
@@ -141,7 +150,7 @@ export async function renderCronogramaPage(container) {
     container.innerHTML = `
       ${renderInstitutionalBanner(
         'Cronograma FASD de Actividades y Metas',
-        'Calendario de ejecución semestral de simplificación y entrega de hitos regulatorios',
+        'Calendario de ejecución semestral por actividad de simplificación y digitalización',
         'CRONOGRAMA FASD 2026'
       )}
 

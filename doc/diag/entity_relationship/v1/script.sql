@@ -212,15 +212,17 @@ CREATE TABLE fichas_has_acciones (
     FOREIGN KEY (id_accion) REFERENCES acciones(id_accion) ON DELETE CASCADE
 );
 
+-- Actualización Sprint 5 (2026-09-21): El cronograma pasa de nivel acción a nivel actividad.
+-- Se reemplaza id_accion por id_actividad FK a la tabla actividades(id_actividades).
 CREATE TABLE cronograma_de_actividades_por_ficha (
     id_cronograma INT AUTO_INCREMENT PRIMARY KEY,
     id_ficha INT NOT NULL,
-    id_accion INT NOT NULL,
+    id_actividad INT NOT NULL,
     num_mes_inicio_plazo INT CHECK (num_mes_inicio_plazo >= 0 AND num_mes_inicio_plazo <= 6),
     num_mes_final_plazo INT CHECK (num_mes_final_plazo >= 0 AND num_mes_final_plazo <= 6),
     created_by_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_ficha) REFERENCES fichas(id_ficha) ON DELETE CASCADE,
-    FOREIGN KEY (id_accion) REFERENCES acciones(id_accion) ON DELETE CASCADE
+    FOREIGN KEY (id_actividad) REFERENCES actividades(id_actividades) ON DELETE CASCADE
 );

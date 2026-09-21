@@ -266,12 +266,13 @@ export async function renderCatalogosAdminPage(container) {
       { id: 'roles', label: 'Roles de Sistema', icon: 'admin_panel_settings' },
       { id: 'permisos', label: 'Catálogo de Permisos', icon: 'key' },
       { id: 'roles-permisos', label: 'Matriz Rol ↔ Permisos', icon: 'rule' },
+      { id: 'acciones-jerarquico', label: 'Catálogo Jerárquico FASD', icon: 'account_tree', path: '#/acciones' },
     ];
 
     container.innerHTML = `
       ${renderInstitutionalBanner(
         'Gestión de Catálogos Oficiales del Sistema',
-        'Administración centralizada de dependencias, usuarios, roles y permisos de acceso RBAC',
+        'Administración centralizada de dependencias, usuarios, roles y catálogo jerárquico LNETB',
         'CATÁLOGOS ESTRUCTURALES'
       )}
 
@@ -279,10 +280,12 @@ export async function renderCatalogosAdminPage(container) {
       <div class="mb-space-md bg-surface-container-lowest/80 p-1.5 rounded-xl border border-border-subtle flex items-center gap-1 overflow-x-auto">
         ${tabs.map(t => {
           const isActive = activeTab === t.id;
+          const dataPathAttr = t.path ? `data-path="${t.path}"` : '';
           return `<button
             type="button"
             data-action="switch-tab"
             data-tab="${t.id}"
+            ${dataPathAttr}
             class="px-4 py-2 rounded-lg font-title-md text-body-sm font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${isActive ? 'bg-primary-container text-on-primary-container shadow-md' : 'text-text-secondary hover:text-text-primary hover:bg-surface-container-high'}"
           >
             <span class="material-symbols-outlined text-[18px]">${t.icon}</span>
@@ -335,6 +338,10 @@ export async function renderCatalogosAdminPage(container) {
     container.addEventListener('click', (e) => {
       const btnTab = e.target.closest('[data-action="switch-tab"]');
       if (btnTab) {
+        if (btnTab.dataset.path) {
+          window.location.hash = btnTab.dataset.path;
+          return;
+        }
         const tab = btnTab.dataset.tab;
         if (tab && tab !== activeTab) {
           fetchCurrentTab(tab, 1);

@@ -42,14 +42,19 @@ class CronogramaActividad(models.Model):
         verbose_name="Ficha",
         help_text="Ficha a la que pertenece este cronograma (ON DELETE CASCADE)"
     )
-    id_accion = models.ForeignKey(
-        'src.Accion',
+    id_actividad = models.ForeignKey(
+        'src.Actividad',
         on_delete=models.CASCADE,
         related_name='cronograma_actividades',
-        db_column='id_accion',
-        verbose_name="Acción",
-        help_text="Acción calendarizada (ON DELETE CASCADE)"
+        db_column='id_actividad',
+        verbose_name="Actividad",
+        help_text="Actividad calendarizada (ON DELETE CASCADE)"
     )
+
+    @property
+    def id_accion(self):
+        """Propiedad derivada para acceder a la Acción a través de la Actividad."""
+        return self.id_actividad.id_accion if self.id_actividad_id else None
     num_mes_inicio_plazo = models.IntegerField(
         choices=MES_CHOICES,
         blank=True,
@@ -80,7 +85,7 @@ class CronogramaActividad(models.Model):
         db_table = 'cronograma_de_actividades_por_ficha'
         verbose_name = 'Cronograma de Actividad'
         verbose_name_plural = 'Cronogramas de Actividades'
-        ordering = ['id_ficha', 'id_accion', 'num_mes_inicio_plazo']
+        ordering = ['id_ficha', 'id_actividad', 'num_mes_inicio_plazo']
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(num_mes_inicio_plazo__isnull=True) | (models.Q(num_mes_inicio_plazo__gte=0) & models.Q(num_mes_inicio_plazo__lte=6)),
@@ -95,6 +100,6 @@ class CronogramaActividad(models.Model):
     def __str__(self):
         return (
             f"Cronograma Ficha #{self.id_ficha_id} — "
-            f"Acción {self.id_accion.clave if self.id_accion_id else '?'} "
+            f"Actividad {self.id_actividad.clave if self.id_actividad_id else '?'} "
             f"(meses {self.num_mes_inicio_plazo}–{self.num_mes_final_plazo})"
         )

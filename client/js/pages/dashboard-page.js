@@ -87,7 +87,7 @@ export async function renderDashboardPage(container) {
             <span class="font-data-mono text-label-sm text-text-tertiary">LNETB ART. 14</span>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
             <a href="#/tramites" class="p-space-md rounded-lg bg-surface-container border border-border-subtle hover:border-border-gold transition-all duration-200 group flex items-start gap-space-md">
               <div class="p-2.5 rounded-lg bg-primary/10 text-primary group-hover:scale-110 transition-transform">
                 <span class="material-symbols-outlined text-[24px]">list_alt</span>
@@ -105,6 +105,16 @@ export async function renderDashboardPage(container) {
               <div class="flex flex-col">
                 <h3 class="font-title-md text-title-md text-text-primary group-hover:text-secondary transition-colors">Matriz Diagnóstica</h3>
                 <p class="font-body-sm text-body-sm text-text-secondary mt-1">Fichas de simplificación, medición de plazos y niveles de madurez.</p>
+              </div>
+            </a>
+
+            <a href="#/acciones" class="p-space-md rounded-lg bg-surface-container border border-border-subtle hover:border-border-gold transition-all duration-200 group flex items-start gap-space-md">
+              <div class="p-2.5 rounded-lg bg-primary/10 text-primary group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-[24px]">account_tree</span>
+              </div>
+              <div class="flex flex-col">
+                <h3 class="font-title-md text-title-md text-text-primary group-hover:text-primary transition-colors">Catálogo Jerárquico FASD</h3>
+                <p class="font-body-sm text-body-sm text-text-secondary mt-1">CRUD jerárquico de Acciones, Actividades y Entregables oficiales.</p>
               </div>
             </a>
 

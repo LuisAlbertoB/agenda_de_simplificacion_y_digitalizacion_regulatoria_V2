@@ -23,6 +23,7 @@ export function renderTopAppBar(user, currentPath = '#/') {
     { label: 'Catálogo de Trámites', path: '#/tramites', icon: 'list_alt' },
     { label: 'Matriz Diagnóstica', path: '#/fichas', icon: 'assignment' },
     { label: 'Cronograma FASD', path: '#/cronograma', icon: 'calendar_month' },
+    { label: 'Catálogo Jerárquico', path: '#/acciones', icon: 'account_tree' },
     { label: 'Catálogos Oficiales', path: '#/catalogos-admin', icon: 'folder_managed' },
     { label: 'Centro de Emisión', path: '#/emision-documental', icon: 'print' },
   ];

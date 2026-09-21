@@ -9,7 +9,11 @@ class EntregableViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return EntregableService.obtener_todos()
+        qs = EntregableService.obtener_todos()
+        id_actividad = self.request.query_params.get('id_actividad')
+        if id_actividad:
+            qs = qs.filter(id_actividad_id=id_actividad)
+        return qs
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)

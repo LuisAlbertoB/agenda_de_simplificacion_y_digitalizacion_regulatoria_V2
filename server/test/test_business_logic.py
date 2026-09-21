@@ -109,12 +109,13 @@ class BusinessLogicTestCase(TestCase):
         agenda = Agenda.objects.create(id_dependencia=self.dependencia, anio=2026, semestre=True, created_by=self.user)
         ficha = Ficha.objects.create(id_agenda=agenda, id_tramite_servicio=self.tramite, created_by=self.user)
 
-        from src.models import Accion
+        from src.models import Accion, Actividad
         accion = Accion.objects.create(clave='ACC_TEST', titulo='Acción Test', simplificacion_o_digitalizacion=True)
+        actividad = Actividad.objects.create(id_accion=accion, clave='ACT_TEST', titulo='Actividad Test')
 
         res = self.client.post('/api/cronograma/', {
             'id_ficha_id': ficha.id_ficha,
-            'id_accion_id': accion.id_accion,
+            'id_actividad_id': actividad.id_actividades,
             'num_mes_inicio_plazo': 4,
             'num_mes_final_plazo': 2  # Incoherente: fin (2) < inicio (4)
         })
