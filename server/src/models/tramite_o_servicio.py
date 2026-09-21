@@ -55,7 +55,7 @@ class TramiteOServicio(models.Model):
         blank=True,
         null=True,
         verbose_name="Tipo",
-        help_text="0=trámite presencial, 1=trámite digital, 2=servicio presencial, 3=servicio digital, 4=mixto"
+        help_text="DEPRECADO — Utilizar tramites_has_tipos para selección múltiple de modalidades de atención"
     )
     tramite_o_servicio = models.BooleanField(
         blank=True,

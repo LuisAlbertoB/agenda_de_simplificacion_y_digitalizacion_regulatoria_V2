@@ -101,18 +101,38 @@ export function renderPagination({ count = 0, page = 1, pageSize = 10 }) {
 /**
  * Nivel de Digitalización Regulatoria (0 al 3 según LNETB)
  */
-export function renderMaturityLevel(level = 0) {
-  const levels = {
-    0: { label: 'Nivel 0: Presencial', color: 'neutral', icon: 'description' },
-    1: { label: 'Nivel 1: Descargable', color: 'secondary', icon: 'download' },
-    2: { label: 'Nivel 2: Semi-Digital', color: 'warning', icon: 'settings_suggest' },
-    3: { label: 'Nivel 3: 100% En Línea', color: 'tertiary', icon: 'verified' },
+export function renderMaturityLevel(data = 0) {
+  const levelsMap = {
+    0: { label: 'Nivel 0: Presencial', icon: 'description' },
+    1: { label: 'Nivel 1: Informativo', icon: 'info' },
+    2: { label: 'Nivel 2: Formatos disponibles', icon: 'download' },
+    3: { label: 'Nivel 3: Interactivo', icon: 'settings_suggest' },
+    4: { label: 'Nivel 4: Digital End-to-End', icon: 'verified' },
   };
 
-  const item = levels[level] || levels[0];
-  return `<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container-high border border-border-subtle">
-    <span class="material-symbols-outlined text-[16px] text-primary">${item.icon}</span>
-    <span class="font-data-mono text-label-sm text-text-primary">${item.label}</span>
+  let levelNumbers = [];
+  if (typeof data === 'number') {
+    levelNumbers = [data];
+  } else if (Array.isArray(data)) {
+    levelNumbers = data.map(item => typeof item === 'object' && item !== null ? item.nivel : Number(item));
+  } else if (typeof data === 'object' && data !== null) {
+    if (Array.isArray(data.niveles_digitalizacion) && data.niveles_digitalizacion.length > 0) {
+      levelNumbers = data.niveles_digitalizacion.map(n => n.nivel);
+    } else if (data.nivel_digitalizacion_actual !== null && data.nivel_digitalizacion_actual !== undefined) {
+      levelNumbers = [data.nivel_digitalizacion_actual];
+    }
+  }
+
+  if (levelNumbers.length === 0) levelNumbers = [0];
+
+  return `<div class="flex flex-wrap items-center gap-1.5">
+    ${levelNumbers.map(lvl => {
+      const item = levelsMap[lvl] || levelsMap[0];
+      return `<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container-high border border-border-subtle">
+        <span class="material-symbols-outlined text-[16px] text-primary">${item.icon}</span>
+        <span class="font-data-mono text-label-sm text-text-primary">${item.label}</span>
+      </div>`;
+    }).join('')}
   </div>`;
 }
 

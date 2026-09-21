@@ -5,7 +5,7 @@ Módulo 1 — Seguridad y Control de Acceso (RBAC):
   Role, Permiso, RoleHasPermiso, Dependencia, Usuario
 
 Módulo 2 — Trámites, Servicios y Agendas:
-  TramiteOServicio, Agenda, Ficha, Cobro
+  TramiteOServicio, TramiteTipoAtencion, Agenda, Ficha, Cobro
 
 Módulo 3 — Acciones, Actividades, Entregables y Cronogramas:
   Accion, Actividad, Entregable, FichaHasAccion, CronogramaActividad
@@ -20,8 +20,10 @@ from .role_has_permiso import RoleHasPermiso
 
 # ── Módulo 2: Trámites, Servicios y Agendas ───────────────────────────────────
 from .tramite_o_servicio import TramiteOServicio
+from .tramite_tipo_atencion import TramiteTipoAtencion
 from .agenda import Agenda
 from .ficha import Ficha
+from .ficha_nivel_digitalizacion import FichaNivelDigitalizacion
 from .cobro import Cobro
 
 # ── Módulo 3: Acciones, Actividades, Entregables y Cronogramas ────────────────
@@ -41,8 +43,10 @@ __all__ = [
     'RoleHasPermiso',
     # Módulo 2
     'TramiteOServicio',
+    'TramiteTipoAtencion',
     'Agenda',
     'Ficha',
+    'FichaNivelDigitalizacion',
     'Cobro',
     # Módulo 3
     'Accion',

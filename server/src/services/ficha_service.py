@@ -140,6 +140,7 @@ class FichaService:
 
         # Extraer listas compuestas del payload
         id_accion_ids = payload.pop('id_accion_ids', [])
+        niveles_digitalizacion_ids = payload.pop('niveles_digitalizacion_ids', [])
         cronograma_items = payload.pop('cronograma_items', [])
 
         # Crear Ficha principal
@@ -178,6 +179,18 @@ class FichaService:
             status=payload.get('status', 0),
             created_by=user if (user and user.is_authenticated) else None
         )
+
+        # Vincular Niveles de Digitalización (FichaNivelDigitalizacion)
+        from src.models import FichaNivelDigitalizacion
+        for n_id in niveles_digitalizacion_ids:
+            try:
+                n_val = int(n_id)
+                FichaNivelDigitalizacion.objects.get_or_create(
+                    id_ficha=ficha,
+                    nivel=n_val
+                )
+            except (ValueError, TypeError):
+                pass
 
         # Vincular Acciones (FichaHasAccion)
         for acc_id in id_accion_ids:

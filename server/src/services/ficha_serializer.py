@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from src.models import Ficha, Agenda, TramiteOServicio
+from src.models import Ficha, Agenda, TramiteOServicio, FichaNivelDigitalizacion
 from src.services.tramite_o_servicio_serializer import TramiteOServicioSerializer
+from src.services.ficha_nivel_digitalizacion_serializer import FichaNivelDigitalizacionSerializer
 
 
 class AgendaMinSerializer(serializers.ModelSerializer):
@@ -27,6 +28,13 @@ class FichaSerializer(serializers.ModelSerializer):
         help_text="ID del trámite/servicio diagnosticado"
     )
     created_by_id = serializers.PrimaryKeyRelatedField(read_only=True, source='created_by')
+    niveles_digitalizacion = FichaNivelDigitalizacionSerializer(many=True, read_only=True)
+    niveles_digitalizacion_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        write_only=True,
+        required=False,
+        help_text="Lista de niveles de madurez digital (0-4)"
+    )
 
     class Meta:
         model = Ficha
@@ -64,6 +72,8 @@ class FichaSerializer(serializers.ModelSerializer):
             'tipo_tramite_dirigido',
             'formas_de_pago',
             'nivel_digitalizacion_actual',
+            'niveles_digitalizacion',
+            'niveles_digitalizacion_ids',
             'propuesta_mejora_transaccion_tecnologica',
             'status',
             'created_by_id',
@@ -71,6 +81,11 @@ class FichaSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
         read_only_fields = ['id_ficha', 'created_by_id', 'created_at', 'updated_at']
+
+    def validate_importe_tramite(self, value):
+        if value is not None and value < 0:
+            raise serializers.ValidationError("El importe del trámite no puede ser un valor negativo.")
+        return value
 
     def validate(self, attrs):
         id_agenda = attrs.get('id_agenda', getattr(self.instance, 'id_agenda', None))
@@ -93,3 +108,25 @@ class FichaSerializer(serializers.ModelSerializer):
                 })
 
         return attrs
+
+    def create(self, validated_data):
+        niveles_ids = validated_data.pop('niveles_digitalizacion_ids', None)
+        ficha = super().create(validated_data)
+        if niveles_ids is not None:
+            self._sync_niveles(ficha, niveles_ids)
+        return ficha
+
+    def update(self, instance, validated_data):
+        niveles_ids = validated_data.pop('niveles_digitalizacion_ids', None)
+        ficha = super().update(instance, validated_data)
+        if niveles_ids is not None:
+            self._sync_niveles(ficha, niveles_ids)
+        return ficha
+
+    def _sync_niveles(self, ficha, niveles_ids):
+        ficha.niveles_digitalizacion.all().delete()
+        for n_val in niveles_ids:
+            try:
+                FichaNivelDigitalizacion.objects.create(id_ficha=ficha, nivel=int(n_val))
+            except (ValueError, TypeError):
+                pass

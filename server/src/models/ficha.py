@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class Ficha(models.Model):
@@ -222,12 +223,12 @@ class Ficha(models.Model):
         verbose_name="Unidad de cobro",
         help_text="UMAs, Moneda Nacional o Gratuito"
     )
-    importe_tramite = models.CharField(
-        max_length=255,
+    importe_tramite = models.FloatField(
         blank=True,
         null=True,
+        validators=[MinValueValidator(0.0)],
         verbose_name="Importe del trámite",
-        help_text="Importe expresado en string"
+        help_text="Importe numérico en Moneda Nacional o equivalente (>= 0)"
     )
     tipo_tramite_dirigido = models.CharField(
         max_length=100,
@@ -250,7 +251,7 @@ class Ficha(models.Model):
         blank=True,
         null=True,
         verbose_name="Nivel de digitalización actual",
-        help_text="1=Nivel 1 Informativo, 2=Nivel 2 Formatos, 3=Nivel 3 Interactivo, 4=Nivel 4 Digital End-to-End"
+        help_text="DEPRECADO — Utilizar fichas_has_niveles_digitalizacion para selección múltiple"
     )
     propuesta_mejora_transaccion_tecnologica = models.TextField(
         blank=True,

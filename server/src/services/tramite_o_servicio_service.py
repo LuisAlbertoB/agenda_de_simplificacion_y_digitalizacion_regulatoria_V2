@@ -6,7 +6,7 @@ class TramiteOServicioService:
 
     @staticmethod
     def obtener_todos():
-        return TramiteOServicio.objects.all()
+        return TramiteOServicio.objects.prefetch_related('tipos_atencion').all()
 
     @staticmethod
     def obtener_por_id(id_tramite_servicio):

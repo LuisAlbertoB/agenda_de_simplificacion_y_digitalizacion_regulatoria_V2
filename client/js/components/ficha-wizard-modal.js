@@ -35,7 +35,7 @@ export async function showFichaWizardModal({ onComplete }) {
     regulacion_faculta_organo: '',
     fundamento_en_ley_de_ingresos: '',
     unidad_de_cobro: 'UMAs', // UMAs, Moneda Nacional, Gratuito
-    importe_tramite: '0.00',
+    importe_tramite: 0,
     tipo_tramite_dirigido: 'Ciudadano', // Ciudadano, Empresarial, Ambos
     formas_de_pago: ['caja_propia', 'bancos'], // caja_propia, bancos, banca_electronica, otros
 
@@ -46,7 +46,8 @@ export async function showFichaWizardModal({ onComplete }) {
     ],
 
     // Apartado 5: Matriz de Diagnóstico
-    nivel_digitalizacion_actual: 1, // 1 a 4
+    niveles_digitalizacion_ids: [1], // Array de números 0 a 4
+    propuesta_mejora_transaccion_tecnologica: '',
 
     // Apartado 6: Hallazgos y Oportunidades
     cuellos_de_botella: '',
@@ -426,7 +427,8 @@ export async function showFichaWizardModal({ onComplete }) {
 
             <div class="flex flex-col gap-1">
               <label class="font-label-sm text-xs font-semibold text-text-secondary">Indique el Importe del Trámite</label>
-              <input type="text" id="field-importe" value="${wizardData.importe_tramite || ''}" placeholder="ej. 5.5 UMAs / $450.00" class="w-full px-3 py-2 rounded-lg bg-surface-recessed border border-border-subtle text-text-primary font-body-sm" />
+              <input type="number" step="0.01" min="0" id="field-importe" value="${wizardData.importe_tramite !== null && wizardData.importe_tramite !== undefined ? wizardData.importe_tramite : ''}" placeholder="ej. 450.00" class="w-full px-3 py-2 rounded-lg bg-surface-recessed border border-border-subtle text-text-primary font-body-sm" />
+              <span class="field-error text-status-danger font-label-sm text-[11px] hidden"></span>
             </div>
 
             <div class="flex flex-col gap-1 md:col-span-2">
@@ -505,6 +507,7 @@ export async function showFichaWizardModal({ onComplete }) {
     // ── Apartado 5: Matriz de Diagnóstico ──
     if (step === 5) {
       const niveles = [
+        { num: 0, title: 'Nivel 0: Presencial', desc: 'El trámite se realiza exclusivamente en ventanilla física sin opción digital.' },
         { num: 1, title: 'Nivel 1: Informativo', desc: 'La información del trámite o servicio está publicada en medios electrónicos.' },
         { num: 2, title: 'Nivel 2: Formatos Disponibles', desc: 'Los formatos del trámite o servicio están disponibles electrónicamente.' },
         { num: 3, title: 'Nivel 3: Interactivo', desc: 'El usuario puede iniciar la gestión, recibir o reenviar la información del trámite.' },
@@ -515,17 +518,17 @@ export async function showFichaWizardModal({ onComplete }) {
         <div class="flex flex-col gap-space-md">
           <h4 class="font-title-md text-title-md font-bold text-text-primary flex items-center gap-2 border-b border-border-subtle pb-2">
             <span class="material-symbols-outlined text-primary">equalizer</span>
-            Apartado 5: Matriz de Diagnóstico y Nivel de Digitalización
+            Apartado 5: Matriz de Diagnóstico y Niveles de Digitalización
           </h4>
 
-          <p class="font-body-sm text-xs text-text-secondary">Indique el nivel de digitalización actual del trámite o servicio:</p>
+          <p class="font-body-sm text-xs text-text-secondary">Seleccione los niveles de digitalización aplicables al trámite o servicio (selección múltiple):</p>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             ${niveles.map(n => {
-              const isSelected = Number(wizardData.nivel_digitalizacion_actual) === n.num;
+              const isSelected = Array.isArray(wizardData.niveles_digitalizacion_ids) && wizardData.niveles_digitalizacion_ids.includes(n.num);
               return `
-                <div class="p-4 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${isSelected ? 'bg-primary/10 border-border-gold shadow-md' : 'bg-surface-container border-border-subtle hover:border-border-gold/50'}" onclick="document.getElementById('rad-nivel-${n.num}').click()">
-                  <input type="radio" id="rad-nivel-${n.num}" name="rad-nivel-digital" value="${n.num}" ${isSelected ? 'checked' : ''} class="w-5 h-5 accent-primary mt-0.5" onclick="event.stopPropagation()" />
+                <div class="p-4 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${isSelected ? 'bg-primary/10 border-border-gold shadow-md' : 'bg-surface-container border-border-subtle hover:border-border-gold/50'}" onclick="document.getElementById('chk-nivel-${n.num}').click()">
+                  <input type="checkbox" id="chk-nivel-${n.num}" data-nivel-val="${n.num}" ${isSelected ? 'checked' : ''} class="w-5 h-5 accent-primary mt-0.5 rounded cursor-pointer" onclick="event.stopPropagation()" />
                   <div class="flex flex-col gap-1">
                     <span class="font-title-md font-bold text-sm text-text-primary">${n.title}</span>
                     <p class="font-body-sm text-xs text-text-tertiary leading-relaxed">${n.desc}</p>
@@ -533,6 +536,11 @@ export async function showFichaWizardModal({ onComplete }) {
                 </div>
               `;
             }).join('')}
+          </div>
+
+          <div class="flex flex-col gap-1 mt-2">
+            <label class="font-label-sm text-xs font-semibold text-text-secondary">Propuesta de Transacción Tecnológica</label>
+            <textarea id="field-propuesta-transaccion" rows="3" class="w-full px-3 py-2 rounded-lg bg-surface-recessed border border-border-subtle text-text-primary font-body-sm" placeholder="Describa la propuesta de solución o desarrollo tecnológico a implementar">${wizardData.propuesta_mejora_transaccion_tecnologica || ''}</textarea>
           </div>
         </div>
       `;
@@ -762,19 +770,17 @@ export async function showFichaWizardModal({ onComplete }) {
               { name: 'clave', label: 'Clave Única', type: 'text', required: true },
               { name: 'nombre_oficial', label: 'Nombre Oficial', type: 'text', required: true, fullWidth: true },
               {
-                name: 'tipo',
-                label: 'Tipo de Trámite/Servicio',
-                type: 'select',
+                name: 'tipos_atencion_ids',
+                label: 'Tipo de Trámite o Servicio (Modalidades)',
+                type: 'multi-checkbox',
+                fullWidth: true,
                 options: [
-                  { value: 0, label: '0 = Trámite presencial' },
-                  { value: 1, label: '1 = Trámite digital' },
-                  { value: 2, label: '2 = Servicio presencial' },
-                  { value: 3, label: '3 = Servicio digital' },
-                  { value: 4, label: '4 = Mixto' },
-                  { value: 5, label: '5 = Vía telefónica' },
+                  { value: 0, label: 'Presencial' },
+                  { value: 1, label: 'Vía Telefónica' },
+                  { value: 2, label: 'Vía Digital' },
                 ],
               },
-              { name: 'tramite_o_servicio', label: '¿Es Trámite? (Marcar = Trámite, Desmarcar = Servicio)', type: 'checkbox' },
+              { name: 'tramite_o_servicio', label: 'Categoría del Trámite o Servicio', type: 'radio-bool', trueLabel: 'Trámite', falseLabel: 'Servicio', defaultValue: true },
             ],
             submitText: 'Crear Trámite',
             onSubmit: async (payload) => {
@@ -838,7 +844,9 @@ export async function showFichaWizardModal({ onComplete }) {
       if (fieldFaculta) fieldFaculta.addEventListener('change', (e) => wizardData.regulacion_faculta_organo = e.target.value);
       if (fieldLey) fieldLey.addEventListener('change', (e) => wizardData.fundamento_en_ley_de_ingresos = e.target.value);
       if (fieldUnidad) fieldUnidad.addEventListener('change', (e) => wizardData.unidad_de_cobro = e.target.value);
-      if (fieldImporte) fieldImporte.addEventListener('change', (e) => wizardData.importe_tramite = e.target.value);
+      if (fieldImporte) fieldImporte.addEventListener('input', (e) => {
+        wizardData.importe_tramite = e.target.value !== '' ? parseFloat(e.target.value) : null;
+      });
       if (fieldTipoDir) fieldTipoDir.addEventListener('change', (e) => wizardData.tipo_tramite_dirigido = e.target.value);
 
       overlay.querySelectorAll('[data-pago-key]').forEach(chk => {
@@ -882,9 +890,29 @@ export async function showFichaWizardModal({ onComplete }) {
     }
 
     if (step === 5) {
-      overlay.querySelectorAll('[name="rad-nivel-digital"]').forEach(rad => {
-        rad.addEventListener('change', (e) => wizardData.nivel_digitalizacion_actual = Number(e.target.value));
+      overlay.querySelectorAll('[data-nivel-val]').forEach(chk => {
+        chk.addEventListener('change', () => {
+          const val = Number(chk.dataset.nivelVal);
+          if (!Array.isArray(wizardData.niveles_digitalizacion_ids)) {
+            wizardData.niveles_digitalizacion_ids = [];
+          }
+          if (chk.checked) {
+            if (!wizardData.niveles_digitalizacion_ids.includes(val)) {
+              wizardData.niveles_digitalizacion_ids.push(val);
+            }
+          } else {
+            wizardData.niveles_digitalizacion_ids = wizardData.niveles_digitalizacion_ids.filter(v => v !== val);
+          }
+          renderWizard();
+        });
       });
+
+      const fieldPropuestaTech = overlay.querySelector('#field-propuesta-transaccion');
+      if (fieldPropuestaTech) {
+        fieldPropuestaTech.addEventListener('change', (e) => {
+          wizardData.propuesta_mejora_transaccion_tecnologica = e.target.value;
+        });
+      }
     }
 
     if (step === 6) {

@@ -110,14 +110,16 @@ export async function renderFichasPage(container) {
       { name: 'regulacion_fundamenta_existencia_tramite', label: 'Regulación que Fundamenta la Existencia del Trámite', type: 'textarea', fullWidth: true },
       { name: 'fundamento_en_ley_de_ingresos', label: 'Fundamento Jurídico en Ley de Ingresos', type: 'textarea', fullWidth: true },
       {
-        name: 'nivel_digitalizacion_actual',
-        label: 'Nivel de Madurez Digital Actual',
-        type: 'select',
+        name: 'niveles_digitalizacion_ids',
+        label: 'Niveles de Madurez Digital (Selección Múltiple)',
+        type: 'multi-checkbox',
+        fullWidth: true,
         options: [
           { value: 0, label: 'Nivel 0: Presencial' },
           { value: 1, label: 'Nivel 1: Informativo' },
-          { value: 2, label: 'Nivel 2: Interactivo parcial' },
-          { value: 3, label: 'Nivel 3: Digital end-to-end' },
+          { value: 2, label: 'Nivel 2: Formatos disponibles' },
+          { value: 3, label: 'Nivel 3: Interactivo parcial' },
+          { value: 4, label: 'Nivel 4: Digital end-to-end' },
         ],
       },
       { name: 'propuesta_mejora_transaccion_tecnologica', label: 'Propuesta de Transacción Tecnológica', type: 'textarea', fullWidth: true },
@@ -137,6 +139,9 @@ export async function renderFichasPage(container) {
       ...item,
       id_agenda_id: item.id_agenda?.id_agenda || item.id_agenda_id,
       id_tramite_servicio_id: item.id_tramite_servicio?.id_tramite_servicio || item.id_tramite_servicio_id,
+      niveles_digitalizacion_ids: Array.isArray(item.niveles_digitalizacion)
+        ? item.niveles_digitalizacion.map(n => n.nivel)
+        : (item.nivel_digitalizacion_actual !== null && item.nivel_digitalizacion_actual !== undefined ? [item.nivel_digitalizacion_actual] : []),
     };
     showFormModal({
       title: `Editar Ficha Diagnóstica #FCH-${item.id_ficha}`,
@@ -450,8 +455,8 @@ export async function renderFichasPage(container) {
                 ` : ''}
 
                 <div>
-                  <span class="font-label-sm text-xs text-text-tertiary uppercase block mb-1">Nivel de Digitalización Actual:</span>
-                  ${renderMaturityLevel(selectedFicha.nivel_digitalizacion_actual || 0)}
+                  <span class="font-label-sm text-xs text-text-tertiary uppercase block mb-1">Nivel(es) de Digitalización:</span>
+                  ${renderMaturityLevel(selectedFicha)}
                 </div>
 
                 <!-- Subsección 1: FichaHasAcciones (Relación N:M) -->

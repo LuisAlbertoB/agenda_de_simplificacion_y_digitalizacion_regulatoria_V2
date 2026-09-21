@@ -33,19 +33,17 @@ export async function renderTramitesPage(container) {
       { name: 'descripcion', label: 'Descripción del Trámite/Servicio', type: 'textarea', fullWidth: true },
       { name: 'objetivo', label: 'Objetivo Institucional', type: 'textarea', fullWidth: true },
       {
-        name: 'tipo',
-        label: 'Tipo de Trámite/Servicio',
-        type: 'select',
+        name: 'tipos_atencion_ids',
+        label: 'Tipo de Trámite o Servicio (Modalidades)',
+        type: 'multi-checkbox',
+        fullWidth: true,
         options: [
-          { value: 0, label: '0 = Trámite presencial' },
-          { value: 1, label: '1 = Trámite digital' },
-          { value: 2, label: '2 = Servicio presencial' },
-          { value: 3, label: '3 = Servicio digital' },
-          { value: 4, label: '4 = Mixto' },
-          { value: 5, label: '5 = Vía telefónica' },
+          { value: 0, label: 'Presencial' },
+          { value: 1, label: 'Vía Telefónica' },
+          { value: 2, label: 'Vía Digital' },
         ],
       },
-      { name: 'tramite_o_servicio', label: '¿Es Trámite? (Marcar = Trámite, Desmarcar = Servicio)', type: 'checkbox' },
+      { name: 'tramite_o_servicio', label: 'Categoría del Trámite o Servicio', type: 'radio-bool', trueLabel: 'Trámite', falseLabel: 'Servicio', defaultValue: true },
     ];
   }
 
@@ -63,11 +61,17 @@ export async function renderTramitesPage(container) {
   }
 
   function openEditModal(item) {
+    const formattedItem = {
+      ...item,
+      tipos_atencion_ids: Array.isArray(item.tipos_atencion)
+        ? item.tipos_atencion.map((t) => t.tipo)
+        : [],
+    };
     showFormModal({
       title: `Editar Trámite #${item.id_tramite_servicio}`,
       icon: 'edit',
       fields: getFormFields(),
-      initialData: item,
+      initialData: formattedItem,
       submitText: 'Actualizar Trámite',
       onSubmit: async (payload) => {
         await tramitesService.partialUpdate(item.id_tramite_servicio, payload);
@@ -117,12 +121,14 @@ export async function renderTramitesPage(container) {
       },
       {
         header: 'Modalidad (Tipo)',
-        field: 'tipo',
-        width: 'w-44',
+        field: 'tipos_atencion',
+        width: 'w-56',
         render: (row) => {
-          const tipos = ['Presencial', 'Digital', 'Serv. Presencial', 'Serv. Digital', 'Mixto', 'Vía Telefónica'];
-          const label = row.tipo !== null && row.tipo !== undefined ? (tipos[row.tipo] || `Tipo ${row.tipo}`) : 'Sin especificar';
-          return renderBadge(label, 'tertiary');
+          const labels = { 0: 'Presencial', 1: 'Vía Telefónica', 2: 'Vía Digital' };
+          const tipos = Array.isArray(row.tipos_atencion) && row.tipos_atencion.length > 0
+            ? row.tipos_atencion.map(t => labels[t.tipo] ?? `Tipo ${t.tipo}`)
+            : ['Sin especificar'];
+          return `<div class="flex flex-wrap gap-1">${tipos.map(l => renderBadge(l, 'tertiary')).join('')}</div>`;
         },
       },
     ];

@@ -302,8 +302,7 @@ export function showConfirmModal({ title = '¿Está seguro?', message = 'Esta ac
       }
       overlay.remove();
     } catch (err) {
-      btnConfirm.disabled = false;
-      btnConfirm.innerHTML = confirmText;
+      overlay.remove();
       showToast(err.message || 'Error al procesar la acción', 'error');
     }
   });
@@ -391,6 +390,55 @@ export function showFormModal({
               `;
             }
 
+            // Radio bool: dos opciones mutuamente excluyentes que siempre tienen un valor (true/false)
+            if (f.type === 'radio-bool') {
+              const isTruthy = val === true || val === 'true' || val === 1;
+              const trueLabel = f.trueLabel || 'Sí';
+              const falseLabel = f.falseLabel || 'No';
+              return `
+                <div class="${colSpan} flex flex-col gap-2">
+                  <label class="font-label-sm text-label-sm text-text-secondary font-semibold">${f.label} ${f.required ? '<span class="text-status-danger">*</span>' : ''}</label>
+                  <div class="flex items-center gap-4 p-3 rounded-lg bg-surface-recessed border border-border-subtle">
+                    <label class="flex items-center gap-2 cursor-pointer font-body-sm text-body-sm text-text-primary font-semibold">
+                      <input type="radio" name="${f.name}" value="true" ${isTruthy ? 'checked' : ''} class="w-4 h-4 accent-primary" required />
+                      <span>${trueLabel}</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer font-body-sm text-body-sm text-text-secondary">
+                      <input type="radio" name="${f.name}" value="false" ${!isTruthy ? 'checked' : ''} class="w-4 h-4 accent-primary" />
+                      <span>${falseLabel}</span>
+                    </label>
+                  </div>
+                  ${f.helpText ? `<span class="font-label-sm text-[11px] text-text-tertiary">${f.helpText}</span>` : ''}
+                  <span class="field-error text-status-danger font-label-sm text-[11px] hidden"></span>
+                </div>
+              `;
+            }
+
+            // Multi-checkbox: selección múltiple de opciones
+            if (f.type === 'multi-checkbox') {
+              const selectedVals = Array.isArray(val)
+                ? val.map(v => (typeof v === 'object' && v !== null ? v.nivel : Number(v)))
+                : [];
+              return `
+                <div class="${colSpan} flex flex-col gap-2">
+                  <label class="font-label-sm text-label-sm text-text-secondary font-semibold">${f.label} ${f.required ? '<span class="text-status-danger">*</span>' : ''}</label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2 p-3 rounded-lg bg-surface-recessed border border-border-subtle">
+                    ${(f.options || []).map(opt => {
+                      const checked = selectedVals.includes(opt.value) ? 'checked' : '';
+                      return `
+                        <label class="flex items-center gap-2 cursor-pointer font-body-sm text-body-sm text-text-primary">
+                          <input type="checkbox" name="${f.name}" value="${opt.value}" ${checked} class="w-4 h-4 accent-primary rounded" />
+                          <span>${opt.label}</span>
+                        </label>
+                      `;
+                    }).join('')}
+                  </div>
+                  ${f.helpText ? `<span class="font-label-sm text-[11px] text-text-tertiary">${f.helpText}</span>` : ''}
+                  <span class="field-error text-status-danger font-label-sm text-[11px] hidden"></span>
+                </div>
+              `;
+            }
+
             return `
               <div class="${colSpan} flex flex-col gap-1">
                 <label class="font-label-sm text-label-sm text-text-secondary font-semibold">${f.label} ${f.required ? '<span class="text-status-danger">*</span>' : ''}</label>
@@ -448,6 +496,12 @@ export function showFormModal({
     fields.forEach(f => {
       if (f.type === 'checkbox' || f.type === 'boolean') {
         payload[f.name] = formData.has(f.name);
+      } else if (f.type === 'multi-checkbox') {
+        const checkedEls = form.querySelectorAll(`[name="${f.name}"]:checked`);
+        payload[f.name] = Array.from(checkedEls).map(cb => Number(cb.value));
+      } else if (f.type === 'radio-bool') {
+        const val = formData.get(f.name);
+        payload[f.name] = val === 'true';
       } else if (f.type === 'number') {
         const val = formData.get(f.name);
         payload[f.name] = val !== '' && val !== null ? Number(val) : null;
