@@ -1,5 +1,6 @@
 from django.db import transaction
 from src.models import Ficha
+from src.models import Cobro, FichaHasAccion, CronogramaActividad, FichaNivelDigitalizacion
 
 
 class FichaService:
@@ -217,3 +218,146 @@ class FichaService:
                 )
 
         return ficha
+
+    @staticmethod
+    def obtener_paquete_documental(ficha):
+        """
+        Consolida en un solo dict todos los datos necesarios para generar
+        el documento oficial imprimible FASD (6 hojas: FASD 07, 08, 09, 03, 04, 05).
+
+        Devuelve:
+          - Todos los campos propios de la ficha
+          - agenda: Agenda completa con id_dependencia anidada y 6 campos de firmantes
+          - tramite: TramiteOServicio completo
+          - cobros: Lista de Cobro filtrados por esta ficha
+          - acciones: Lista de FichaHasAccion, cada uno con la acción completa, sus
+                      actividades, entregables y cronograma (inicio/fin) para esta ficha
+          - niveles_digitalizacion: niveles de madurez digital de la ficha
+        """
+        from src.services.agenda_serializer import AgendaSerializer
+        from src.services.tramite_o_servicio_serializer import TramiteOServicioSerializer
+        from src.services.cobro_serializer import CobroSerializer
+        from src.services.ficha_nivel_digitalizacion_serializer import FichaNivelDigitalizacionSerializer
+
+        # ── 1. Datos propios de la Ficha ──────────────────────────────────────
+        ficha_data = {
+            'id_ficha': ficha.id_ficha,
+            'solicitud_tipo': ficha.solicitud_tipo,
+            'plazo_maximo_resolucion_dias': ficha.plazo_maximo_resolucion_dias,
+            'is_dia_habil_o_inhabil': ficha.is_dia_habil_o_inhabil,
+            'vigencia_del_documento_obtenido': ficha.vigencia_del_documento_obtenido,
+            'conceptos_con_fundamento': ficha.conceptos_con_fundamento,
+            'numero_requisitos': ficha.numero_requisitos,
+            'poblacion_prioritaria_atencion_preferente': ficha.poblacion_prioritaria_atencion_preferente,
+            'solicitudes_recibidas_semestre_anterior': ficha.solicitudes_recibidas_semestre_anterior,
+            'resoluciones_positivas': ficha.resoluciones_positivas,
+            'cantidad_personas_intervienen': ficha.cantidad_personas_intervienen,
+            'areas_administrativas_interfieren': ficha.areas_administrativas_interfieren,
+            'condiciones_o_criterios_de_resolucion': ficha.condiciones_o_criterios_de_resolucion,
+            'habile_ventanilla_presencial': ficha.habile_ventanilla_presencial,
+            'habile_portal_web_municipal': ficha.habile_portal_web_municipal,
+            'habile_app_mobile': ficha.habile_app_mobile,
+            'habile_linea_telefonica': ficha.habile_linea_telefonica,
+            'cuellos_de_botella': ficha.cuellos_de_botella,
+            'requisitos_sin_valor': ficha.requisitos_sin_valor,
+            'propuestas_de_mejora': ficha.propuestas_de_mejora,
+            'analisis_requisitos_json': ficha.analisis_requisitos_json or [],
+            'regulacion_fundamenta_existencia_tramite': ficha.regulacion_fundamenta_existencia_tramite,
+            'regulacion_faculta_organo': ficha.regulacion_faculta_organo,
+            'fundamento_en_ley_de_ingresos': ficha.fundamento_en_ley_de_ingresos,
+            'unidad_de_cobro': ficha.unidad_de_cobro,
+            'importe_tramite': ficha.importe_tramite,
+            'tipo_tramite_dirigido': ficha.tipo_tramite_dirigido,
+            'formas_de_pago': ficha.formas_de_pago or [],
+            'nivel_digitalizacion_actual': ficha.nivel_digitalizacion_actual,
+            'propuesta_mejora_transaccion_tecnologica': ficha.propuesta_mejora_transaccion_tecnologica,
+            'status': ficha.status,
+            'created_at': ficha.created_at.isoformat() if ficha.created_at else None,
+            'updated_at': ficha.updated_at.isoformat() if ficha.updated_at else None,
+        }
+
+        # ── 2. Agenda completa con dependencia y firmantes ────────────────────
+        agenda = ficha.id_agenda
+        agenda_data = AgendaSerializer(agenda).data
+
+        # ── 3. Trámite o Servicio completo ─────────────────────────────────────
+        tramite = ficha.id_tramite_servicio
+        tramite_data = TramiteOServicioSerializer(tramite).data
+
+        # ── 4. Cobros filtrados por esta ficha ─────────────────────────────────
+        cobros_qs = Cobro.objects.filter(id_ficha=ficha).order_by('id_cobros')
+        cobros_data = CobroSerializer(cobros_qs, many=True).data
+
+        # ── 5. Acciones vinculadas con actividades, entregables y cronograma ──
+        # Construimos un índice de cronograma (id_actividad -> {inicio, fin})
+        cronograma_qs = CronogramaActividad.objects.filter(id_ficha=ficha).select_related('id_actividad')
+        cronograma_index = {}
+        for cr in cronograma_qs:
+            act_id = cr.id_actividad_id
+            # Si hay varios registros para la misma actividad, tomamos el primero
+            if act_id not in cronograma_index:
+                cronograma_index[act_id] = {
+                    'num_mes_inicio_plazo': cr.num_mes_inicio_plazo,
+                    'num_mes_final_plazo': cr.num_mes_final_plazo,
+                }
+
+        fichas_has_acciones_qs = (
+            FichaHasAccion.objects
+            .filter(id_ficha=ficha)
+            .select_related('id_accion')
+            .prefetch_related('id_accion__actividades__entregables')
+            .order_by('id_accion__clave')
+        )
+
+        acciones_data = []
+        for fha in fichas_has_acciones_qs:
+            accion = fha.id_accion
+            actividades_list = []
+            for actividad in accion.actividades.all().prefetch_related('entregables').order_by('clave'):
+                entregables_list = [
+                    {
+                        'id_entregable': e.id_entregable,
+                        'clave': e.clave,
+                        'titulo': e.titulo,
+                        'descripcion': e.descripcion,
+                        'status': e.status,
+                    }
+                    for e in actividad.entregables.all().order_by('clave')
+                ]
+                cronograma_act = cronograma_index.get(actividad.id_actividades, {
+                    'num_mes_inicio_plazo': None,
+                    'num_mes_final_plazo': None,
+                })
+                actividades_list.append({
+                    'id_actividades': actividad.id_actividades,
+                    'clave': actividad.clave,
+                    'titulo': actividad.titulo,
+                    'descripcion': actividad.descripcion,
+                    'entregables': entregables_list,
+                    'cronograma': cronograma_act,
+                })
+
+            acciones_data.append({
+                'id_fichas_has_accion': fha.id_fichas_has_accion,
+                'id_accion': {
+                    'id_accion': accion.id_accion,
+                    'simplificacion_o_digitalizacion': accion.simplificacion_o_digitalizacion,
+                    'clave': accion.clave,
+                    'titulo': accion.titulo,
+                    'descripcion': accion.descripcion,
+                },
+                'actividades': actividades_list,
+            })
+
+        # ── 6. Niveles de digitalización ──────────────────────────────────────
+        niveles_qs = FichaNivelDigitalizacion.objects.filter(id_ficha=ficha).order_by('nivel')
+        niveles_data = FichaNivelDigitalizacionSerializer(niveles_qs, many=True).data
+
+        return {
+            **ficha_data,
+            'agenda': agenda_data,
+            'tramite': tramite_data,
+            'cobros': list(cobros_data),
+            'acciones': acciones_data,
+            'niveles_digitalizacion': list(niveles_data),
+        }

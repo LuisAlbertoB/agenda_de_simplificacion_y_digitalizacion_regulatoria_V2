@@ -265,16 +265,79 @@ export async function showFichaWizardModal({ onComplete }) {
                 <p class="font-body-sm text-xs text-status-danger italic p-3 rounded bg-status-danger/10 border border-status-danger/20">
                   No hay trámites registrados en el catálogo.
                 </p>
-              ` : `
-                <select id="select-tramite" class="w-full px-3 py-2 rounded-lg bg-surface-recessed border border-border-subtle text-text-primary font-body-sm focus:border-primary focus:outline-none">
-                  <option value="">-- Seleccionar Trámite/Servicio --</option>
-                  ${tramitesList.map(t => `
-                    <option value="${t.id_tramite_servicio}" ${String(wizardData.id_tramite_servicio_id) === String(t.id_tramite_servicio) ? 'selected' : ''}>
-                      ${t.clave} - ${t.nombre_oficial}
-                    </option>
-                  `).join('')}
-                </select>
-              `}
+              ` : (() => {
+                const selTr = tramitesList.find(t => String(t.id_tramite_servicio) === String(wizardData.id_tramite_servicio_id));
+                const selLabel = selTr ? `${selTr.clave} — ${selTr.nombre_oficial}` : '';
+                return `
+                <div id="tramite-combobox" class="relative" style="position:relative">
+                  <!-- Input row -->
+                  <div class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-recessed border border-border-subtle focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20 transition-all">
+                    <span class="material-symbols-outlined text-text-secondary text-[18px] shrink-0 select-none">search</span>
+                    <input
+                      id="tramite-search-input"
+                      type="text"
+                      autocomplete="off"
+                      spellcheck="false"
+                      placeholder="Busca por clave o nombre…"
+                      value="${selLabel.replace(/"/g, '&quot;')}"
+                      data-selected-id="${wizardData.id_tramite_servicio_id || ''}"
+                      class="flex-1 bg-transparent text-text-primary font-body-sm text-sm outline-none placeholder:text-text-tertiary min-w-0"
+                    />
+                    <button type="button" id="tramite-clear-btn" title="Limpiar selección"
+                      class="${selLabel ? '' : 'hidden '}shrink-0 text-text-tertiary hover:text-status-danger transition-colors"
+                      style="line-height:1">
+                      <span class="material-symbols-outlined text-[18px]">close</span>
+                    </button>
+                    <span class="material-symbols-outlined text-text-secondary text-[18px] shrink-0 select-none" id="tramite-chevron">expand_more</span>
+                  </div>
+
+                  <!-- Dropdown panel -->
+                  <div id="tramite-dropdown"
+                    class="hidden absolute left-0 right-0 z-[9999] mt-1 rounded-xl border border-border-subtle bg-surface-container shadow-2xl overflow-hidden"
+                    style="top:100%">
+
+                    <!-- Options list -->
+                    <ul id="tramite-options-list"
+                      class="max-h-56 overflow-y-auto py-1"
+                      role="listbox" aria-label="Trámites disponibles">
+                      ${tramitesList.map((t, idx) => `
+                        <li
+                          role="option"
+                          data-value="${t.id_tramite_servicio}"
+                          data-label="${(t.clave + ' — ' + t.nombre_oficial).replace(/"/g, '&quot;')}"
+                          data-idx="${idx}"
+                          class="tramite-option flex items-start gap-2.5 px-3 py-2.5 cursor-pointer transition-colors hover:bg-secondary/10 ${
+                            String(wizardData.id_tramite_servicio_id) === String(t.id_tramite_servicio)
+                              ? 'bg-secondary/15 text-secondary'
+                              : 'text-text-primary'
+                          }"
+                        >
+                          <span class="mt-0.5 shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold tracking-wide
+                            bg-secondary/15 text-secondary border border-secondary/25"
+                          >${t.clave}</span>
+                          <span class="font-body-sm text-xs leading-snug line-clamp-2">${t.nombre_oficial}</span>
+                        </li>
+                      `).join('')}
+                    </ul>
+
+                    <!-- Empty state -->
+                    <div id="tramite-empty" class="hidden px-4 py-6 text-center">
+                      <span class="material-symbols-outlined text-[32px] text-text-tertiary block mb-1">search_off</span>
+                      <p class="font-body-sm text-xs text-text-tertiary">Sin resultados para tu búsqueda.</p>
+                    </div>
+
+                    <!-- Counter footer -->
+                    <div class="px-3 py-1.5 border-t border-border-subtle bg-surface-container-lowest flex items-center justify-between">
+                      <span id="tramite-count" class="font-data-mono text-[10px] text-text-tertiary">${tramitesList.length} trámite(s)</span>
+                      <span class="font-data-mono text-[10px] text-text-tertiary">↑↓ navegar · Enter seleccionar · Esc cerrar</span>
+                    </div>
+                  </div>
+
+                  <!-- Hidden real value carrier -->
+                  <input type="hidden" id="tramite-hidden-value" value="${wizardData.id_tramite_servicio_id || ''}" />
+                </div>
+                `;
+              })()}
             </div>
           </div>
         </div>
@@ -734,9 +797,155 @@ export async function showFichaWizardModal({ onComplete }) {
 
     if (step === 1) {
       const selectAg = overlay.querySelector('#select-agenda');
-      const selectTr = overlay.querySelector('#select-tramite');
       if (selectAg) selectAg.addEventListener('change', (e) => wizardData.id_agenda_id = Number(e.target.value));
-      if (selectTr) selectTr.addEventListener('change', (e) => wizardData.id_tramite_servicio_id = Number(e.target.value));
+
+      // ── Searchable combobox for Trámite/Servicio ──────────────────────────
+      const comboWrap    = overlay.querySelector('#tramite-combobox');
+      const searchInput  = overlay.querySelector('#tramite-search-input');
+      const dropdown     = overlay.querySelector('#tramite-dropdown');
+      const optionsList  = overlay.querySelector('#tramite-options-list');
+      const emptyState   = overlay.querySelector('#tramite-empty');
+      const hiddenVal    = overlay.querySelector('#tramite-hidden-value');
+      const clearBtn     = overlay.querySelector('#tramite-clear-btn');
+      const chevron      = overlay.querySelector('#tramite-chevron');
+      const countLabel   = overlay.querySelector('#tramite-count');
+
+      if (searchInput && dropdown) {
+        let activeIdx = -1;
+        const allOptions = () => [...optionsList.querySelectorAll('.tramite-option')];
+        const visibleOptions = () => allOptions().filter(o => o.style.display !== 'none');
+
+        const openDropdown = () => {
+          dropdown.classList.remove('hidden');
+          chevron.textContent = 'expand_less';
+          filterOptions(searchInput.value);
+        };
+
+        const closeDropdown = () => {
+          dropdown.classList.add('hidden');
+          chevron.textContent = 'expand_more';
+          activeIdx = -1;
+          allOptions().forEach(o => o.classList.remove('bg-surface-container-high'));
+        };
+
+        const setActive = (opts, idx) => {
+          opts.forEach(o => o.classList.remove('bg-surface-container-high'));
+          if (idx >= 0 && idx < opts.length) {
+            opts[idx].classList.add('bg-surface-container-high');
+            opts[idx].scrollIntoView({ block: 'nearest' });
+          }
+        };
+
+        const selectOption = (li) => {
+          const val = li.dataset.value;
+          const label = li.dataset.label;
+          wizardData.id_tramite_servicio_id = Number(val);
+          hiddenVal.value = val;
+          searchInput.value = label;
+          searchInput.dataset.selectedId = val;
+          clearBtn.classList.remove('hidden');
+          // Highlight selected in list
+          allOptions().forEach(o => {
+            o.classList.toggle('bg-secondary/15', o.dataset.value === val);
+            o.classList.toggle('text-secondary', o.dataset.value === val);
+          });
+          closeDropdown();
+        };
+
+        const filterOptions = (query) => {
+          const q = query.trim().toLowerCase();
+          let shown = 0;
+          allOptions().forEach(o => {
+            const text = (o.dataset.label || '').toLowerCase();
+            const match = !q || text.includes(q);
+            o.style.display = match ? '' : 'none';
+            if (match) shown++;
+          });
+          emptyState.classList.toggle('hidden', shown > 0);
+          countLabel.textContent = `${shown} de ${allOptions().length} trámite(s)`;
+          activeIdx = -1;
+        };
+
+        // Open on input focus
+        searchInput.addEventListener('focus', () => {
+          openDropdown();
+          searchInput.select();
+        });
+
+        // Filter on type — clear selection if user edits
+        searchInput.addEventListener('input', () => {
+          const prevId = searchInput.dataset.selectedId;
+          if (prevId) {
+            // user is typing → clear current selection
+            wizardData.id_tramite_servicio_id = '';
+            hiddenVal.value = '';
+            searchInput.dataset.selectedId = '';
+            clearBtn.classList.add('hidden');
+            allOptions().forEach(o => {
+              o.classList.remove('bg-secondary/15', 'text-secondary');
+            });
+          }
+          openDropdown();
+          filterOptions(searchInput.value);
+        });
+
+        // Keyboard navigation
+        searchInput.addEventListener('keydown', (e) => {
+          const opts = visibleOptions();
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (dropdown.classList.contains('hidden')) { openDropdown(); return; }
+            activeIdx = Math.min(activeIdx + 1, opts.length - 1);
+            setActive(opts, activeIdx);
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIdx = Math.max(activeIdx - 1, 0);
+            setActive(opts, activeIdx);
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (activeIdx >= 0 && opts[activeIdx]) selectOption(opts[activeIdx]);
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            closeDropdown();
+          }
+        });
+
+        // Click on option
+        optionsList.addEventListener('click', (e) => {
+          const li = e.target.closest('.tramite-option');
+          if (li) selectOption(li);
+        });
+
+        // Clear button
+        if (clearBtn) {
+          clearBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            wizardData.id_tramite_servicio_id = '';
+            hiddenVal.value = '';
+            searchInput.value = '';
+            searchInput.dataset.selectedId = '';
+            clearBtn.classList.add('hidden');
+            allOptions().forEach(o => {
+              o.classList.remove('bg-secondary/15', 'text-secondary');
+            });
+            filterOptions('');
+            searchInput.focus();
+            openDropdown();
+          });
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', function onDocClick(e) {
+          if (comboWrap && !comboWrap.contains(e.target)) {
+            closeDropdown();
+            // If user typed but didn't select, restore previous label or clear
+            if (!searchInput.dataset.selectedId) {
+              searchInput.value = '';
+            }
+            document.removeEventListener('click', onDocClick);
+          }
+        });
+      }
 
       const btnQuickAg = overlay.querySelector('#btn-quick-add-agenda');
       const btnQuickTr = overlay.querySelector('#btn-quick-add-tramite');

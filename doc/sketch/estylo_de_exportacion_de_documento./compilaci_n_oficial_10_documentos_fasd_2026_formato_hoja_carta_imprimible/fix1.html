@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Documento Maestro - Agenda de Simplificación y Digitalización {{ ficha.id_agenda.anio }}</title>
+  <!-- Tailwind CSS v3 with Plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandGold: '#b38e44',
+            brandDark: '#1a1a1a',
+            govGray: '#374151'
+          }
+        }
+      }
+    }
+  </script>
+  <style data-purpose="print-and-page-geometry">
+    @page {
+      size: letter portrait;
+      margin: 8mm 10mm;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .page-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 6mm 8mm !important;
+        page-break-after: always;
+        break-after: page;
+        width: 100% !important;
+        min-height: 100vh !important;
+      }
+      .page-sheet:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+    }
+    .page-sheet {
+      width: 215.9mm;
+      min-height: 279.4mm;
+      margin: 0 auto 2rem auto;
+      background-color: #ffffff;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+      padding: 10mm 12mm 8mm 12mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+  </style>
+  <style data-purpose="table-borders-and-typography">
+    .gov-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid #1f2937;
+      font-size: 9.5px;
+      line-height: 1.2;
+    }
+    .gov-table th, .gov-table td {
+      border: 1px solid #374151;
+      padding: 3px 5px;
+      vertical-align: middle;
+    }
+    .gov-table th {
+      background-color: #f3f4f6;
+      font-weight: 700;
+      color: #111827;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-gray-900 font-sans antialiased min-h-screen">
+  <!-- Control Navigation Header -->
+  <header class="no-print sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-7 bg-amber-600 rounded-sm"></div>
+        <div>
+          <h1 class="text-sm sm:text-base font-bold text-gray-900 leading-tight">Plataforma Oficial FASD {{ ficha.id_agenda.anio }}</h1>
+          <p class="text-xs text-gray-500">Documento Completo (6 Hojas) — Tuxtla Gutiérrez</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap">
+        <label class="text-xs font-semibold text-gray-700" for="doc-selector">Hoja:</label>
+        <select class="text-xs border-gray-300 rounded-md py-1.5 px-3 bg-gray-50 focus:ring-amber-500 focus:border-amber-500 text-gray-800 font-medium" id="doc-selector" onchange="filterDocuments(this.value)">
+          <option value="all">Ver Las 6 Hojas (Modo Completo)</option>
+          <option value="doc-1">Hoja 1: FASD 07 (Información General y Fundamento Jurídico)</option>
+          <option value="doc-2">Hoja 2: FASD 08 (Análisis, Matriz y Hallazgos)</option>
+          <option value="doc-3">Hoja 3: FASD 09 (Acciones de Simplificación y Digitalización)</option>
+          <option value="doc-4">Hoja 4: FASD 03 (Formato de Acciones)</option>
+          <option value="doc-5">Hoja 5: FASD 04 (Cronología de Simplificación)</option>
+          <option value="doc-6">Hoja 6: FASD 05 (Cronología de Digitalización)</option>
+        </select>
+        <button class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-semibold rounded-md shadow transition" onclick="window.print()" type="button">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Imprimir / Guardar PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="py-6 sm:py-8 px-2 sm:px-4" id="documents-root">
+    
+    <!-- =================================================================== -->
+    <!-- HOJA 1: FASD 07 - I. INFORMACIÓN GENERAL & II. FUNDAMENTO JURÍDICO -->
+    <!-- =================================================================== -->
+    <article class="page-sheet doc-item" data-doc-title="Hoja 1" id="doc-1">
+      <div>
+        <!-- Institutional Header -->
+        <div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+          <div class="col-span-4 flex items-center">
+            <img alt="Ayuntamiento Logo" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRw-2n4EGbsMA6gqudh8qScGkBW3oR1wgtQ6kBgWyKMNHi6AWOFOzcirpfBN-phkTcEyxlfUDb6HqfNXHITizG-zMi9OmjkdwXxdfSe--QxDeFu0sDp1d9_ZHu8zqVnaw3Q3v_hQpRhWMuIviR5XzqrBbiW-F2PANylR5YHmlEtsD3gujSiRDkFSA7xBn7r1k-3XWIGJviEr1Y3yMaWMLHxGLEWnHIgam0KnTw1Rz9wz7xmBTXUJAFNoEB6pzckBog1RE"/>
+          </div>
+          <div class="col-span-8 pl-3 border-l border-gray-400">
+            <div class="text-[11px] text-gray-500 font-semibold mb-0.5">{{ ficha.id_agenda.id_dependencia.nombre_oficial }}</div>
+            <div class="text-[12px] font-bold text-gray-800 uppercase tracking-wide">{{ ficha.id_agenda.semestre }}ª Agenda de Simplificación y Digitalización {{ ficha.id_agenda.anio }}</div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-baseline mb-2">
+          <h2 class="text-xs font-bold text-gray-900 uppercase">I. INFORMACIÓN GENERAL</h2>
+          <div class="text-[10px] font-medium">Fecha del levantamiento: <span class="font-bold">{{ ficha.created_at|date:"d/m/Y" }}</span></div>
+          <span class="text-[11px] font-mono font-bold text-gray-700">FASD 07 {{ ficha.id_agenda.anio }}</span>
+        </div>
+
+        <!-- Meta Information Block 1 -->
+        <div class="border border-gray-700 text-[10px] mb-2">
+          <div class="grid grid-cols-12 border-b border-gray-700">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre de la Unidad Administrativa:</div>
+            <div class="col-span-8 p-1.5 font-medium">{{ ficha.id_agenda.unidad_administrativa }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre oficial del trámite o servicio:</div>
+            <div class="col-span-5 p-1.5 font-medium">{{ ficha.id_tramite_servicio.nombre_oficial }}</div>
+            <div class="col-span-3 p-1.5 border-l border-gray-700 bg-gray-50">
+              <span class="font-bold">Clave:</span> {{ ficha.id_tramite_servicio.clave }}
+            </div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center bg-gray-50">
+            <div class="col-span-3 p-1 font-bold border-r border-gray-700">Tipo de Gestión:</div>
+            <div class="col-span-9 p-1 flex gap-6">
+              <label class="flex items-center gap-1 font-semibold"><input class="rounded" type="checkbox" {% if ficha.id_tramite_servicio.tramite_o_servicio == True %}checked{% endif %}/> Trámite</label>
+              <label class="flex items-center gap-1 font-semibold"><input class="rounded" type="checkbox" {% if ficha.id_tramite_servicio.tramite_o_servicio == False %}checked{% endif %}/> Servicio</label>
+            </div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Objetivo del trámite:</div>
+            <div class="col-span-8 p-1.5 text-gray-800">{{ ficha.id_tramite_servicio.objetivo }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Medios de atención:</div>
+            <div class="col-span-9 p-1.5 flex flex-wrap gap-4 text-[9.5px]">
+              <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if ficha.habile_linea_telefonica %}checked{% endif %}/> Telefónico</label>
+              <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if ficha.habile_ventanilla_presencial %}checked{% endif %}/> Presencial</label>
+              <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if ficha.habile_portal_web_municipal or ficha.habile_app_mobile %}checked{% endif %}/> Digital</label>
+            </div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Tipo de solicitud:</div>
+            <div class="col-span-9 p-1.5 flex flex-wrap gap-4 text-[9.5px]">
+              <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if ficha.solicitud_tipo == 0 %}checked{% endif %}/> No tiene</label>
+              <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if ficha.solicitud_tipo == 1 %}checked{% endif %}/> Escrito libre</label>
+              <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if ficha.solicitud_tipo == 2 %}checked{% endif %}/> Formato específico</label>
+              <label class="flex items-center gap-1 font-semibold"><input class="rounded" type="checkbox" {% if ficha.solicitud_tipo == 3 %}checked{% endif %}/> Formato único</label>
+            </div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Plazo para resolver la solicitud:</div>
+            <div class="col-span-3 p-1.5 font-medium border-r border-gray-700 text-blue-900 font-bold">{{ ficha.plazo_maximo_resolucion_dias }} {% if ficha.is_dia_habil_o_inhabil %}días hábiles{% else %}días naturales{% endif %}</div>
+            <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700 text-center">Vigencia del resolutivo:</div>
+            <div class="col-span-2 p-1.5 font-medium text-center">{{ ficha.vigencia_del_documento_obtenido }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-6 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Número de requisitos que tiene el trámite o servicio:</div>
+            <div class="col-span-6 p-1.5 font-bold text-center">{{ ficha.analisis_requisitos_json|length }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-6 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Total de solicitudes recibidas en el ejercicio inmediato anterior:</div>
+            <div class="col-span-6 p-1.5 font-bold text-center">{{ ficha.solicitudes_recibidas_semestre_anterior }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-6 p-1.5 font-bold bg-gray-100 border-r border-gray-700">De las solicitudes anteriores ¿Cuántas fueron resoluciones positivas?:</div>
+            <div class="col-span-6 p-1.5 font-bold text-center">{{ ficha.resoluciones_positivas }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Cantidad de personas que intervienen:</div>
+            <div class="col-span-2 p-1.5 font-bold text-center border-r border-gray-700">{{ ficha.cantidad_personas_intervienen }}</div>
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700 text-center">Cantidad de áreas que intervienen:</div>
+            <div class="col-span-2 p-1.5 font-bold text-center">{{ ficha.areas_administrativas_interfieren }}</div>
+          </div>
+          <div class="grid grid-cols-12 items-center">
+            <div class="col-span-8 p-1.5 font-bold bg-gray-100 border-r border-gray-700">¿Este trámite o servicio está dirigido a personas o grupos de atención prioritaria o vulnerable?:</div>
+            <div class="col-span-4 p-1.5 flex justify-around font-semibold">
+              <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if ficha.poblacion_prioritaria_atencion_preferente %}checked{% endif %}/> Sí</label>
+              <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if not ficha.poblacion_prioritaria_atencion_preferente %}checked{% endif %}/> No</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section II. FUNDAMENTO JURÍDICO -->
+        <div class="flex justify-between items-baseline mb-1">
+          <h2 class="text-xs font-bold text-gray-900 uppercase">II. FUNDAMENTO JURÍDICO</h2>
+        </div>
+        <div class="border border-gray-700 text-[10px] mb-2">
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre, artículo y fracción de la regulación en la que se fundamenta el trámite o servicio:</div>
+            <div class="col-span-8 p-1.5">{{ ficha.regulacion_fundamenta_existencia_tramite }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Fundamento legal en la Ley de Ingresos:</div>
+            <div class="col-span-8 p-1.5 font-medium">{{ ficha.fundamento_en_ley_de_ingresos }}</div>
+          </div>
+          
+          {% for cobro in ficha.cobros_set.all %}
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center bg-gray-50">
+            <div class="col-span-3 p-1 font-bold border-r border-gray-700">Unidad de cobro ({{ cobro.concepto }}):</div>
+            <div class="col-span-9 p-1 flex flex-wrap gap-6 text-[9.5px]">
+              <label class="flex items-center gap-1 font-semibold"><input type="checkbox" class="rounded" {% if "UMA" in cobro.unidad_medida %}checked{% endif %}/> UMA'S</label>
+              <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if "Nacional" in cobro.unidad_medida or "MXN" in cobro.unidad_medida %}checked{% endif %}/> Moneda Nacional</label>
+              <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if cobro.importe == 0 %}checked{% endif %}/> Gratuito</label>
+            </div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Importe del trámite:</div>
+            <div class="col-span-8 p-1.5 font-bold border-r border-gray-700">{{ cobro.importe }}</div>
+          </div>
+          <div class="grid grid-cols-12 items-center">
+            <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Formas de pago:</div>
+            <div class="col-span-9 p-1.5 flex flex-wrap gap-6 text-[9.5px]">
+              <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if "Caja" in cobro.forma_pago %}checked{% endif %}/> Cajas propias</label>
+              <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if "Banco" in cobro.forma_pago %}checked{% endif %}/> Bancos</label>
+              <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if "electrónica" in cobro.forma_pago or "Linea" in cobro.forma_pago %}checked{% endif %}/> Banca electrónica</label>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Signatures Footer -->
+      <div>
+        <table class="gov-table mb-2">
+          <thead>
+            <tr>
+              <th class="w-1/3 py-1 font-bold">Elaboró</th>
+              <th class="w-1/3 py-1 font-bold">Revisó</th>
+              <th class="w-1/3 py-1 font-bold">Autorizó</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="h-10">
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.elaboro_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.reviso1_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.autorizo_nombre }}</td>
+            </tr>
+            <tr class="text-center text-[9px] font-semibold bg-gray-50">
+              <td class="p-1">{{ ficha.id_agenda.elaboro_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.reviso1_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.autorizo_puesto }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+          <span></span>
+          <span class="font-mono">Página 1 de 6</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- =================================================================== -->
+    <!-- HOJA 2: FASD 08 - III. ANÁLISIS, IV. MATRIZ, V. HALLAZGOS -->
+    <!-- =================================================================== -->
+    <article class="page-sheet doc-item" data-doc-title="Hoja 2" id="doc-2">
+      <div>
+        <div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+          <div class="col-span-4 flex items-center">
+            <img alt="Ayuntamiento Logo" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRw-2n4EGbsMA6gqudh8qScGkBW3oR1wgtQ6kBgWyKMNHi6AWOFOzcirpfBN-phkTcEyxlfUDb6HqfNXHITizG-zMi9OmjkdwXxdfSe--QxDeFu0sDp1d9_ZHu8zqVnaw3Q3v_hQpRhWMuIviR5XzqrBbiW-F2PANylR5YHmlEtsD3gujSiRDkFSA7xBn7r1k-3XWIGJviEr1Y3yMaWMLHxGLEWnHIgam0KnTw1Rz9wz7xmBTXUJAFNoEB6pzckBog1RE"/>
+          </div>
+          <div class="col-span-8 pl-3 border-l border-gray-400">
+            <div class="text-[11px] text-gray-500 font-semibold mb-0.5">{{ ficha.id_agenda.id_dependencia.nombre_oficial }}</div>
+            <div class="text-[12px] font-bold text-gray-800 uppercase tracking-wide">{{ ficha.id_agenda.semestre }}ª Agenda de Simplificación y Digitalización {{ ficha.id_agenda.anio }}</div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-baseline mb-2">
+          <h2 class="text-xs font-bold text-gray-900 uppercase">III. ANÁLISIS DE LA OPERACIÓN</h2>
+          <span class="text-[11px] font-mono font-bold text-gray-700">FASD 08 {{ ficha.id_agenda.anio }}</span>
+        </div>
+
+        <table class="gov-table text-[9.5px] mb-3">
+          <thead>
+            <tr>
+              <th class="py-1 bg-gray-100" colspan="2">Situación actual</th>
+            </tr>
+            <tr>
+              <th class="w-1/2 py-1 font-bold">Requisitos:</th>
+              <th class="w-1/2 py-1 font-bold">Observaciones / Problemas Detectados con los requisitos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-2 align-top">
+                <ol class="list-decimal pl-4 space-y-1">
+                  {% for requisito_obj in ficha.analisis_requisitos_json %}
+                  <li>{{ requisito_obj.requisito }}</li>
+                  {% endfor %}
+                </ol>
+              </td>
+              <td class="p-2 align-top">
+                {% for requisito_obj in ficha.analisis_requisitos_json %}
+                <div class="flex items-start gap-1.5 mb-1">
+                  <span class="font-bold text-blue-900">☑</span>
+                  <p class="text-gray-800 leading-relaxed">{{ requisito_obj.observacion }}</p>
+                </div>
+                {% endfor %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="border border-gray-700 p-2 mb-3 text-[10px] bg-gray-50">
+          <span class="font-bold block mb-0.5">En caso de existir condicionantes, favor de indicarlas:</span>
+          <p class="text-gray-800">{{ ficha.condiciones_o_criterios_de_resolucion|default:"No aplica" }}</p>
+        </div>
+
+        <!-- IV. MATRIZ DE DIAGNÓSTICO -->
+        <div class="flex justify-between items-baseline mb-1">
+          <h2 class="text-xs font-bold text-gray-900 uppercase">IV. MATRIZ DE DIAGNÓSTICO</h2>
+        </div>
+        <table class="gov-table text-[9.5px] mb-3">
+          <thead>
+            <tr>
+              <th colspan="2" class="py-1">Indique el nivel de digitalización del trámite o servicio.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="w-12 text-center font-bold {% if ficha.nivel_digitalizacion_actual == 1 %}bg-amber-50{% endif %}">Nivel 1</td>
+              <td class="p-1.5">
+                <label class="flex items-center gap-2 font-medium cursor-pointer">
+                  <input class="rounded text-gray-800" type="checkbox" {% if ficha.nivel_digitalizacion_actual == 1 %}checked{% endif %}/>
+                  La información del trámite o servicio está publicada en medios electrónicos
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td class="w-12 text-center font-bold {% if ficha.nivel_digitalizacion_actual == 2 %}bg-amber-50{% endif %}">Nivel 2</td>
+              <td class="p-1.5">
+                <label class="flex items-center gap-2 font-medium cursor-pointer">
+                  <input class="rounded text-gray-800" type="checkbox" {% if ficha.nivel_digitalizacion_actual == 2 %}checked{% endif %}/>
+                  Los formatos del trámite o servicio están disponibles electrónicamente
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td class="w-12 text-center font-bold {% if ficha.nivel_digitalizacion_actual == 3 %}bg-amber-50{% endif %}">Nivel 3</td>
+              <td class="p-1.5">
+                <label class="flex items-center gap-2 font-medium cursor-pointer">
+                  <input class="rounded text-gray-800" type="checkbox" {% if ficha.nivel_digitalizacion_actual == 3 %}checked{% endif %}/>
+                  El usuario puede iniciar la gestión, recibir o enviar información del trámite
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td class="w-12 text-center font-bold {% if ficha.nivel_digitalizacion_actual == 4 %}bg-amber-50{% endif %}">Nivel 4</td>
+              <td class="p-1.5">
+                <label class="flex items-center gap-2 font-medium cursor-pointer">
+                  <input class="rounded text-gray-800" type="checkbox" {% if ficha.nivel_digitalizacion_actual == 4 %}checked{% endif %}/>
+                  El trámite o servicio se gestiona desde el inicio hasta el final a través de un medio electrónico
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- V. HALLAZGOS Y OPORTUNIDADES -->
+        <div class="flex justify-between items-baseline mb-1">
+          <h2 class="text-xs font-bold text-gray-900 uppercase">V. HALLAZGOS Y OPORTUNIDADES</h2>
+        </div>
+        <div class="border border-gray-700 text-[10px] mb-2">
+          <div class="grid grid-cols-12 border-b border-gray-700">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Dónde están los cuellos de botella detectados:</div>
+            <div class="col-span-8 p-1.5 text-gray-800">{{ ficha.cuellos_de_botella|default:"No aplica" }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Qué requisitos no agregan valor al resolutivo del trámite o servicio:</div>
+            <div class="col-span-8 p-1.5 text-gray-800">{{ ficha.requisitos_sin_valor|default:"No aplica" }}</div>
+          </div>
+          <div class="grid grid-cols-12">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Indique propuesta de mejora a los problemas detectados:</div>
+            <div class="col-span-8 p-1.5 text-gray-800 font-medium">{{ ficha.propuestas_de_mejora }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signatures Footer -->
+      <div>
+        <table class="gov-table mb-2">
+          <thead>
+            <tr>
+              <th class="w-1/3 py-1 font-bold">Elaboró</th>
+              <th class="w-1/3 py-1 font-bold">Revisó</th>
+              <th class="w-1/3 py-1 font-bold">Autorizó</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="h-10">
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.elaboro_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.reviso1_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.autorizo_nombre }}</td>
+            </tr>
+            <tr class="text-center text-[9px] font-semibold bg-gray-50">
+              <td class="p-1">{{ ficha.id_agenda.elaboro_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.reviso1_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.autorizo_puesto }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+          <span></span>
+          <span class="font-mono">Página 2 de 6</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- =================================================================== -->
+    <!-- HOJA 3: FASD 09 - VI. ACCIONES DE SIMPLIFICACIÓN Y DIGITALIZACIÓN -->
+    <!-- =================================================================== -->
+    <article class="page-sheet doc-item" data-doc-title="Hoja 3" id="doc-3">
+      <div>
+        <div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+          <div class="col-span-4 flex items-center">
+            <img alt="Ayuntamiento Logo" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRw-2n4EGbsMA6gqudh8qScGkBW3oR1wgtQ6kBgWyKMNHi6AWOFOzcirpfBN-phkTcEyxlfUDb6HqfNXHITizG-zMi9OmjkdwXxdfSe--QxDeFu0sDp1d9_ZHu8zqVnaw3Q3v_hQpRhWMuIviR5XzqrBbiW-F2PANylR5YHmlEtsD3gujSiRDkFSA7xBn7r1k-3XWIGJviEr1Y3yMaWMLHxGLEWnHIgam0KnTw1Rz9wz7xmBTXUJAFNoEB6pzckBog1RE"/>
+          </div>
+          <div class="col-span-8 pl-3 border-l border-gray-400">
+            <div class="text-[11px] text-gray-500 font-semibold mb-0.5">{{ ficha.id_agenda.id_dependencia.nombre_oficial }}</div>
+            <div class="text-[12px] font-bold text-gray-800 uppercase tracking-wide">{{ ficha.id_agenda.semestre }}ª Agenda de Simplificación y Digitalización {{ ficha.id_agenda.anio }}</div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-baseline mb-2">
+          <h2 class="text-xs font-bold text-gray-900 uppercase">VI. ACCIONES DE SIMPLIFICACIÓN Y/O DIGITALIZACIÓN</h2>
+          <span class="text-[11px] font-mono font-bold text-gray-700">FASD 09 {{ ficha.id_agenda.anio }}</span>
+        </div>
+
+        <div class="mb-2">
+          <h3 class="text-[11px] font-bold text-gray-900 mb-1 bg-gray-100 p-1 border border-gray-700">VI.I Acciones de Simplificación</h3>
+          <table class="gov-table text-[9.5px]">
+            <thead>
+              <tr>
+                <th class="w-8 text-center py-1">No</th>
+                <th class="text-left py-1">Acción de Simplificación</th>
+                <th class="w-16 text-center py-1">Aplica</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for accion in listado_acciones_simplificacion %}
+              <tr>
+                <td class="text-center font-bold">{{ forloop.counter }}</td>
+                <td>{{ accion.titulo }}</td>
+                <td class="text-center {% if accion in ficha.fichas_has_acciones.all %}font-bold text-blue-900{% endif %}">
+                  {% if accion in ficha.fichas_has_acciones.all %}☑{% else %}☐{% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mb-3">
+          <h3 class="text-[11px] font-bold text-gray-900 mb-1 bg-gray-100 p-1 border border-gray-700">VI.II Acciones de Digitalización</h3>
+          <table class="gov-table text-[9.5px]">
+            <thead>
+              <tr>
+                <th class="w-8 text-center py-1">No</th>
+                <th class="text-left py-1">Acción de Digitalización</th>
+                <th class="w-16 text-center py-1">Aplica</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for accion in listado_acciones_digitalizacion %}
+              <tr>
+                <td class="text-center font-bold">{{ forloop.counter }}</td>
+                <td>{{ accion.titulo }}</td>
+                <td class="text-center {% if accion in ficha.fichas_has_acciones.all %}font-bold text-blue-900{% endif %}">
+                  {% if accion in ficha.fichas_has_acciones.all %}☑{% else %}☐{% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Signatures Footer -->
+      <div>
+        <table class="gov-table mb-2">
+          <thead>
+            <tr>
+              <th class="w-1/3 py-1 font-bold">Elaboró</th>
+              <th class="w-1/3 py-1 font-bold">Revisó</th>
+              <th class="w-1/3 py-1 font-bold">Autorizó</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="h-12">
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.elaboro_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.reviso1_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 font-medium">{{ ficha.id_agenda.autorizo_nombre }}</td>
+            </tr>
+            <tr class="text-center text-[9px] font-semibold bg-gray-50">
+              <td class="p-1">{{ ficha.id_agenda.elaboro_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.reviso1_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.autorizo_puesto }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+          <span></span>
+          <span class="font-mono">Página 3 de 6</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- =================================================================== -->
+    <!-- HOJA 4: FASD 03 - Acciones de Simplificación y Digitalización (Formato) -->
+    <!-- =================================================================== -->
+    <article class="page-sheet doc-item" data-doc-title="Hoja 4" id="doc-4">
+      <div>
+        <div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+          <div class="col-span-4 flex items-center">
+            <img alt="Ayuntamiento Logo" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRw-2n4EGbsMA6gqudh8qScGkBW3oR1wgtQ6kBgWyKMNHi6AWOFOzcirpfBN-phkTcEyxlfUDb6HqfNXHITizG-zMi9OmjkdwXxdfSe--QxDeFu0sDp1d9_ZHu8zqVnaw3Q3v_hQpRhWMuIviR5XzqrBbiW-F2PANylR5YHmlEtsD3gujSiRDkFSA7xBn7r1k-3XWIGJviEr1Y3yMaWMLHxGLEWnHIgam0KnTw1Rz9wz7xmBTXUJAFNoEB6pzckBog1RE"/>
+          </div>
+          <div class="col-span-8 pl-3 border-l border-gray-400 flex justify-between items-center">
+            <div>
+              <div class="text-[12px] text-amber-700 font-semibold mb-0.5">{{ ficha.id_agenda.id_dependencia.nombre_oficial }}</div>
+              <div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+            </div>
+            <div class="text-[10px] font-mono font-bold text-gray-700 self-start">FASD 03 {{ ficha.id_agenda.anio }}</div>
+          </div>
+        </div>
+
+        <div class="text-center mb-2">
+          <h2 class="text-xs font-bold text-gray-900">I. Acciones de Simplificación y Digitalización</h2>
+        </div>
+
+        <div class="border border-gray-700 text-[10px] mb-2">
+          <div class="grid grid-cols-12">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-50 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
+            <div class="col-span-8 p-1.5">{{ ficha.id_tramite_servicio.nombre_oficial }}</div>
+          </div>
+        </div>
+
+        <!-- Simplification Table -->
+        <div class="mb-2">
+          <div class="bg-gray-100 border-t border-x border-gray-700 p-1 text-center font-bold text-[10px]">Acciones de Simplificación</div>
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th class="w-8 text-center py-1">No</th>
+                <th class="text-left py-1">Acción de Simplificación</th>
+                <th class="w-12 text-center py-1">Aplica</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for accion in listado_acciones_simplificacion %}
+              <tr>
+                <td class="text-center font-bold">{{ forloop.counter }}</td>
+                <td>{{ accion.titulo }}</td>
+                <td class="text-center"><input type="checkbox" class="rounded border-gray-400" {% if accion in ficha.fichas_has_acciones.all %}checked{% endif %}/></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Digitalization Table -->
+        <div class="mb-3">
+          <div class="bg-gray-100 border-t border-x border-gray-700 p-1 text-center font-bold text-[10px]">Acciones de Digitalización</div>
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th class="w-8 text-center py-1">No</th>
+                <th class="text-left py-1">Acción de Digitalización</th>
+                <th class="w-12 text-center py-1">Aplica</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for accion in listado_acciones_digitalizacion %}
+              <tr>
+                <td class="text-center font-bold">{{ forloop.counter }}</td>
+                <td>{{ accion.titulo }}</td>
+                <td class="text-center"><input type="checkbox" class="rounded border-gray-400" {% if accion in ficha.fichas_has_acciones.all %}checked{% endif %}/></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Signatures Footer -->
+      <div>
+        <table class="gov-table mb-2">
+          <thead>
+            <tr>
+              <th class="w-1/3 py-1 font-bold">Elaboró</th>
+              <th class="w-1/3 py-1 font-bold">Revisó</th>
+              <th class="w-1/3 py-1 font-bold">Autorizó</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="h-12">
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.elaboro_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.reviso1_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.autorizo_nombre }}</td>
+            </tr>
+            <tr class="text-center text-[9px] font-semibold bg-gray-50">
+              <td class="p-1">{{ ficha.id_agenda.elaboro_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.reviso1_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.autorizo_puesto }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+          <span></span>
+          <span class="font-mono">Página 4 de 6</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- =================================================================== -->
+    <!-- HOJA 5: FASD 04 - Cronología de Integración de la Agenda (Simplificación) -->
+    <!-- =================================================================== -->
+    <article class="page-sheet doc-item" data-doc-title="Hoja 5" id="doc-5">
+      <div>
+        <div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+          <div class="col-span-4 flex items-center">
+            <img alt="Ayuntamiento Logo" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRw-2n4EGbsMA6gqudh8qScGkBW3oR1wgtQ6kBgWyKMNHi6AWOFOzcirpfBN-phkTcEyxlfUDb6HqfNXHITizG-zMi9OmjkdwXxdfSe--QxDeFu0sDp1d9_ZHu8zqVnaw3Q3v_hQpRhWMuIviR5XzqrBbiW-F2PANylR5YHmlEtsD3gujSiRDkFSA7xBn7r1k-3XWIGJviEr1Y3yMaWMLHxGLEWnHIgam0KnTw1Rz9wz7xmBTXUJAFNoEB6pzckBog1RE"/>
+          </div>
+          <div class="col-span-8 pl-3 border-l border-gray-400 flex justify-between items-center">
+            <div>
+              <div class="text-[12px] text-amber-700 font-semibold mb-0.5">{{ ficha.id_agenda.id_dependencia.nombre_oficial }}</div>
+              <div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+            </div>
+            <div class="text-[10px] font-mono font-bold text-gray-700 self-start">FASD 04 {{ ficha.id_agenda.anio }}</div>
+          </div>
+        </div>
+
+        <div class="text-center mb-2">
+          <h2 class="text-xs font-bold text-gray-900">VII. Cronología de Integración de la Agenda de Simplificación</h2>
+        </div>
+
+        {% for accion in ficha.fichas_has_acciones.all %}
+        {% if accion.simplificacion_o_digitalizacion %}
+        <!-- Meta Info -->
+        <div class="border border-gray-700 text-[10px] mb-2">
+          <div class="grid grid-cols-12 border-b border-gray-700">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-50 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
+            <div class="col-span-8 p-1.5">{{ ficha.id_tramite_servicio.nombre_oficial }}</div>
+          </div>
+          <div class="grid grid-cols-12">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-50 border-r border-gray-700">Nombre de la acción:</div>
+            <div class="col-span-8 p-1.5 font-medium">{{ accion.titulo }}</div>
+          </div>
+        </div>
+
+        <!-- Gantt Cronology Table -->
+        <table class="gov-table text-[9px] mb-4">
+          <thead>
+            <tr>
+              <th class="w-6" rowspan="2">No</th>
+              <th class="w-1/3" rowspan="2">Actividades</th>
+              <th class="text-center" colspan="6">Meses</th>
+              <th class="w-1/3" rowspan="2">Entregables</th>
+            </tr>
+            <tr class="text-[8px] bg-gray-100">
+              <th class="w-6">Ene</th>
+              <th class="w-6">Feb</th>
+              <th class="w-6">Mzo</th>
+              <th class="w-6">Abr</th>
+              <th class="w-6">May</th>
+              <th class="w-6">Jun</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for actividad in accion.actividades.all %}
+            <tr>
+              <td class="text-center font-bold">{{ forloop.counter }}</td>
+              <td class="font-medium">{{ actividad.titulo }}</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td>
+              <td class="text-[8px] leading-relaxed">
+                {% for entregable in actividad.entregables.all %}
+                  - {{ entregable.titulo }}<br/>
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Signatures Footer -->
+      <div>
+        <table class="gov-table mb-2">
+          <thead>
+            <tr>
+              <th class="w-1/3 py-1 font-bold">Elaboró</th>
+              <th class="w-1/3 py-1 font-bold">Revisó</th>
+              <th class="w-1/3 py-1 font-bold">Autorizó</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="h-12">
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.elaboro_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.reviso1_nombre }}</td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.autorizo_nombre }}</td>
+            </tr>
+            <tr class="text-center text-[9px] font-semibold bg-gray-50">
+              <td class="p-1">{{ ficha.id_agenda.elaboro_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.reviso1_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.autorizo_puesto }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+          <span></span>
+          <span class="font-mono">Página 5 de 6</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- =================================================================== -->
+    <!-- HOJA 6: FASD 05 - Cronología de Integración de la Agenda (Digitalización) -->
+    <!-- =================================================================== -->
+    <article class="page-sheet doc-item" data-doc-title="Hoja 6" id="doc-6">
+      <div>
+        <div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
+          <div class="col-span-4 flex items-center">
+            <img alt="Ayuntamiento Logo" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRw-2n4EGbsMA6gqudh8qScGkBW3oR1wgtQ6kBgWyKMNHi6AWOFOzcirpfBN-phkTcEyxlfUDb6HqfNXHITizG-zMi9OmjkdwXxdfSe--QxDeFu0sDp1d9_ZHu8zqVnaw3Q3v_hQpRhWMuIviR5XzqrBbiW-F2PANylR5YHmlEtsD3gujSiRDkFSA7xBn7r1k-3XWIGJviEr1Y3yMaWMLHxGLEWnHIgam0KnTw1Rz9wz7xmBTXUJAFNoEB6pzckBog1RE"/>
+          </div>
+          <div class="col-span-8 pl-3 border-l border-gray-400 flex justify-between items-center">
+            <div>
+              <div class="text-[12px] text-amber-700 font-semibold mb-0.5">{{ ficha.id_agenda.id_dependencia.nombre_oficial }}</div>
+              <div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
+            </div>
+            <div class="text-[10px] font-mono font-bold text-gray-700 self-start">FASD 05 {{ ficha.id_agenda.anio }}</div>
+          </div>
+        </div>
+
+        <div class="text-center mb-2">
+          <h2 class="text-xs font-bold text-gray-900">VIII. Cronología de Integración de la Agenda de Digitalización</h2>
+        </div>
+
+        {% for accion in ficha.fichas_has_acciones.all %}
+        {% if not accion.simplificacion_o_digitalizacion %}
+        <!-- Meta Info -->
+        <div class="border border-gray-700 text-[10px] mb-2">
+          <div class="grid grid-cols-12 border-b border-gray-700">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-50 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
+            <div class="col-span-8 p-1.5">{{ ficha.id_tramite_servicio.nombre_oficial }}</div>
+          </div>
+          <div class="grid grid-cols-12">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-50 border-r border-gray-700">Nombre de la acción:</div>
+            <div class="col-span-8 p-1.5 font-medium">{{ accion.titulo }}</div>
+          </div>
+        </div>
+
+        <!-- Gantt Cronology Table -->
+        <table class="gov-table text-[9px] mb-4">
+          <thead>
+            <tr>
+              <th class="w-6" rowspan="2">No</th>
+              <th class="w-1/3" rowspan="2">Actividades</th>
+              <th class="text-center" colspan="6">Meses</th>
+              <th class="w-1/3" rowspan="2">Entregables</th>
+            </tr>
+            <tr class="text-[8px] bg-gray-100">
+              <th class="w-6">Ene</th>
+              <th class="w-6">Feb</th>
+              <th class="w-6">Mzo</th>
+              <th class="w-6">Abr</th>
+              <th class="w-6">May</th>
+              <th class="w-6">Jun</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for actividad in accion.actividades.all %}
+            <tr>
+              <td class="text-center font-bold">{{ forloop.counter }}</td>
+              <td class="font-medium">{{ actividad.titulo }}</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td>
+              <td class="text-[8px] leading-relaxed">
+                {% for entregable in actividad.entregables.all %}
+                  - {{ entregable.titulo }}<br/>
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Signatures Footer Modificado -->
+      <div>
+        <table class="gov-table mb-2">
+          <thead>
+            <tr>
+              <th class="w-1/3 py-1 font-bold">Elaboró</th>
+              <th class="w-1/3 py-1 font-bold">Revisó</th>
+              <th class="w-1/3 py-1 font-bold">Autorizó</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 h-24">{{ ficha.id_agenda.elaboro_nombre }}</td>
+              <td class="p-0 align-top">
+                <div class="flex flex-col h-full justify-between">
+                  <div class="h-10 flex items-end justify-center pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.reviso1_nombre }}</div>
+                  <div class="text-center text-[8px] font-semibold bg-gray-50 border-y border-gray-700 py-0.5">{{ ficha.id_agenda.reviso1_puesto }}</div>
+                  <div class="h-10 flex items-end justify-center pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.reviso2_nombre }}</div>
+                </div>
+              </td>
+              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800 h-24">{{ ficha.id_agenda.autorizo_nombre }}</td>
+            </tr>
+            <tr class="text-center text-[9px] font-semibold bg-gray-50">
+              <td class="p-1">{{ ficha.id_agenda.elaboro_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.reviso2_puesto }}</td>
+              <td class="p-1">{{ ficha.id_agenda.autorizo_puesto }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+          <span></span>
+          <span class="font-mono">Página 6 de 6</span>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <script data-purpose="document-filter-interaction">
+    function filterDocuments(selectedVal) {
+      const items = document.querySelectorAll('.doc-item');
+      if (selectedVal === 'all') {
+        items.forEach(doc => {
+          doc.style.display = 'flex';
+        });
+      } else {
+        items.forEach(doc => {
+          if (doc.id === selectedVal) {
+            doc.style.display = 'flex';
+          } else {
+            doc.style.display = 'none';
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>

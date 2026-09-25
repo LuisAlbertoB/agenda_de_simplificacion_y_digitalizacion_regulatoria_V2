@@ -2,6 +2,7 @@ import { agendasService, dependenciasService, usuariosService } from '../service
 import { api } from '../services/api.js';
 import { renderDataTable, renderInstitutionalBanner, showFormModal, showConfirmModal, showToast } from '../components/organisms.js';
 import { renderBadge } from '../components/atoms.js';
+import { generarDocumentoAgenda, generarDocumentoFicha } from '../services/documento-fasd-generator.js';
 
 export async function renderAgendasPage(container) {
   let currentPage = 1;
@@ -186,6 +187,10 @@ export async function renderAgendasPage(container) {
                 <p class="font-body-sm text-xs text-text-tertiary">${dataCons.unidad_administrativa || 'Unidad Administrativa'} — Año ${dataCons.anio} (${dataCons.semestre ? '1er Semestre' : '2do Semestre'})</p>
               </div>
             </div>
+            <button type="button" id="btn-print-agenda-fasd" class="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-title-md text-xs font-bold shadow flex items-center gap-1.5 transition-colors mr-2">
+              <span class="material-symbols-outlined text-[16px]">print</span>
+              <span>Generar FASD Completo</span>
+            </button>
             <button id="btn-close-consolidado" class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-text-secondary hover:text-text-primary transition-colors">
               <span class="material-symbols-outlined text-[20px]">close</span>
             </button>
@@ -305,7 +310,13 @@ export async function renderAgendasPage(container) {
                             <span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-data-mono text-xs font-bold">#FCH-${f.id_ficha}</span>
                             <span class="font-title-md font-semibold text-text-primary text-sm">${f.id_tramite_servicio?.nombre_oficial || 'Trámite'}</span>
                           </div>
-                          <span class="font-data-mono text-xs text-text-tertiary">Plazo: ${f.plazo_maximo_resolucion_dias ?? '-'} días</span>
+                          <div class="flex items-center gap-2">
+                             <button type="button" data-action="print-single-ficha-fasd" data-id="${f.id_ficha}" class="px-2 py-1 rounded bg-emerald-950/40 text-emerald-400 hover:bg-emerald-900/60 border border-emerald-700/50 text-xs font-bold flex items-center gap-1">
+                               <span class="material-symbols-outlined text-[14px]">print</span>
+                               <span>Imprimir FASD</span>
+                             </button>
+                             <span class="font-data-mono text-xs text-text-tertiary">Plazo: ${f.plazo_maximo_resolucion_dias ?? '-'} días</span>
+                           </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
@@ -358,6 +369,31 @@ export async function renderAgendasPage(container) {
       closeBtn.addEventListener('click', closeHandler);
       backdrop.addEventListener('click', (e) => {
         if (e.target === backdrop) closeHandler();
+      });
+
+      const btnPrintAgenda = backdrop.querySelector('#btn-print-agenda-fasd');
+      if (btnPrintAgenda) {
+        btnPrintAgenda.addEventListener('click', async () => {
+          try {
+            showToast('Generando compilación oficial FASD para toda la agenda...', 'info');
+            await generarDocumentoAgenda(dataCons.id_agenda);
+          } catch (err) {
+            showToast(err.message || 'Error al generar documento', 'error');
+          }
+        });
+      }
+
+      backdrop.addEventListener('click', async (e) => {
+        const btnSingleFicha = e.target.closest('[data-action="print-single-ficha-fasd"]');
+        if (btnSingleFicha) {
+          const fid = parseInt(btnSingleFicha.dataset.id, 10);
+          try {
+            showToast('Generando documento oficial FASD...', 'info');
+            await generarDocumentoFicha(fid);
+          } catch (err) {
+            showToast(err.message || 'Error al generar documento', 'error');
+          }
+        }
       });
 
       const btnSaveFirmantes = backdrop.querySelector('#btn-save-firmantes');
@@ -553,6 +589,7 @@ export async function renderAgendasPage(container) {
     if (!tableContainer) return;
 
     tableContainer.addEventListener('click', (e) => {
+      const btnPrintAgendaTbl = e.target.closest('[data-action="print-agenda-fasd"]');
       const btnConsolidado = e.target.closest('[data-action="consolidado"]');
       const btnStatus = e.target.closest('[data-action="status"]');
       const btnEdit = e.target.closest('[data-action="edit"]');
@@ -560,7 +597,11 @@ export async function renderAgendasPage(container) {
       const btnPrev = e.target.closest('[data-action="prev-page"]');
       const btnNext = e.target.closest('[data-action="next-page"]');
 
-      if (btnConsolidado) {
+      if (btnPrintAgendaTbl) {
+        const idAg = parseInt(btnPrintAgendaTbl.dataset.id, 10);
+        showToast('Generando compilación oficial FASD para toda la agenda...', 'info');
+        generarDocumentoAgenda(idAg).catch(err => showToast(err.message || 'Error al generar documento', 'error'));
+      } else if (btnConsolidado) {
         const id = parseInt(btnConsolidado.dataset.id, 10);
         const item = data.find(d => d.id_agenda === id);
         if (item) openConsolidadoModal(item);

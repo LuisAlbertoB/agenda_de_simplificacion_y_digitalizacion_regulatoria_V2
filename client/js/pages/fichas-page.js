@@ -4,6 +4,7 @@ import { renderDataTable, renderInstitutionalBanner, showFormModal, showConfirmM
 import { renderMaturityLevel } from '../components/molecules.js';
 import { renderBadge, renderSpinner } from '../components/atoms.js';
 import { showFichaWizardModal } from '../components/ficha-wizard-modal.js';
+import { generarDocumentoFicha } from '../services/documento-fasd-generator.js';
 
 export async function renderFichasPage(container) {
   let currentPage = 1;
@@ -336,6 +337,9 @@ export async function renderFichasPage(container) {
               idField: 'id_ficha',
               renderActions: (row) => `
                 <div class="inline-flex items-center justify-end gap-1">
+                  <button type="button" data-action="print-fasd" data-id="${row.id_ficha}" class="p-1 rounded bg-emerald-950/40 text-emerald-400 hover:bg-emerald-900/60 border border-emerald-700/50" title="Generar Documento Oficial FASD (Imprimible)">
+                    <span class="material-symbols-outlined text-[16px]">print</span>
+                  </button>
                   <button type="button" data-action="view-detail" data-id="${row.id_ficha}" class="p-1 rounded bg-surface-container text-primary hover:bg-surface-container-high border border-border-subtle" title="Ver Detalle">
                     <span class="material-symbols-outlined text-[16px]">visibility</span>
                   </button>
@@ -362,6 +366,10 @@ export async function renderFichasPage(container) {
                   <h3 class="font-headline-sm text-headline-sm text-text-primary font-bold">Ficha Diagnóstica #FCH-${selectedFicha.id_ficha}</h3>
                 </div>
                 <div class="flex items-center gap-2">
+                  <button id="btn-print-selected" class="px-2.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-title-md text-xs font-bold shadow flex items-center gap-1.5" title="Imprimir Documento FASD (6 Hojas)">
+                    <span class="material-symbols-outlined text-[16px]">print</span>
+                    <span>Imprimir FASD</span>
+                  </button>
                   <button id="btn-edit-selected" class="p-1.5 rounded-lg bg-surface-container text-primary hover:bg-surface-container-high border border-border-subtle" title="Editar Ficha">
                     <span class="material-symbols-outlined text-[18px]">edit</span>
                   </button>
@@ -545,7 +553,12 @@ export async function renderFichasPage(container) {
         const btnPrev = e.target.closest('[data-action="prev-page"]');
         const btnNext = e.target.closest('[data-action="next-page"]');
 
-        if (btnView) {
+        const btnPrint = e.target.closest('[data-action="print-fasd"]');
+        if (btnPrint) {
+          const fid = parseInt(btnPrint.dataset.id, 10);
+          showToast('Generando documento oficial FASD...', 'info');
+          generarDocumentoFicha(fid).catch(err => showToast(err.message || 'Error al generar', 'error'));
+        } else if (btnView) {
           const fid = parseInt(btnView.dataset.id, 10);
           selectFicha(fid);
         } else if (btnEdit) {
@@ -574,6 +587,14 @@ export async function renderFichasPage(container) {
     }
 
     const btnEditSelected = container.querySelector('#btn-edit-selected');
+    const btnPrintSelected = container.querySelector('#btn-print-selected');
+    if (btnPrintSelected && selectedFicha) {
+      btnPrintSelected.addEventListener('click', () => {
+        showToast('Generando documento oficial FASD...', 'info');
+        generarDocumentoFicha(selectedFicha.id_ficha).catch(err => showToast(err.message || 'Error al generar', 'error'));
+      });
+    }
+
     if (btnEditSelected && selectedFicha) {
       btnEditSelected.addEventListener('click', () => openEditModal(selectedFicha));
     }

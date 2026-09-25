@@ -34,3 +34,17 @@ class FichaViewSet(ModelViewSet):
         ficha = FichaService.registrar_ficha_con_cronograma(request.data, user=user)
         serializer = self.get_serializer(ficha)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['get'], url_path='paquete-documental')
+    def paquete_documental(self, request, pk=None):
+        """
+        Devuelve el paquete documental consolidado para generar las 6 hojas
+        del documento oficial FASD (FASD 07, 08, 09, 03, 04, 05).
+
+        Consolida en una sola respuesta: ficha, agenda (con dependencia y firmantes),
+        trámite, cobros, acciones vinculadas (con actividades, entregables y cronograma)
+        y niveles de digitalización. Acción de solo lectura, sin migracones.
+        """
+        ficha = self.get_object()
+        paquete = FichaService.obtener_paquete_documental(ficha)
+        return Response(paquete, status=status.HTTP_200_OK)
