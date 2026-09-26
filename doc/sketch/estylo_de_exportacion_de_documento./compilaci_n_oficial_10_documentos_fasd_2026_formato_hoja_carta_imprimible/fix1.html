@@ -204,12 +204,16 @@
             <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700 text-center">Cantidad de áreas que intervienen:</div>
             <div class="col-span-2 p-1.5 font-bold text-center">{{ ficha.areas_administrativas_interfieren }}</div>
           </div>
-          <div class="grid grid-cols-12 items-center">
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
             <div class="col-span-8 p-1.5 font-bold bg-gray-100 border-r border-gray-700">¿Este trámite o servicio está dirigido a personas o grupos de atención prioritaria o vulnerable?:</div>
             <div class="col-span-4 p-1.5 flex justify-around font-semibold">
               <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if ficha.poblacion_prioritaria_atencion_preferente %}checked{% endif %}/> Sí</label>
               <label class="flex items-center gap-1"><input class="rounded" type="checkbox" {% if not ficha.poblacion_prioritaria_atencion_preferente %}checked{% endif %}/> No</label>
             </div>
+          </div>
+          <div class="grid grid-cols-12 items-center">
+            <div class="col-span-8 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Valor de la priorización de este trámite o servicio:</div>
+            <div class="col-span-4 p-1.5 font-bold text-center">{{ ficha.valor_priorizacion }}</div>
           </div>
         </div>
 
@@ -221,6 +225,10 @@
           <div class="grid grid-cols-12 border-b border-gray-700 items-center">
             <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre, artículo y fracción de la regulación en la que se fundamenta el trámite o servicio:</div>
             <div class="col-span-8 p-1.5">{{ ficha.regulacion_fundamenta_existencia_tramite }}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre de la regulación que faculta al Órgano Administrativo:</div>
+            <div class="col-span-8 p-1.5">{{ ficha.regulacion_faculta_organo }}</div>
           </div>
           <div class="grid grid-cols-12 border-b border-gray-700 items-center">
             <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Fundamento legal en la Ley de Ingresos:</div>
@@ -241,11 +249,17 @@
             <div class="col-span-8 p-1.5 font-bold border-r border-gray-700">{{ cobro.importe }}</div>
           </div>
           <div class="grid grid-cols-12 items-center">
-            <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Formas de pago:</div>
-            <div class="col-span-9 p-1.5 flex flex-wrap gap-6 text-[9.5px]">
+            <div class="col-span-2 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Formas de pago:</div>
+            <div class="col-span-4 p-1.5 flex flex-wrap gap-2 text-[9.5px] border-r border-gray-700">
               <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if "Caja" in cobro.forma_pago %}checked{% endif %}/> Cajas propias</label>
               <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if "Banco" in cobro.forma_pago %}checked{% endif %}/> Bancos</label>
               <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if "electrónica" in cobro.forma_pago or "Linea" in cobro.forma_pago %}checked{% endif %}/> Banca electrónica</label>
+            </div>
+            <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700 text-center">Tipo de trámite o servicio:</div>
+            <div class="col-span-3 p-1.5 flex flex-wrap gap-2 text-[9.5px] justify-around">
+              <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if ficha.tipo_tramite_dirigido == "Ciudadano" or "Ciudadano" in ficha.tipo_tramite_dirigido %}checked{% endif %}/> Ciudadano</label>
+              <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if ficha.tipo_tramite_dirigido == "Empresarial" or "Empresarial" in ficha.tipo_tramite_dirigido %}checked{% endif %}/> Empresarial</label>
+              <label class="flex items-center gap-1"><input type="checkbox" class="rounded" {% if ficha.tipo_tramite_dirigido == "Ambos" or "Ambos" in ficha.tipo_tramite_dirigido %}checked{% endif %}/> Ambos</label>
             </div>
           </div>
           {% endfor %}
@@ -537,111 +551,7 @@
       </div>
     </article>
 
-    <!-- =================================================================== -->
-    <!-- HOJA 4: FASD 03 - Acciones de Simplificación y Digitalización (Formato) -->
-    <!-- =================================================================== -->
-    <article class="page-sheet doc-item" data-doc-title="Hoja 4" id="doc-4">
-      <div>
-        <div class="border border-gray-700 p-2 mb-2 grid grid-cols-12 items-center gap-2">
-          <div class="col-span-4 flex items-center">
-            <img alt="Ayuntamiento Logo" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRw-2n4EGbsMA6gqudh8qScGkBW3oR1wgtQ6kBgWyKMNHi6AWOFOzcirpfBN-phkTcEyxlfUDb6HqfNXHITizG-zMi9OmjkdwXxdfSe--QxDeFu0sDp1d9_ZHu8zqVnaw3Q3v_hQpRhWMuIviR5XzqrBbiW-F2PANylR5YHmlEtsD3gujSiRDkFSA7xBn7r1k-3XWIGJviEr1Y3yMaWMLHxGLEWnHIgam0KnTw1Rz9wz7xmBTXUJAFNoEB6pzckBog1RE"/>
-          </div>
-          <div class="col-span-8 pl-3 border-l border-gray-400 flex justify-between items-center">
-            <div>
-              <div class="text-[12px] text-amber-700 font-semibold mb-0.5">{{ ficha.id_agenda.id_dependencia.nombre_oficial }}</div>
-              <div class="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Agenda de Simplificación y Digitalización</div>
-            </div>
-            <div class="text-[10px] font-mono font-bold text-gray-700 self-start">FASD 03 {{ ficha.id_agenda.anio }}</div>
-          </div>
-        </div>
 
-        <div class="text-center mb-2">
-          <h2 class="text-xs font-bold text-gray-900">I. Acciones de Simplificación y Digitalización</h2>
-        </div>
-
-        <div class="border border-gray-700 text-[10px] mb-2">
-          <div class="grid grid-cols-12">
-            <div class="col-span-4 p-1.5 font-bold bg-gray-50 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
-            <div class="col-span-8 p-1.5">{{ ficha.id_tramite_servicio.nombre_oficial }}</div>
-          </div>
-        </div>
-
-        <!-- Simplification Table -->
-        <div class="mb-2">
-          <div class="bg-gray-100 border-t border-x border-gray-700 p-1 text-center font-bold text-[10px]">Acciones de Simplificación</div>
-          <table class="gov-table">
-            <thead>
-              <tr>
-                <th class="w-8 text-center py-1">No</th>
-                <th class="text-left py-1">Acción de Simplificación</th>
-                <th class="w-12 text-center py-1">Aplica</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for accion in listado_acciones_simplificacion %}
-              <tr>
-                <td class="text-center font-bold">{{ forloop.counter }}</td>
-                <td>{{ accion.titulo }}</td>
-                <td class="text-center"><input type="checkbox" class="rounded border-gray-400" {% if accion in ficha.fichas_has_acciones.all %}checked{% endif %}/></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Digitalization Table -->
-        <div class="mb-3">
-          <div class="bg-gray-100 border-t border-x border-gray-700 p-1 text-center font-bold text-[10px]">Acciones de Digitalización</div>
-          <table class="gov-table">
-            <thead>
-              <tr>
-                <th class="w-8 text-center py-1">No</th>
-                <th class="text-left py-1">Acción de Digitalización</th>
-                <th class="w-12 text-center py-1">Aplica</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for accion in listado_acciones_digitalizacion %}
-              <tr>
-                <td class="text-center font-bold">{{ forloop.counter }}</td>
-                <td>{{ accion.titulo }}</td>
-                <td class="text-center"><input type="checkbox" class="rounded border-gray-400" {% if accion in ficha.fichas_has_acciones.all %}checked{% endif %}/></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Signatures Footer -->
-      <div>
-        <table class="gov-table mb-2">
-          <thead>
-            <tr>
-              <th class="w-1/3 py-1 font-bold">Elaboró</th>
-              <th class="w-1/3 py-1 font-bold">Revisó</th>
-              <th class="w-1/3 py-1 font-bold">Autorizó</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="h-12">
-              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.elaboro_nombre }}</td>
-              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.reviso1_nombre }}</td>
-              <td class="align-bottom pb-1 text-center font-serif text-[10px] text-gray-800">{{ ficha.id_agenda.autorizo_nombre }}</td>
-            </tr>
-            <tr class="text-center text-[9px] font-semibold bg-gray-50">
-              <td class="p-1">{{ ficha.id_agenda.elaboro_puesto }}</td>
-              <td class="p-1">{{ ficha.id_agenda.reviso1_puesto }}</td>
-              <td class="p-1">{{ ficha.id_agenda.autorizo_puesto }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
-          <span></span>
-          <span class="font-mono">Página 4 de 6</span>
-        </div>
-      </div>
-    </article>
 
     <!-- =================================================================== -->
     <!-- HOJA 5: FASD 04 - Cronología de Integración de la Agenda (Simplificación) -->

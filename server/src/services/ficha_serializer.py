@@ -28,6 +28,7 @@ class FichaSerializer(serializers.ModelSerializer):
         help_text="ID del trámite/servicio diagnosticado"
     )
     created_by_id = serializers.PrimaryKeyRelatedField(read_only=True, source='created_by')
+    valor_priorizacion = serializers.SerializerMethodField(read_only=True)
     niveles_digitalizacion = FichaNivelDigitalizacionSerializer(many=True, read_only=True)
     niveles_digitalizacion_ids = serializers.ListField(
         child=serializers.IntegerField(),
@@ -76,11 +77,18 @@ class FichaSerializer(serializers.ModelSerializer):
             'niveles_digitalizacion_ids',
             'propuesta_mejora_transaccion_tecnologica',
             'status',
+            'valor_priorizacion',
             'created_by_id',
             'created_at',
             'updated_at',
         ]
-        read_only_fields = ['id_ficha', 'created_by_id', 'created_at', 'updated_at']
+        read_only_fields = ['id_ficha', 'valor_priorizacion',
+            'created_by_id', 'created_at', 'updated_at']
+
+    def get_valor_priorizacion(self, obj):
+        from src.services.ficha_service import FichaService
+        res = FichaService.calcular_puntaje_priorizacion(obj)
+        return res.get('puntaje_total', 0)
 
     def validate_importe_tramite(self, value):
         if value is not None and value < 0:

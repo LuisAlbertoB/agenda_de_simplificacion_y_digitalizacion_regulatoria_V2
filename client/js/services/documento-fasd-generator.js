@@ -1,16 +1,17 @@
 /**
  * documento-fasd-generator.js
  *
- * Genera el documento oficial imprimible FASD (6 hojas) a partir de datos reales
- * de la API, replicando exactamente la estructura visual, tablas, estilos y firmantes de fix1.html.
+ * Genera el documento oficial imprimible FASD (5 hojas) a partir de datos reales
+ * de la API, replicando exactamente la versión actualizada de fix1.html.
  *
- * Hojas generadas (en este orden, idéntico a fix1.html):
- *   Hoja 1: FASD 07 — I. Información General + II. Fundamento Jurídico
- *   Hoja 2: FASD 08 — III. Análisis Operativo + IV. Matriz Diagnóstico + V. Hallazgos
- *   Hoja 3: FASD 09 — VI. Checklists del catálogo oficial de acciones
- *   Hoja 4: FASD 03 — I. Tabla de acciones vinculadas (Formato)
- *   Hoja 5: FASD 04 — VII. Cronología de Integración de la Agenda (Simplificación)
- *   Hoja 6: FASD 05 — VIII. Cronología de Integración de la Agenda (Digitalización, 2 revisores)
+ * Hojas generadas (5 hojas en este orden, respetando el salto de ID de fix1.html):
+ *   Hoja 1: id="doc-1" — FASD 07 (Información General + Fundamento Jurídico)
+ *   Hoja 2: id="doc-2" — FASD 08 (Análisis Operativo + Matriz Diagnóstico + Hallazgos)
+ *   Hoja 3: id="doc-3" — FASD 09 (Checklists catálogo oficial de acciones)
+ *   Hoja 5: id="doc-5" — FASD 04 (Cronología de Simplificación)
+ *   Hoja 6: id="doc-6" — FASD 05 (Cronología de Digitalización - 2 revisores)
+ *
+ * Nota: La "Hoja 4" (FASD 03) fue eliminada en fix1.html y ya no se genera.
  */
 
 import { api } from './api.js';
@@ -131,7 +132,7 @@ function renderFirmas(agenda, pagina, totalPaginas, esHoja6 = false) {
           </tr>
         </tbody>
       </table>
-      <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+      <div class="doc-footer flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
         <span></span>
         <span class="font-mono">Página ${pagina} de ${totalPaginas}</span>
       </div>`;
@@ -159,7 +160,7 @@ function renderFirmas(agenda, pagina, totalPaginas, esHoja6 = false) {
         </tr>
       </tbody>
     </table>
-    <div class="flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
+    <div class="doc-footer flex items-center justify-between border-t border-gray-300 pt-1 text-[10px] text-gray-600">
       <span></span>
       <span class="font-mono">Página ${pagina} de ${totalPaginas}</span>
     </div>`;
@@ -179,6 +180,12 @@ function renderHoja1(paquete, opts) {
   const numReqs = (paquete.analisis_requisitos_json || []).length;
   const esTramite = tramite.tramite_o_servicio === true;
   const esServicio = tramite.tramite_o_servicio === false;
+
+  // Lógica de coincidencia para tipo_tramite_dirigido (tolerante exacto / substring)
+  const valDirigido = String(paquete.tipo_tramite_dirigido || '');
+  const esCiudadano = valDirigido === 'Ciudadano' || valDirigido.includes('Ciudadano');
+  const esEmpresarial = valDirigido === 'Empresarial' || valDirigido.includes('Empresarial');
+  const esAmbos = valDirigido === 'Ambos' || valDirigido.includes('Ambos');
 
   let cobrosHtml = '';
   if (Array.isArray(cobros) && cobros.length > 0) {
@@ -205,16 +212,21 @@ function renderHoja1(paquete, opts) {
           <div class="col-span-8 p-1.5 font-bold border-r border-gray-700">${esc(cobro.importe ?? '')}</div>
         </div>
         <div class="grid grid-cols-12 items-center">
-          <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Formas de pago:</div>
-          <div class="col-span-9 p-1.5 flex flex-wrap gap-6 text-[9.5px]">
+          <div class="col-span-2 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Formas de pago:</div>
+          <div class="col-span-4 p-1.5 flex flex-wrap gap-2 text-[9.5px] border-r border-gray-700">
             <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esCaja)}/> Cajas propias</label>
             <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esBanco)}/> Bancos</label>
             <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esBancaElec)}/> Banca electrónica</label>
           </div>
+          <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700 text-center">Tipo de trámite o servicio:</div>
+          <div class="col-span-3 p-1.5 flex flex-wrap gap-2 text-[9.5px] justify-around">
+            <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esCiudadano)}/> Ciudadano</label>
+            <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esEmpresarial)}/> Empresarial</label>
+            <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esAmbos)}/> Ambos</label>
+          </div>
         </div>`;
     }).join('');
   } else {
-    // Default cobro row si no hay registros en la tabla Cobro
     const uCobro = paquete.unidad_de_cobro || '';
     const importeVal = paquete.importe_tramite;
     const formasPago = paquete.formas_de_pago || [];
@@ -233,11 +245,17 @@ function renderHoja1(paquete, opts) {
         <div class="col-span-8 p-1.5 font-bold border-r border-gray-700">${esc(importeVal ?? '0.00')}</div>
       </div>
       <div class="grid grid-cols-12 items-center">
-        <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Formas de pago:</div>
-        <div class="col-span-9 p-1.5 flex flex-wrap gap-6 text-[9.5px]">
+        <div class="col-span-2 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Formas de pago:</div>
+        <div class="col-span-4 p-1.5 flex flex-wrap gap-2 text-[9.5px] border-r border-gray-700">
           <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(fpStr.includes('Caja'))}/> Cajas propias</label>
           <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(fpStr.includes('Banco'))}/> Bancos</label>
           <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(fpStr.includes('electrónica') || fpStr.includes('Linea'))}/> Banca electrónica</label>
+        </div>
+        <div class="col-span-3 p-1.5 font-bold bg-gray-100 border-r border-gray-700 text-center">Tipo de trámite o servicio:</div>
+        <div class="col-span-3 p-1.5 flex flex-wrap gap-2 text-[9.5px] justify-around">
+          <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esCiudadano)}/> Ciudadano</label>
+          <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esEmpresarial)}/> Empresarial</label>
+          <label class="flex items-center gap-1"><input type="checkbox" class="rounded" ${chk(esAmbos)}/> Ambos</label>
         </div>
       </div>`;
   }
@@ -313,12 +331,16 @@ function renderHoja1(paquete, opts) {
             <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700 text-center">Cantidad de áreas que intervienen:</div>
             <div class="col-span-2 p-1.5 font-bold text-center">${esc(paquete.areas_administrativas_interfieren ?? '')}</div>
           </div>
-          <div class="grid grid-cols-12 items-center">
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
             <div class="col-span-8 p-1.5 font-bold bg-gray-100 border-r border-gray-700">¿Este trámite o servicio está dirigido a personas o grupos de atención prioritaria o vulnerable?:</div>
             <div class="col-span-4 p-1.5 flex justify-around font-semibold">
               <label class="flex items-center gap-1"><input class="rounded" type="checkbox" ${chk(paquete.poblacion_prioritaria_atencion_preferente)}/> Sí</label>
               <label class="flex items-center gap-1"><input class="rounded" type="checkbox" ${chk(!paquete.poblacion_prioritaria_atencion_preferente)}/> No</label>
             </div>
+          </div>
+          <div class="grid grid-cols-12 items-center">
+            <div class="col-span-8 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Valor de la priorización de este trámite o servicio:</div>
+            <div class="col-span-4 p-1.5 font-bold text-center">${esc(paquete.valor_priorizacion ?? 0)}</div>
           </div>
         </div>
         <div class="flex justify-between items-baseline mb-1">
@@ -328,6 +350,10 @@ function renderHoja1(paquete, opts) {
           <div class="grid grid-cols-12 border-b border-gray-700 items-center">
             <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre, artículo y fracción de la regulación en la que se fundamenta el trámite o servicio:</div>
             <div class="col-span-8 p-1.5">${esc(paquete.regulacion_fundamenta_existencia_tramite || '')}</div>
+          </div>
+          <div class="grid grid-cols-12 border-b border-gray-700 items-center">
+            <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Nombre de la regulación que faculta al Órgano Administrativo:</div>
+            <div class="col-span-8 p-1.5">${esc(paquete.regulacion_faculta_organo || '')}</div>
           </div>
           <div class="grid grid-cols-12 border-b border-gray-700 items-center">
             <div class="col-span-4 p-1.5 font-bold bg-gray-100 border-r border-gray-700">Fundamento legal en la Ley de Ingresos:</div>
@@ -514,82 +540,6 @@ function renderHoja3(paquete, todasAcciones, opts) {
     </article>`;
 }
 
-// ─── HOJA 4: FASD 03 ─── Tabla de acciones vinculadas con checkboxes ──────────
-
-function renderHoja4(paquete, todasAcciones, opts) {
-  const { agenda, tramite, acciones } = paquete;
-  const pag = opts.paginaBase + 4;
-  const total = opts.totalPaginas;
-
-  const accionesVinculadasIds = new Set(
-    (acciones || []).map(a => a.id_accion && a.id_accion.id_accion)
-  );
-
-  const simplificacion = todasAcciones.filter(a => a.simplificacion_o_digitalizacion === true);
-  const digitalizacion = todasAcciones.filter(a => a.simplificacion_o_digitalizacion === false);
-
-  const renderFilaCheck = (accion, idx) => {
-    const aplica = accionesVinculadasIds.has(accion.id_accion);
-    return `
-      <tr>
-        <td class="text-center font-bold">${idx + 1}</td>
-        <td>${esc(accion.titulo || '')}</td>
-        <td class="text-center"><input type="checkbox" class="rounded border-gray-400" ${chk(aplica)}/></td>
-      </tr>`;
-  };
-
-  return `
-    <article class="page-sheet doc-item" data-doc-title="Hoja 4" id="doc-4-f${paquete.id_ficha}">
-      <div>
-        ${renderEncabezadoFASD(agenda, '03')}
-        <div class="text-center mb-2">
-          <h2 class="text-xs font-bold text-gray-900">I. Acciones de Simplificación y Digitalización</h2>
-        </div>
-        <div class="border border-gray-700 text-[10px] mb-2">
-          <div class="grid grid-cols-12">
-            <div class="col-span-4 p-1.5 font-bold bg-gray-50 border-r border-gray-700">Nombre del Trámite o Servicio:</div>
-            <div class="col-span-8 p-1.5">${esc(tramite.nombre_oficial || '')}</div>
-          </div>
-        </div>
-        <div class="mb-2">
-          <div class="bg-gray-100 border-t border-x border-gray-700 p-1 text-center font-bold text-[10px]">Acciones de Simplificación</div>
-          <table class="gov-table text-[9.5px]">
-            <thead>
-              <tr>
-                <th class="w-8 text-center py-1">No</th>
-                <th class="text-left py-1">Acción de Simplificación</th>
-                <th class="w-12 text-center py-1">Aplica</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${simplificacion.length === 0
-                ? '<tr><td colspan="3" class="text-center text-gray-500 p-2">Sin acciones registradas</td></tr>'
-                : simplificacion.map((a, i) => renderFilaCheck(a, i)).join('')}
-            </tbody>
-          </table>
-        </div>
-        <div class="mb-3">
-          <div class="bg-gray-100 border-t border-x border-gray-700 p-1 text-center font-bold text-[10px]">Acciones de Digitalización</div>
-          <table class="gov-table text-[9.5px]">
-            <thead>
-              <tr>
-                <th class="w-8 text-center py-1">No</th>
-                <th class="text-left py-1">Acción de Digitalización</th>
-                <th class="w-12 text-center py-1">Aplica</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${digitalizacion.length === 0
-                ? '<tr><td colspan="3" class="text-center text-gray-500 p-2">Sin acciones registradas</td></tr>'
-                : digitalizacion.map((a, i) => renderFilaCheck(a, i)).join('')}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div>${renderFirmas(agenda, pag, total, false)}</div>
-    </article>`;
-}
-
 // ─── HOJA 5 y 6: FASD 04/05 ─── Gantt por tipo de acción ─────────────────────
 
 function renderHojaGantt(paquete, opts, tipo) {
@@ -599,8 +549,11 @@ function renderHojaGantt(paquete, opts, tipo) {
   const tituloSeccion = esSimpl
     ? 'VII. Cronología de Integración de la Agenda de Simplificación'
     : 'VIII. Cronología de Integración de la Agenda de Digitalización';
-  const hojaNum = esSimpl ? 5 : 6;
-  const pag = opts.paginaBase + hojaNum;
+
+  // Hoja 5 (FASD 04) es la 4ª página de la ficha; Hoja 6 (FASD 05) es la 5ª página.
+  const hojaNumAttr = esSimpl ? 5 : 6;
+  const numPaginaDeFicha = esSimpl ? 4 : 5;
+  const pag = opts.paginaBase + numPaginaDeFicha;
   const total = opts.totalPaginas;
   const meses = getMesesSemestre(agenda.semestre);
 
@@ -670,7 +623,7 @@ function renderHojaGantt(paquete, opts, tipo) {
     : accionesFiltradas.map(renderGanttTabla).join('');
 
   return `
-    <article class="page-sheet doc-item" data-doc-title="Hoja ${hojaNum}" id="doc-${hojaNum}-f${paquete.id_ficha}">
+    <article class="page-sheet doc-item" data-doc-title="Hoja ${hojaNumAttr}" id="doc-${hojaNumAttr}-f${paquete.id_ficha}">
       <div>
         ${renderEncabezadoFASD(agenda, fasdCod)}
         <div class="text-center mb-2">
@@ -682,26 +635,26 @@ function renderHojaGantt(paquete, opts, tipo) {
     </article>`;
 }
 
-// ─── Función principal: construir HTML de 6 hojas para una ficha ──────────────
+// ─── Función principal: construir HTML de 5 hojas para una ficha ──────────────
 
 export function construirHtmlCompilacionFicha(paquete, todasAcciones, opts = {}) {
   const paginaBase = opts.paginaBase ?? 0;
-  const totalPaginas = opts.totalPaginas ?? 6;
+  const totalPaginas = opts.totalPaginas ?? 5;
   const optsNorm = { paginaBase, totalPaginas };
 
   return [
     renderHoja1(paquete, optsNorm),
     renderHoja2(paquete, optsNorm),
     renderHoja3(paquete, todasAcciones, optsNorm),
-    renderHoja4(paquete, todasAcciones, optsNorm),
-    renderHojaGantt(paquete, optsNorm, 'simplificacion'),
-    renderHojaGantt(paquete, optsNorm, 'digitalizacion'),
+    renderHojaGantt(paquete, optsNorm, 'simplificacion'), // id="doc-5" (Hoja 5)
+    renderHojaGantt(paquete, optsNorm, 'digitalizacion'),  // id="doc-6" (Hoja 6, 2 revisores)
   ].join('\n');
 }
 
 // ─── HTML envolvente (head + tailwind + estilos impresión idénticos a fix1.html) ───
 
 function envolverDocumento(cuerpoHtml, titulo, totalFichas = 1) {
+  const totalPaginasDocumento = totalFichas * 5;
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -725,15 +678,23 @@ function envolverDocumento(cuerpoHtml, titulo, totalFichas = 1) {
   <style data-purpose="print-and-page-geometry">
     @page {
       size: letter portrait;
-      margin: 8mm 10mm;
+      margin: 0;
     }
     @media print {
-      body {
+      html, body {
         background: #ffffff !important;
         padding: 0 !important;
         margin: 0 !important;
+        width: 215.9mm !important;
+        height: auto !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+      }
+      #documents-root, main {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 215.9mm !important;
+        max-width: none !important;
       }
       .no-print {
         display: none !important;
@@ -742,11 +703,13 @@ function envolverDocumento(cuerpoHtml, titulo, totalFichas = 1) {
         box-shadow: none !important;
         border: none !important;
         margin: 0 !important;
-        padding: 6mm 8mm !important;
+        padding: 10mm 12mm 8mm 12mm !important;
+        width: 215.9mm !important;
+        max-width: 215.9mm !important;
+        box-sizing: border-box !important;
+        min-height: 279.4mm !important;
         page-break-after: always;
         break-after: page;
-        width: 100% !important;
-        min-height: 100vh !important;
       }
       .page-sheet:last-child {
         page-break-after: avoid;
@@ -795,21 +758,20 @@ function envolverDocumento(cuerpoHtml, titulo, totalFichas = 1) {
         <div class="w-2.5 h-7 bg-amber-600 rounded-sm"></div>
         <div>
           <h1 class="text-sm sm:text-base font-bold text-gray-900 leading-tight">Plataforma Oficial FASD</h1>
-          <p class="text-xs text-gray-500">Documento Completo (${totalFichas * 6} Hojas — ${totalFichas} ficha${totalFichas !== 1 ? 's' : ''}) — Tuxtla Gutiérrez</p>
+          <p class="text-xs text-gray-500">Documento Completo (${totalPaginasDocumento} Hojas — ${totalFichas} ficha${totalFichas !== 1 ? 's' : ''}) — Tuxtla Gutiérrez</p>
         </div>
       </div>
       <div class="flex items-center gap-3 flex-wrap">
         <label class="text-xs font-semibold text-gray-700" for="doc-selector">Hoja:</label>
-        <select class="text-xs border-gray-300 rounded-md py-1.5 px-3 bg-gray-50 focus:ring-amber-500 focus:border-amber-500 text-gray-800 font-medium" id="doc-selector" onchange="filterDocuments(this.value)">
-          <option value="all">Ver Las 6 Hojas (Modo Completo)</option>
+        <select class="text-xs border-gray-300 rounded-md py-1.5 px-3 bg-gray-50 text-gray-800 font-medium" id="doc-selector" onchange="filterDocuments(this.value)">
+          <option value="all">Ver Las 5 Hojas (Modo Completo)</option>
           <option value="doc-1">Hoja 1: FASD 07 (Información General y Fundamento Jurídico)</option>
           <option value="doc-2">Hoja 2: FASD 08 (Análisis, Matriz y Hallazgos)</option>
           <option value="doc-3">Hoja 3: FASD 09 (Acciones de Simplificación y Digitalización)</option>
-          <option value="doc-4">Hoja 4: FASD 03 (Formato de Acciones)</option>
           <option value="doc-5">Hoja 5: FASD 04 (Cronología de Simplificación)</option>
           <option value="doc-6">Hoja 6: FASD 05 (Cronología de Digitalización)</option>
         </select>
-        <button class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-semibold rounded-md shadow transition" onclick="window.print()" type="button">
+        <button class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-semibold rounded-md shadow transition" onclick="adjustFooterVisibility(); window.print()" type="button">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
           </svg>
@@ -822,6 +784,67 @@ function envolverDocumento(cuerpoHtml, titulo, totalFichas = 1) {
     ${cuerpoHtml}
   </main>
   <script data-purpose="document-filter-interaction">
+    var MM_TO_PX = 96 / 25.4;
+    var PAGE_LETTER_HEIGHT_PX = 279.4 * MM_TO_PX; // ~1055.874px
+    var TOLERANCE_PX = 3;
+
+    function waitForAssets() {
+      return new Promise(function(resolve) {
+        var promises = [];
+        if (document.fonts && document.fonts.ready) {
+          promises.push(document.fonts.ready);
+        }
+        var imgs = Array.from(document.images);
+        imgs.forEach(function(img) {
+          if (!img.complete) {
+            promises.push(new Promise(function(resImg) {
+              img.onload = resImg;
+              img.onerror = resImg;
+            }));
+          }
+        });
+        Promise.all(promises).then(resolve);
+      });
+    }
+
+    function adjustFooterVisibility() {
+      var sheets = document.querySelectorAll('.page-sheet');
+      sheets.forEach(function(sheet) {
+        var footer = sheet.querySelector('.doc-footer');
+        if (!footer) return;
+
+        footer.style.display = '';
+
+        var origPadding = sheet.style.padding;
+        var origBoxSizing = sheet.style.boxSizing;
+        sheet.style.padding = '10mm 12mm 8mm 12mm';
+        sheet.style.boxSizing = 'border-box';
+
+        var actualHeight = sheet.scrollHeight;
+
+        sheet.style.padding = origPadding;
+        sheet.style.boxSizing = origBoxSizing;
+
+        if (actualHeight > (PAGE_LETTER_HEIGHT_PX + TOLERANCE_PX)) {
+          footer.style.display = 'none';
+        } else {
+          footer.style.display = '';
+        }
+      });
+    }
+
+    function runAdjustmentProcess() {
+      waitForAssets().then(function() {
+        if (window.requestAnimationFrame) {
+          window.requestAnimationFrame(function() {
+            adjustFooterVisibility();
+          });
+        } else {
+          adjustFooterVisibility();
+        }
+      });
+    }
+
     function filterDocuments(selectedVal) {
       const items = document.querySelectorAll('.doc-item');
       if (selectedVal === 'all') {
@@ -832,7 +855,11 @@ function envolverDocumento(cuerpoHtml, titulo, totalFichas = 1) {
           doc.style.display = matches ? 'flex' : 'none';
         });
       }
+      runAdjustmentProcess();
     }
+
+    window.addEventListener('load', runAdjustmentProcess);
+    window.addEventListener('beforeprint', adjustFooterVisibility);
   <\/script>
 </body>
 </html>`;
@@ -858,6 +885,42 @@ async function cargarTodasLasAcciones() {
 
 // ─── API PÚBLICA ─────────────────────────────────────────────────────────────
 
+export async function generarHojaIndividual(idFicha, codigoHoja) {
+  const codUpper = String(codigoHoja).toUpperCase().replace(/\s+/g, '');
+  const necesitaAcciones = codUpper === 'FASD09' || codUpper === 'HOJA3' || codUpper === '3';
+
+  const [paquete, todasAcciones] = await Promise.all([
+    api.get(`${CONFIG.ENDPOINTS.FICHAS}${idFicha}/paquete-documental/`),
+    necesitaAcciones ? cargarTodasLasAcciones() : Promise.resolve([]),
+  ]);
+
+  const optsNorm = { paginaBase: 0, totalPaginas: 1 };
+  let htmlHoja = '';
+  let nombreHoja = codigoHoja;
+
+  if (codUpper === 'FASD07' || codUpper === 'HOJA1' || codUpper === '1') {
+    htmlHoja = renderHoja1(paquete, optsNorm);
+    nombreHoja = 'FASD 07 (Hoja 1)';
+  } else if (codUpper === 'FASD08' || codUpper === 'HOJA2' || codUpper === '2') {
+    htmlHoja = renderHoja2(paquete, optsNorm);
+    nombreHoja = 'FASD 08 (Hoja 2)';
+  } else if (codUpper === 'FASD09' || codUpper === 'HOJA3' || codUpper === '3') {
+    htmlHoja = renderHoja3(paquete, todasAcciones, optsNorm);
+    nombreHoja = 'FASD 09 (Hoja 3)';
+  } else if (codUpper === 'FASD04' || codUpper === 'HOJA5' || codUpper === '5') {
+    htmlHoja = renderHojaGantt(paquete, optsNorm, 'simplificacion');
+    nombreHoja = 'FASD 04 (Hoja 5)';
+  } else if (codUpper === 'FASD05' || codUpper === 'HOJA6' || codUpper === '6') {
+    htmlHoja = renderHojaGantt(paquete, optsNorm, 'digitalizacion');
+    nombreHoja = 'FASD 05 (Hoja 6)';
+  } else {
+    throw new Error(`Código de hoja no reconocido: ${codigoHoja}`);
+  }
+
+  const titulo = `${nombreHoja} — Ficha #${idFicha} — ${paquete.tramite?.nombre_oficial || ''}`;
+  abrirEnVentana(envolverDocumento(htmlHoja, titulo, 1));
+}
+
 export async function generarDocumentoFicha(idFicha) {
   const [paquete, todasAcciones] = await Promise.all([
     api.get(`${CONFIG.ENDPOINTS.FICHAS}${idFicha}/paquete-documental/`),
@@ -865,7 +928,7 @@ export async function generarDocumentoFicha(idFicha) {
   ]);
 
   const titulo = `FASD ${paquete.agenda?.anio || ''} — Ficha #${idFicha} — ${paquete.tramite?.nombre_oficial || ''}`;
-  const cuerpo = construirHtmlCompilacionFicha(paquete, todasAcciones, { paginaBase: 0, totalPaginas: 6 });
+  const cuerpo = construirHtmlCompilacionFicha(paquete, todasAcciones, { paginaBase: 0, totalPaginas: 5 });
   abrirEnVentana(envolverDocumento(cuerpo, titulo, 1));
 }
 
@@ -902,10 +965,10 @@ export async function generarDocumentoAgenda(idAgenda) {
     ),
   ]);
 
-  const totalPaginas = fichas.length * 6;
+  const totalPaginas = fichas.length * 5;
   const bloquesHtml = paquetes.map((paquete, idx) =>
     construirHtmlCompilacionFicha(paquete, todasAcciones, {
-      paginaBase: idx * 6,
+      paginaBase: idx * 5,
       totalPaginas,
     })
   );

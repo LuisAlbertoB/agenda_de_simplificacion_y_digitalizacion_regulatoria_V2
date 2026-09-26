@@ -272,6 +272,7 @@ class FichaService:
             'nivel_digitalizacion_actual': ficha.nivel_digitalizacion_actual,
             'propuesta_mejora_transaccion_tecnologica': ficha.propuesta_mejora_transaccion_tecnologica,
             'status': ficha.status,
+            'valor_priorizacion': FichaService.calcular_puntaje_priorizacion(ficha).get('puntaje_total', 0),
             'created_at': ficha.created_at.isoformat() if ficha.created_at else None,
             'updated_at': ficha.updated_at.isoformat() if ficha.updated_at else None,
         }

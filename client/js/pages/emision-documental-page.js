@@ -1,7 +1,7 @@
 import { agendasService, fichasService } from '../services/crud-factory.js';
-import { renderInstitutionalBanner, showToast } from '../components/organisms.js';
+import { renderInstitutionalBanner, showFormModal, showToast } from '../components/organisms.js';
 import { renderBadge, renderSpinner } from '../components/atoms.js';
-import { generarDocumentoFicha, generarDocumentoAgenda } from '../services/documento-fasd-generator.js';
+import { generarDocumentoFicha, generarDocumentoAgenda, generarHojaIndividual } from '../services/documento-fasd-generator.js';
 
 export async function renderEmisionDocumentalPage(container) {
   let loading = true;
@@ -11,13 +11,12 @@ export async function renderEmisionDocumentalPage(container) {
   let selectedFichaId = null;
 
   const documentosCatalog = [
-    { codigo: 'FASD 07', nombre: 'Hoja 1: Info General + Fundamento Jurídico', alcance: 'Por Ficha', hoja: 1, descripcion: 'Datos generales del trámite, vigencias, plazos, cobros, fundamento de existencia y facultades del órgano.' },
+    { codigo: 'FASD 07', nombre: 'Hoja 1: Info General + Fundamento Jurídico', alcance: 'Por Ficha', hoja: 1, descripcion: 'Datos generales del trámite, vigencias, plazos, cobros, valor de priorización, fundamento y facultades del órgano.' },
     { codigo: 'FASD 08', nombre: 'Hoja 2: Análisis Operativo, Matriz y Hallazgos', alcance: 'Por Ficha', hoja: 2, descripcion: 'Análisis de solicitudes/positivas, ventanillas de atención, cuellos de botella y matriz de madurez digital (LNETB).' },
     { codigo: 'FASD 09', nombre: 'Hoja 3: Checklist de Acciones del Catálogo', alcance: 'Por Ficha', hoja: 3, descripcion: 'Checklist completo del catálogo oficial de acciones de simplificación y digitalización con casillas marcadas.' },
-    { codigo: 'FASD 03', nombre: 'Hoja 4: Tabla de Acciones Vinculadas', alcance: 'Por Ficha', hoja: 4, descripcion: 'Tabla de acciones LNETB vinculadas específicamente a esta ficha diagnóstica, con entregables esperados.' },
     { codigo: 'FASD 04', nombre: 'Hoja 5: Gantt de Simplificación', alcance: 'Por Ficha', hoja: 5, descripcion: 'Cronograma semestral de actividades operativas de simplificación con celdas de mes calendarizadas.' },
-    { codigo: 'FASD 05', nombre: 'Hoja 6: Gantt de Digitalización', alcance: 'Por Ficha', hoja: 6, descripcion: 'Cronograma semestral de actividades operativas de digitalización con celdas de mes calendarizadas.' },
-    { codigo: 'FASD COMP', nombre: 'Compilación Oficial Completa (Agenda)', alcance: 'Por Agenda', hoja: '1-6', descripcion: 'Expediente consolidado con las 6 hojas de todas las fichas diagnósticas de la agenda en secuencia continua.' },
+    { codigo: 'FASD 05', nombre: 'Hoja 6: Gantt de Digitalización', alcance: 'Por Ficha', hoja: 6, descripcion: 'Cronograma semestral de actividades operativas de digitalización con celdas de mes calendarizadas y firmantes de 2 revisores.' },
+    { codigo: 'FASD COMP', nombre: 'Compilación Oficial Completa (Agenda)', alcance: 'Por Agenda', hoja: '1-5', descripcion: 'Expediente consolidado con las 5 hojas de todas las fichas diagnósticas de la agenda en secuencia continua.' },
   ];
 
   async function loadData() {
@@ -99,7 +98,7 @@ export async function renderEmisionDocumentalPage(container) {
           </div>
           <div class="flex items-center gap-2">
             <span class="px-3 py-1 rounded-full bg-primary/10 text-primary border border-border-gold text-xs font-semibold">
-              Formato Hoja Carta (6 Hojas / Ficha)
+              Formato Hoja Carta (5 Hojas / Ficha)
             </span>
           </div>
         </div>
@@ -140,7 +139,7 @@ export async function renderEmisionDocumentalPage(container) {
               `).join('')}
             </select>
             <p class="text-[11px] text-text-tertiary">
-              Muestra el documento oficial individual de 6 hojas para la ficha seleccionada.
+              Muestra el documento oficial individual de 5 hojas para la ficha seleccionada.
             </p>
           </div>
         </div>
@@ -153,7 +152,7 @@ export async function renderEmisionDocumentalPage(container) {
             class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-title-md text-sm font-bold shadow-lg transition-all flex items-center gap-2 cursor-pointer ${!selectedFichaId ? 'opacity-50 pointer-events-none' : ''}"
           >
             <span class="material-symbols-outlined text-[20px]">description</span>
-            <span>Generar Ficha Seleccionada (6 Hojas)</span>
+            <span>Generar Ficha Seleccionada (5 Hojas)</span>
           </button>
 
           <button
@@ -178,7 +177,11 @@ export async function renderEmisionDocumentalPage(container) {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
-          ${documentosCatalog.map(doc => `
+          ${documentosCatalog.map(doc => {
+            const isComp = doc.codigo === 'FASD COMP';
+            const isDisabled = isComp ? agendasList.length === 0 : fichasList.length === 0;
+
+            return `
             <div class="p-space-md rounded-xl bg-surface-card border border-border-subtle shadow-md flex flex-col justify-between gap-3 hover:border-border-gold transition-colors relative overflow-hidden">
               <div class="flex flex-col gap-1.5">
                 <div class="flex items-center justify-between">
@@ -194,22 +197,25 @@ export async function renderEmisionDocumentalPage(container) {
               </div>
 
               <div class="pt-3 border-t border-border-subtle/50 flex items-center justify-between">
-                <span class="text-[11px] text-emerald-400 font-medium flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[14px]">check_circle</span>
-                  Funcional con API
+                <span class="text-[11px] ${isDisabled ? 'text-status-warning' : 'text-emerald-400'} font-medium flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">${isDisabled ? 'warning' : 'check_circle'}</span>
+                  ${isDisabled ? (isComp ? 'Sin Agendas' : 'Sin Fichas') : 'Funcional con API'}
                 </span>
                 <button
                   type="button"
                   data-action="generar-doc-card"
-                  data-hoja="${doc.hoja}"
-                  class="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary border border-border-subtle text-xs font-semibold flex items-center gap-1 transition-colors"
+                  data-codigo="${doc.codigo}"
+                  ${isDisabled ? 'disabled' : ''}
+                  title="${isDisabled ? (isComp ? 'No hay agendas capturadas' : 'No hay fichas capturadas') : 'Ver en documento'}"
+                  class="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary border border-border-subtle text-xs font-semibold flex items-center gap-1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <span class="material-symbols-outlined text-[14px]">visibility</span>
                   <span>Ver en documento</span>
                 </button>
               </div>
             </div>
-          `).join('')}
+          `;
+          }).join('')}
         </div>
       </div>
     `;
@@ -244,7 +250,7 @@ export async function renderEmisionDocumentalPage(container) {
           return;
         }
         try {
-          showToast('Generando documento oficial FASD (6 Hojas)...', 'info');
+          showToast('Generando documento oficial FASD (5 Hojas)...', 'info');
           await generarDocumentoFicha(selectedFichaId);
         } catch (err) {
           console.error('Error al generar documento de ficha:', err);
@@ -273,16 +279,72 @@ export async function renderEmisionDocumentalPage(container) {
     container.addEventListener('click', async (e) => {
       const btnDocCard = e.target.closest('[data-action="generar-doc-card"]');
       if (btnDocCard) {
-        if (!selectedFichaId) {
-          showToast('Seleccione primero una ficha diagnóstica', 'warning');
-          return;
-        }
-        try {
-          showToast('Generando documento oficial FASD...', 'info');
-          await generarDocumentoFicha(selectedFichaId);
-        } catch (err) {
-          console.error('Error al generar documento:', err);
-          showToast(err.message || 'Error al generar documento', 'error');
+        const codigo = btnDocCard.dataset.codigo;
+        const docInfo = documentosCatalog.find(d => d.codigo === codigo);
+        if (!docInfo) return;
+
+        if (codigo === 'FASD COMP') {
+          if (agendasList.length === 0) {
+            showToast('No hay agendas regulatorias capturadas en el sistema', 'warning');
+            return;
+          }
+
+          showFormModal({
+            title: 'Ver Compilación Oficial Completa (Agenda)',
+            icon: 'menu_book',
+            submitText: 'Generar Compilación por Agenda',
+            fields: [
+              {
+                name: 'id_agenda',
+                label: 'Seleccione Agenda Regulatoria',
+                type: 'select',
+                required: true,
+                options: agendasList.map(a => ({
+                  value: a.id_agenda,
+                  label: `Agenda #AG-${a.id_agenda} | ${a.id_dependencia?.clave || 'Dep'} — Año ${a.anio} (${a.semestre ? '1er Sem' : '2do Sem'})`
+                })),
+                defaultValue: selectedAgendaId || (agendasList[0] ? agendasList[0].id_agenda : '')
+              }
+            ],
+            onSubmit: async (formData) => {
+              const idAgenda = parseInt(formData.id_agenda, 10);
+              if (!idAgenda) throw new Error('Debe seleccionar una agenda válida');
+              showToast('Generando compilación oficial para la agenda...', 'info');
+              await generarDocumentoAgenda(idAgenda);
+            }
+          });
+        } else {
+          if (fichasList.length === 0) {
+            showToast('No hay fichas diagnósticas capturadas en el sistema', 'warning');
+            return;
+          }
+
+          const fichasDisponibles = getFichasFiltradas().length > 0 ? getFichasFiltradas() : fichasList;
+
+          showFormModal({
+            title: `Ver Documento: ${docInfo.codigo} — ${docInfo.nombre}`,
+            icon: 'description',
+            submitText: 'Generar y Abrir Hoja',
+            fields: [
+              {
+                name: 'id_ficha',
+                label: 'Seleccione Ficha Diagnóstica',
+                type: 'select',
+                required: true,
+                options: fichasDisponibles.map(f => ({
+                  value: f.id_ficha,
+                  label: `Ficha #FCH-${f.id_ficha} — ${f.id_tramite_servicio?.nombre_oficial || 'Trámite'} (${f.id_agenda?.id_dependencia?.clave || 'Dep'})`
+                })),
+                defaultValue: selectedFichaId || (fichasDisponibles[0] ? fichasDisponibles[0].id_ficha : '')
+              }
+            ],
+            onSubmit: async (formData) => {
+              const idFicha = parseInt(formData.id_ficha, 10);
+              if (!idFicha) throw new Error('Debe seleccionar una ficha válida');
+              showToast(`Generando hoja ${docInfo.codigo} para la Ficha #${idFicha}...`, 'info');
+              await generarHojaIndividual(idFicha, docInfo.codigo);
+            }
+          });
         }
       }
     });

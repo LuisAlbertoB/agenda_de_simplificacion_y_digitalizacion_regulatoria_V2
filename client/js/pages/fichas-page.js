@@ -366,7 +366,7 @@ export async function renderFichasPage(container) {
                   <h3 class="font-headline-sm text-headline-sm text-text-primary font-bold">Ficha Diagnóstica #FCH-${selectedFicha.id_ficha}</h3>
                 </div>
                 <div class="flex items-center gap-2">
-                  <button id="btn-print-selected" class="px-2.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-title-md text-xs font-bold shadow flex items-center gap-1.5" title="Imprimir Documento FASD (6 Hojas)">
+                  <button id="btn-print-selected" class="px-2.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-title-md text-xs font-bold shadow flex items-center gap-1.5" title="Imprimir Documento FASD (5 Hojas)">
                     <span class="material-symbols-outlined text-[16px]">print</span>
                     <span>Imprimir FASD</span>
                   </button>

@@ -212,7 +212,7 @@ export function renderDataTable({
     </div>
 
     <!-- Paginación integrada -->
-    ${renderPagination({ count, page, pageSize })}
+    ${renderPagination({ count, page, pageSize, actualCount: data ? data.length : 0 })}
   </div>`;
 }
 

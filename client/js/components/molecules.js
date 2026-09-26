@@ -59,12 +59,36 @@ export function renderKPICard({
 /**
  * Control de Paginación de Tabla (Consistente con PageNumberPagination de DRF)
  */
-export function renderPagination({ count = 0, page = 1, pageSize = 10 }) {
-  const totalPages = Math.ceil(count / pageSize) || 1;
+export function renderPagination({ count = 0, page = 1, pageSize = 10, actualCount = null }) {
+  let effectivePageSize = pageSize;
+
+  if (actualCount !== null && actualCount !== undefined && count > 0) {
+    const isFirstPage = page === 1;
+    if (isFirstPage && actualCount > 0 && actualCount < pageSize && count > actualCount) {
+      effectivePageSize = actualCount;
+      console.warn(
+        `[Paginación] Advertencia de desajuste: Se solicitaron ${pageSize} elementos por página, ` +
+        `pero el servidor devolvió solo ${actualCount} elementos en la página 1 para un total de ${count} registros. ` +
+        `Se ajustó dinámicamente el tamaño efectivo de página a ${effectivePageSize} para evitar truncar la navegación.`
+      );
+    } else {
+      const totalEstimatedPages = Math.ceil(count / pageSize) || 1;
+      const isLastPage = page >= totalEstimatedPages;
+      if (!isLastPage && actualCount < pageSize) {
+        console.warn(
+          `[Paginación] Advertencia de desajuste: Se solicitaron ${pageSize} elementos en página ${page}/${totalEstimatedPages}, ` +
+          `pero el servidor devolvió ${actualCount} registros.`
+        );
+      }
+    }
+  }
+
+  const totalPages = Math.ceil(count / effectivePageSize) || 1;
   const hasPrevious = page > 1;
   const hasNext = page < totalPages;
-  const startItem = count > 0 ? (page - 1) * pageSize + 1 : 0;
-  const endItem = Math.min(page * pageSize, count);
+  const startItem = count > 0 ? (page - 1) * effectivePageSize + 1 : 0;
+  const currentItemsOnPage = actualCount !== null && actualCount !== undefined ? actualCount : Math.min(effectivePageSize, Math.max(0, count - startItem + 1));
+  const endItem = count > 0 ? Math.min(startItem + currentItemsOnPage - 1, count) : 0;
 
   return `<div class="px-space-md py-3 bg-surface-container-lowest border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-space-sm rounded-b-xl">
     <div class="font-data-mono text-label-sm text-text-tertiary">

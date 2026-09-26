@@ -112,7 +112,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     # Paginación global
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'src.middlewares.pagination.CustomPageNumberPagination',
     'PAGE_SIZE': 10,
 
     # Renderers y parsers
